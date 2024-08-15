@@ -1,2 +1,10 @@
-# NovaGuieqKlarrind
-É como a GuieqKlarrind, mas nova
+# Nova Guieq Klarrind
+> Eu ia dizer que é nova como nova iorque, mas realmente existe uma cidade chamada de York
+
+- 1º: 12134252
+- 2º: b e w
+- 3º: poton/paiton
+# Agradecimentos
+- Vim
+- Nano
+- Os Carlosboneldianos e os Carlinistas
