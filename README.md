@@ -1,5 +1,5 @@
 # Nova Guieq Klarrind
-> Eu ia dizer que é nova como nova iorque, mas realmente existe uma cidade chamada de York
+> Eu ia dizer que é nova como nova iorque, mas realmente existe uma cidade chamada York
 
 - 1º: 12134252
 - 2º: b e w
