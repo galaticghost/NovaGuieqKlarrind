@@ -1,0 +1,9 @@
+@startuml databanco
+
+title bola
+
+entity Banco {
+    id: BIGINT
+}
+
+@enduml

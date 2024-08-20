@@ -1,0 +1,13 @@
+.impar{
+    color: blue;
+    background-color: blue;
+}
+
+.par{
+    color: green;
+    background-color: green;
+}
+
+p {
+    margin: 12px;
+}
