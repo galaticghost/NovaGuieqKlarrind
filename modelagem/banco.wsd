@@ -2,8 +2,17 @@
 
 title bola
 
-entity Banco {
-    id: BIGINT
+entity databasae {
 }
+
+entity Banco{
+
+}
+
+relationship Transação {
+
+}
+
+Banco 
 
 @enduml
