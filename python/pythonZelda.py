@@ -28,12 +28,17 @@ class LinkedList:
             node.next = data
 
     def add_node(self,data,position):
-        pointer = 0
-        while pointer != position:
-            node = node.next
-            pointer += 1
-        data.next = node.next
-        node.next = data
+        if position == 1:
+            data.next = self.head
+            self.head = data
+        else:
+            self
+            pointer = 2
+            while pointer != position:
+                node = node.next
+                pointer += 1
+            data.next = node.next
+            node.next = data
 
     def __repr__(self):
         node = self.head
