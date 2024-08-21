@@ -10,7 +10,7 @@ class Queue:
 
     def dequeue(self):
         if self.queue == []:
-            return "Fila vazia"
+            print("Fila vazia")
         else:
             self.queue.pop(0)
 
