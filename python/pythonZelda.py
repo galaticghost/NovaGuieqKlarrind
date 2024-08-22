@@ -14,32 +14,6 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
-    def add_first(self,node):
-        node.next = self.head
-        self.head = node
-            
-    def add_last(self,data):
-        node = self.head
-        if node == None:
-            self.head = data
-        else:
-            while node.next is not None:
-                node = node.next
-            node.next = data
-
-    def add_node(self,data,position):
-        if position == 1:
-            data.next = self.head
-            self.head = data
-        else:
-            self
-            pointer = 2
-            while pointer != position:
-                node = node.next
-                pointer += 1
-            data.next = node.next
-            node.next = data
-
     def __repr__(self):
         node = self.head
         nodes = []
@@ -49,10 +23,49 @@ class LinkedList:
             node = node.next
         nodes.append("None")
         return " -> ".join(nodes)
-        
-linked_list = LinkedList()
-linked_list.add_last(Node(2))
-linked_list.add_last(Node(3))
-linked_list.add_first(Node(1))
-linked_list.add_node(Node(1.5),2)
-print(linked_list)
+
+    def add_first(self,node):
+        node.next = self.head
+        self.head = node
+        return None
+            
+    def add_last(self,data):
+        node = self.head
+        if node == None:
+            self.head = data
+        else:
+            while node.next is not None:
+                node = node.next
+            node.next = data
+        return None
+
+    def add_node(self,data,position):
+        if position == 1:
+            self.add_first(data)
+            return None
+        node = self.head
+        pointer = 1
+        while pointer != position - 1:
+            if node.next == None:
+                break
+            pointer += 1
+            node = node.next
+        data.next = node.next
+        node.next = data
+    
+    def delete_node(self,position):
+        if position == 1:
+            self.head = self.head.next
+            return None
+        node = self.head
+        pointer = 1
+        while pointer != position - 1:
+            node = node.next
+            if node == None:
+                print("No node in this position")
+                return None
+            pointer += 1
+        node.next = node.next.next
+
+    def search_node(self,node):
+        node = self.head
