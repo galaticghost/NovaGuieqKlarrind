@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/python3
 # Python 23
 
 class Queue:

@@ -1,3 +1,5 @@
+#!/opt/homebrew/bin/python3
+
 class Stack:
     
     def __init__(self):

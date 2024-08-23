@@ -1,4 +1,5 @@
-#paitonkdfi
+#!/opt/homebrew/bin/python3
+# paitonkdfi
 #cpf
 
 def cpf(cpf):
@@ -24,4 +25,4 @@ def cpf(cpf):
                 return False
     return True
 
-print(cpf("111.111.111-12"))
+print(cpf("111.11.111-12"))
