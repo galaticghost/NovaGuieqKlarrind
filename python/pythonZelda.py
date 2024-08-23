@@ -1,4 +1,7 @@
+#!/opt/homebrew/bin/python3
 # kokokokookkokokokokokokko paiton45
+
+from argparse import *
 
 class Node:
     
@@ -33,7 +36,7 @@ class LinkedList:
             
     def add_last(self,data):
         node = self.head
-        
+
         if node == None:
             self.head = data
         else:
@@ -79,8 +82,10 @@ class LinkedList:
 
     def search(self,data):
         node = self.head
+        position = 1
         while node.data != data:
             if node.next == None:
-                return False
+                return "No node found in this linked list"
             node = node.next
-        return True
+            position += 1
+        return f"{data} found at position {position}"
