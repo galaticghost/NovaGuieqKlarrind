@@ -1,7 +1,7 @@
 #!/opt/homebrew/bin/python3
 
 from pythonZelda import *
-
+parser = ArgumentParser
   
 linked_list = LinkedList()
 linked_list.add_last(Node(2))
