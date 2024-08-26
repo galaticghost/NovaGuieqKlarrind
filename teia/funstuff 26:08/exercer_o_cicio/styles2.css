@@ -1,0 +1,12 @@
+body{
+    background-color: black;
+}
+
+.border{
+    position: fixed;
+    background-color: white;
+    bottom: 0;
+    padding: 16px;
+    width: 100%;
+    text-align: center;
+}

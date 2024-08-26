@@ -1,0 +1,15 @@
+body {
+    background-color:black;
+    color: white;
+}
+
+.top{
+    background-color: white;
+    top: 0;
+    right: 0;
+    padding: 16px;
+}
+
+p{
+    margin-top: 10px;
+}
