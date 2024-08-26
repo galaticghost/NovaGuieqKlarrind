@@ -2,6 +2,7 @@
 # kokokokookkokokokokokokko paiton45
 
 from argparse import *
+from pickle import *
 
 class Node:
     
