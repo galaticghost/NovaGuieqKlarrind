@@ -99,24 +99,33 @@ x = Node(25)
 ll.add_node(x,1)
 y = Node(52)
 ll.add_last(y)
-with open("data.pkl", "wb") as f:
-    dump(ll,f)
-
-f.close()
 
 with open("data.pkl", "rb") as f:
     linked = load(f)
     print(linked)
 f.close()
 
+def dump_data(linked_list):
+    with open("data.pkl", "wb") as f:
+        dump(linked_list,f)
+    f.close()
+ 
+def load_data():
+    with open("data.pkl", "rb") as f:
+        linked_list = load(f)
+    f.close()
+    return linked_list
 
 def add(node,position):
-    ll = LinkedList()
-    ll.add_node(node,position)
+    linked_list = load_data()
+    linked_list.add_node(node,position)
+    dump_data(linked_list)
 
 global_parser = ArgumentParser()
 #global_parser.add_argument("node", help="create a node with the data inserted")
 subparsers = global_parser.add_subparsers(title="subcommands", help="Add, Delete and Search")
 
 add_parser = subparsers.add_parser("add", help="Add a node to the linked list")
+
+
 add_parser.set_defaults(func=add)
