@@ -19,9 +19,12 @@ class LinkedList:
         self.head = None
 
     def __repr__(self):
+        if self.head == None:
+            return "Empty list"
+
         node = self.head
         nodes = []
-        
+    
         while node is not None:
             nodes.append(node.data)
             node = node.next
@@ -90,3 +93,30 @@ class LinkedList:
             node = node.next
             position += 1
         return f"{data} found at position {position}"
+
+ll = LinkedList()
+x = Node(25)
+ll.add_node(x,1)
+y = Node(52)
+ll.add_last(y)
+with open("data.pkl", "wb") as f:
+    dump(ll,f)
+
+f.close()
+
+with open("data.pkl", "rb") as f:
+    linked = load(f)
+    print(linked)
+f.close()
+
+
+def add(node,position):
+    ll = LinkedList()
+    ll.add_node(node,position)
+
+global_parser = ArgumentParser()
+#global_parser.add_argument("node", help="create a node with the data inserted")
+subparsers = global_parser.add_subparsers(title="subcommands", help="Add, Delete and Search")
+
+add_parser = subparsers.add_parser("add", help="Add a node to the linked list")
+add_parser.set_defaults(func=add)
