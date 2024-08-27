@@ -1,0 +1,14 @@
+.carlos{
+    width: 200px;
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    border: double red;
+    border-width: 7px 6px 8px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+p{
+    display: inline;
+}
