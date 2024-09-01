@@ -4,5 +4,4 @@
 from re import *
 
 xina = "1xinamen2345"
-print(search('xinamen',xina))
-print()
+print(search("xin...n",xina))
