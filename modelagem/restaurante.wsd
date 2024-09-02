@@ -1,0 +1,26 @@
+@startuml Restaurante
+
+entity produto{
+    *nome <<PK>>
+    fornecedor <<FK>>
+    --
+    dataDeValidade
+    quantidade
+}
+
+entity fornecedor{
+    *id <<PK>>
+    --
+    cpf
+    cnpj
+    nome
+    endereco
+}
+
+entity lanche{
+    *nome <<PK>>
+    --
+    preço
+}
+
+@enduml

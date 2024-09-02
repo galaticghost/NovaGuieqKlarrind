@@ -1,0 +1,31 @@
+@startuml biblioteca
+
+entity cliente{
+    *id <<PK>>
+    --
+    nome
+    dataDeNascimento
+    categoriaDeInteresse
+}
+
+entity livro{
+    *isbn <<PK>>
+    --
+    prateleira
+    titulo
+    autores
+}
+
+entity emprestimo{
+    *id <<PK>>
+    livro <<FK>>
+    usuario <<FK>>
+    --
+    dataDeRetirada
+    dataDeVencimento
+}
+
+cliente ||--o{ emprestimo
+livro ||--o{ emprestimo
+
+@enduml
