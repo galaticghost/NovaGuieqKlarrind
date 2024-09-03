@@ -1,0 +1,26 @@
+@startuml Universidade
+
+title Universidade Dozaluno
+
+entity aluno{
+    nome : str
+    *cpf : str <<PK>>
+    matricula : str
+}
+
+entity professor{
+    nome: str
+    *cpf: str <<PK>>
+}
+
+entity disciplina{
+    *nome: str <<PK>>
+    sala: int
+    quantidadeAlunos: int 
+    professor: professor <<FK>>
+}
+
+professor |o--o{ disciplina
+
+
+@enduml

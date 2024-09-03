@@ -1,0 +1,43 @@
+@startuml exercer o cicio 
+
+entity carro{
+    *placa <<PK>>
+    --
+    chassi
+    modelo
+    ano
+    categoria
+    qtdPortas
+}
+
+entity cliente{
+    *registro <<PK>>
+    --
+    nome    
+}
+
+entity telefone{
+    *id <<PK>>
+    cliente <<FK>>
+    --
+    telefone
+}
+
+entity loja{
+    *id <<PK>>
+    --
+    numero
+    rua
+}
+
+entity sala{
+    *id <<PK>>
+    loja <<FK>>
+    --
+    nome
+}
+
+cliente ||--|{ telefone
+loja ||--|{ sala
+
+@enduml

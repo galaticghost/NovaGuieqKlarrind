@@ -1,0 +1,64 @@
+@startuml xinamen
+
+entity aluno {
+    *cpf <<PK>>
+    turma <<FK>>
+    matricula <<UN>>
+    --
+    nome
+    endereco
+}
+
+entity professor {
+    *cpf <<PK>>
+    matricula <<UN>>
+    --
+    nome
+    endereco
+    titulacao
+    disponibilidade
+}
+
+entity curso{
+    *nome <<PK>>
+    area
+}
+
+entity cursoDisciplina{
+    *id <<PK>>
+    curso <<FK>>
+    disciplina <<FK>>
+}
+
+entity disciplina{
+    *nome <<PK>>
+    professor <<FK>>
+    sala <<FK>>
+    --
+    quantidadeAlunos
+}
+
+entity sala{
+    *id <<PK>>
+    --
+    nome
+    capacidade
+    comodidades
+}
+
+entity turma{
+    *id <<PK>>
+    professor <<FK>>
+    --
+
+}
+
+professor ||--|{ disciplina
+curso ||--|{ cursoDisciplina
+disciplina ||--|{ cursoDisciplina
+sala ||--|| disciplina
+aluno }|--|| turma
+turma }o--|| professor
+
+
+@enduml

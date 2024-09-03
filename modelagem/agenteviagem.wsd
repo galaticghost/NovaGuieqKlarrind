@@ -1,0 +1,12 @@
+@startuml Agente de Viagem
+
+entity lead{
+    *id 
+    --
+    faixaEtaria
+    poderAquisitivo
+    composicaoFamiliar
+    
+}
+
+@enduml
