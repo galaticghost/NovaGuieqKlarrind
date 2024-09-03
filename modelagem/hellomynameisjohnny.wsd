@@ -1,5 +1,52 @@
-@startuml well my name is johnny
+@startuml well hello, my name is johnny
 
+entity Professor{
+    id
+}
 
+entity disciplina{
+    id
+    idProfessor <<FK>>
+}
 
+Professor |o--o{ disciplina
+
+entity professor {
+    id
+    idDisciplina <<FK>>
+}
+
+entity Disciplina {
+    id
+}
+
+professor }o--o| Disciplina
+
+entity Professores{
+    id 
+}
+
+entity Disciplinas{
+    id
+}
+
+entity ProfessoresDisciplinas{
+    id
+    idProfessor
+    idDisciplina
+}
+
+Professores ||--o{ ProfessoresDisciplinas
+Disciplinas ||--|{ ProfessoresDisciplinas
+
+entity professores {
+    id
+    idDisciplina <<FK>> 
+}
+
+entity disciplinas{
+    id 
+}
+
+professores }|--|| disciplinas
 @enduml

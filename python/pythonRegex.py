@@ -3,5 +3,6 @@
 
 from re import *
 
-xina = "1xinamen2345"
-print(search("xin...n",xina))
+xina = "1xinamEn2345"
+print(search("xin..[c-j,A-Z]n",xina))
+print(search("[^a-z]","1abcdjkd"))
