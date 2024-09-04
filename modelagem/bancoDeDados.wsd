@@ -1,0 +1,22 @@
+@startuml coisa de maluco
+
+'6cubo3visão
+'compreende?
+
+entity seresHumanos{
+    nome VARCHAR
+    --
+    *id INT NOT NULL <<PK>>
+}
+
+entity cerneForma{
+    nome VARCHAR NOT NULL
+    tipo VARCHAR NOT NULL
+    --
+    *id INT NOT NULL <<PK>>
+    humanoId INT NOT NULL <<FK>>
+}
+
+seresHumanos ||--|{ cerneForma
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml Da Esquina
+
+entity produto{
+    *nome <<PK>>
+    --
+    quantidade
+    dataVencimento
+}
+
+entity lanche{
+    *nome <<PK>>
+    --
+    receita
+}
+
+entity produtoLanche{
+    *id <<PK>>
+    produto <<FK>>
+    lanche <<FK>>
+}
+
+produto ||--|{ produtoLanche
+lanche ||--|{ produtoLanche
+
+@enduml

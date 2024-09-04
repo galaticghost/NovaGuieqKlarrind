@@ -1,0 +1,46 @@
+@startuml heklpmi
+
+entity pessoa{
+    *cpf
+    --
+    nome
+}
+
+entity aluno{
+    *cpf <<FK>>
+    --
+    matricula <<UN>>
+}
+
+entity professor{
+    *cpf <<FK>>
+    --
+}
+
+entity disciplina{
+    *nome <<PK>>
+    --
+    sala
+    qtdAlunos
+}
+
+entity alunoDisciplina{
+    *id <<PK>>
+    aluno <<FK>>
+    disciplina <<FK>>
+}
+
+entity professorDisciplina{
+    *id <<PK>>
+    professor <<FK>>
+    disciplina <<FK>>
+}
+
+pessoa ||--|{ aluno
+pessoa ||--|{ professor
+aluno ||--|{ alunoDisciplina
+disciplina ||--|{ alunoDisciplina
+professor ||--|{ professorDisciplina
+disciplina ||--|{ professorDisciplina
+
+@enduml

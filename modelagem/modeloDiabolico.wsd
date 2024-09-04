@@ -1,0 +1,77 @@
+@startuml helpimi homi helmp miOP HOMIIMIMII HOMMERJIR!!!!11!!1
+
+entity empregado{
+    *id <<PK>>
+    departamento <<FK>>
+    --
+    nome
+    cic
+    tipoEmpregado
+}
+
+entity motorista{
+    *id <<FK>>
+    --
+    carteiraDeHabilitacao
+}
+
+entity departamento{
+    *id <<PK>>
+    --
+    nome
+}
+
+entity secretaria{
+    *id <<FK>>
+
+}
+
+entity prosessadorDeTextos{
+    *id <<PK>>
+    --
+    nome 
+}
+
+entity secretariaProssessador{
+    *id <<PK>>
+    secretaria <<FK>>
+    prosessadorDeTextos <<FK>>
+}
+
+entity engenheiro{
+    *id <<FK>>
+    ramo <<FK>>
+    --
+    crea 
+}
+
+entity ramo{
+    *id <<PK>>
+    --
+    nome
+}
+
+entity projeto{
+    *id <<PK>>
+    --
+    nome
+}
+
+entity participacao{
+    *id <<PK>>
+    engenheiro <<FK>>
+    projeto <<FK>>
+}
+
+empregado }|--|| departamento
+empregado ||--|{ motorista
+empregado ||--|{ secretaria
+empregado ||--|{ engenheiro
+
+secretariaProssessador }|--|| secretaria
+secretariaProssessador }o--|| prosessadorDeTextos
+
+engenheiro }|--|| ramo
+engenheiro ||--o{ participacao
+projeto ||--o{ participacao
+@enduml

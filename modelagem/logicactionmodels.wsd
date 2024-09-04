@@ -1,0 +1,88 @@
+@startuml owhroijewroigojreojiojgriee
+
+entity cliente{
+    *id <<PK>>
+    --
+    nome
+    idade
+    cnh
+}
+
+entity telefone{
+    *id <<PK>>
+    idCliente <<FK>>
+    --
+    telefone
+}
+
+cliente ||--|{ telefone
+
+entity aluno{
+    *cpf <<PK>>
+    --
+    nome
+}
+
+entity professor{
+    *matricula <<PK>>
+    --
+    nome
+}
+
+entity disciplina{
+    *nome <<PK>>
+    monitor <<FK>>
+}
+
+entity sala{
+    *id <<PK>>
+    disciplina <<FK>>
+    --
+}
+
+aluno --|| disciplina
+professor --|| disciplina
+sala }|--|| disciplina
+
+entity pessoa{
+    *cpf <<PK>>
+    conjugue <<FK>>
+    --
+    nome
+    dataCasamento
+}
+
+pessoa ||--|| pessoa
+
+entity clientes {
+    *cpf <<PK>>
+    --
+    nome
+}
+
+entity telefones {
+    *id <<PK>>
+    cliente <<FK>>
+    --
+    telefone
+}
+
+entity produtos{
+    *sku <<PK>>
+    --
+    nome
+}
+
+entity vendas{
+    produto <<PK>>
+    cliente <<PK>>
+    --
+    data
+    quantidade
+}
+
+clientes ||--|{ telefones
+vendas }|--|| produtos
+vendas }|--|| clientes
+
+@enduml
