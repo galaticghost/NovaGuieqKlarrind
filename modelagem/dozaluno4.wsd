@@ -1,0 +1,51 @@
+@startuml HLPMEI IMHE HOMMIIIII HELP HEALPLPGL MI JOMI@IMGMI@@@!!!!!
+
+
+entity pessoa{
+    *cpf
+    --
+    nome
+
+}
+
+entity aluno{
+    *cpf <<FK>>
+    --
+    matricula
+}
+
+entity professor{
+    *cpf <<FK>>
+}
+
+entity estuda{
+    *disciplina <<FK>>
+    *aluno <<FK>>
+}
+
+entity ministra{
+    *disciplina <<FK>>
+    *professor <<FK>>
+}
+
+entity disciplina{
+    *nome <<PK>>
+    sala <<FK>>
+    --
+}
+
+entity sala{
+    *numero <<PK>>
+    --
+    qtdAlunos
+}
+
+pessoa ||--|{ aluno
+pessoa ||--|{ professor
+aluno ||--|{ estuda
+professor ||--|{ ministra
+disciplina ||--|{ estuda
+disciplina ||--|{ ministra
+disciplina }|--|| sala
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml holo
+
+entity produto{
+    *SKU <<PK>>
+    --
+    nome
+    quantidade
+    dataValidade
+}
+
+entity lanche{
+    *nome <<PK>>
+    --
+    preco
+}
+
+entity receita{
+    *id <<PK>>
+        
+}
+
+entity passo{
+    *id <<PK>>
+    receita <<FK>>
+    --
+    passo
+}
+
+receita ||--|{ passo
+
+@enduml
