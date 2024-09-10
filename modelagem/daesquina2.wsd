@@ -1,29 +1,28 @@
 @startuml holo
 
 entity produto{
-    *SKU <<PK>>
+    *SKU <<PK>> : VARCHAR
     --
-    nome
-    quantidade
-    dataValidade
+    nome : VARCHAR
+    quantidade : INT
+    dataValidade : DATE
 }
 
 entity lanche{
-    *nome <<PK>>
+    *nome <<PK>> : VARCHAR
     --
-    preco
+    preco : NUMERIC
 }
 
 entity receita{
-    *id <<PK>>
-        
+    *id <<PK>> : INT
 }
 
 entity passo{
-    *id <<PK>>
-    receita <<FK>>
+    *id <<PK>> : INT
+    receita <<FK>> : INT
     --
-    passo
+    passo : TEXT
 }
 
 receita ||--|{ passo

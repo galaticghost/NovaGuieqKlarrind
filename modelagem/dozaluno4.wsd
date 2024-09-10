@@ -2,42 +2,41 @@
 
 
 entity pessoa{
-    *cpf
+    *cpf : VARCHAR
     --
-    nome
-
+    nome : VARCHAR
 }
 
 entity aluno{
-    *cpf <<FK>>
+    *cpf <<FK>> : VARCHAR
     --
-    matricula
+    matricula : VARCHAR
 }
 
 entity professor{
-    *cpf <<FK>>
+    *cpf <<FK>> : VARCHAR
 }
 
 entity estuda{
-    *disciplina <<FK>>
-    *aluno <<FK>>
+    *disciplina <<FK>> : VARCHAR
+    *aluno <<FK>> : VARCHAR
 }
 
 entity ministra{
-    *disciplina <<FK>>
-    *professor <<FK>>
+    *disciplina <<FK>> : VARCHAR
+    *professor <<FK>> : VARCHAR
 }
 
 entity disciplina{
-    *nome <<PK>>
-    sala <<FK>>
+    *nome <<PK>> : VARCHAR
+    sala <<FK>> : VARCHAR
     --
 }
 
 entity sala{
-    *numero <<PK>>
+    *numero <<PK>> : VARCHAR
     --
-    qtdAlunos
+    qtdAlunos : INT
 }
 
 pessoa ||--|{ aluno
