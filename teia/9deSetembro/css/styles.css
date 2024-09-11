@@ -1,3 +1,13 @@
-nav{
-    display:inline;
+#head{
+    display: inline;
+}
+
+.lista{
+    overflow: hidden;
+}
+
+.xi{
+    display: inline;
+    float: left;
+    padding: 5px;
 }
