@@ -1,14 +1,31 @@
-.carta{
+.cartas{
     display: flex;
     flex-direction: column;
-    max-width: 900px;
     margin: auto;
-    border: 2px solid red;
-    border-radius: 8px;
+    gap: 1em;
+    max-width: 900px;
+    justify-content: center;
+    align-content: center;
 }
 
+.carta{
+    border: 2px solid red;
+    border-radius: 8px;
+    background-color: #0A2342;
+}
+
+.carta-imagem img{
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    width: 100%;
+}
+
+.carta-content{
+    padding: 1em;
+    color: white;
+}
 @media (min-width: 780px){
-    .carta{
+    .cartas{
         flex-direction: row;
     }
 }
