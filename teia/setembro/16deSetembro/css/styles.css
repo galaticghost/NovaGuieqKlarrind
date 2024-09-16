@@ -1,0 +1,14 @@
+.carta{
+    display: flex;
+    flex-direction: column;
+    max-width: 900px;
+    margin: auto;
+    border: 2px solid red;
+    border-radius: 8px;
+}
+
+@media (min-width: 780px){
+    .carta{
+        flex-direction: row;
+    }
+}
