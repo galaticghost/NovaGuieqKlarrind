@@ -1,0 +1,22 @@
+@startuml Instituição Financeira
+
+entity metas{
+    *pk_metas INT <<PK>> NOT NULL
+    pk_funcionario <<FK>>
+    --
+    seguros_vendidos INT
+    contas_abertas INT
+    financiamentos INT
+    emprestimos_realizados INT
+}
+
+entity funcionario{
+    *pk_funcionario INT <<PK>> NOT NULL
+    --
+    nome VARCHAR(100)
+    gerente BOOL
+}
+
+metas |o--|| funcionario
+
+@enduml
