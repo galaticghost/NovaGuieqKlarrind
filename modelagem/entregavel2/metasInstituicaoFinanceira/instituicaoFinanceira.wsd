@@ -4,19 +4,19 @@ entity metas{
     *pk_metas INTEGER <<PK>> NOT NULL
     pk_funcionario <<FK>> NOT NULL
     --
-    seguros_vendidos INTEGER
-    contas_abertas INTEGER
-    financiamentos INTEGER
+    seguros_vendidos INTEGER NOT NULL
+    contas_abertas INTEGER NOT NULL
+    financiamentos INTEGER NOT NULL
     emprestimos_realizados INTEGER
 }
 
 entity funcionario{
     *pk_funcionario INTEGER <<PK>> NOT NULL
     --
-    nome VARCHAR(100)
-    gerente BOOL
+    nome VARCHAR(100) NOT NULL
+    gerente CHAR(1) NOT NULL
 }
 
-metas |o--|| funcionario
+metas |o--|{ funcionario
 
 @enduml

@@ -1,0 +1,46 @@
+@startuml Campeonato de futebol
+
+entity jogador{
+    pk_jogador INTEGER <<PK>> NOT NULL
+    pk_equipe <<FK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+    n_contrato VARCHAR(50) NOT NULL
+    tipo_contrato VARCHAR(30) NOT NULL
+    publicacao DATE NOT NULL
+    data_inicio DATE NOT NULL
+    inscricao VARCHAR(20) NOT NULL
+    nascimento DATE NOT NULL
+    apelido
+}
+
+entity equipe{
+    pk_equipe INTEGER <<PK>>
+    --
+    nome VARCHAR(100) NOT NULL
+    endereco TEXT NOT NULL
+}
+
+entity partida{
+    pk_partida INTEGER <<PK>> NOT NULL
+    pk_casa <<FK>> NOT NULL
+    pk_visitante <<FK>> NOT NULL
+    --
+    data DATE NOT NULL
+    local TEXT NOT NULL
+    qtd_cartoes INTEGER
+    gols VARCHAR (10) NOT NULL
+}
+
+entity jogador_partida{
+    pk_jogador_partida INTEGER <<PK>> NOT NULL
+    pk_jogador <<FK>> NOT NULL
+    pk_partida <<FK>> NOT NULL
+}
+
+jogador ||--o{ jogador_partida
+jogador }o--|| equipe
+partida }o-- "2..2" equipe
+partida ||-up-o{ jogador_partida
+
+@enduml
