@@ -1,0 +1,44 @@
+@startuml pesquisa
+
+entity participante{
+    pk_participante INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+    idade INTEGER CHECK(idade >= 0) NOT NULL
+    genero VARCHAR(2) NOT NULL
+    renda NUMERIC CHECK(renda >= 0) NOT NULL
+    regiao CHAR(2) NOT NULL
+    endereco TEXT NOT NULL
+}
+
+entity questao{
+    pk_questao INTEGER <<PK>> NOT NULL
+    --
+    questao TEXT NOT NULL
+    tipo CHAR(1) NOT NULL
+}
+
+entity likert{
+    pk_likert INTEGER <<PK>> NOT NULL
+    pk_questao <<FK>> NOT NULL
+    pk_participante <<FK>> NOT NULL
+    --
+    resposta INTEGER CHECK(resposta >= 1 OR resposta < 6) NOT NULL
+}
+
+entity texto{
+    pk_texto INTEGER <<PK>> NOT NULL
+    pk_questao <<FK>> NOT NULL
+    pk_participante <<FK>> NOT NULL
+    --
+    resposta TEXT NOT NULL
+}
+
+participante ||-up-o{ likert
+participante ||-right-o{ texto
+questao ||-left-o{ texto
+questao ||--o{ likert
+
+
+
+@enduml 

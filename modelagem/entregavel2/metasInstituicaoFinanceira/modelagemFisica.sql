@@ -7,7 +7,7 @@ CREATE TABLE funcionario(
 
 CREATE TABLE metas(
     pk_metas INTEGER PRIMARY KEY NOT NULL,
-    pk_funcionario REFERENCES funcionario,
+    pk_funcionario REFERENCES funcionario NOT NULL,
     seguros_vendidos INTEGER NOT NULL,
     contas_abertas INTEGER NOT NULL,
     financiamentos INTEGER NOT NULL,

@@ -1,0 +1,59 @@
+@startuml Comunidade de Discos
+
+entity usuario{
+    pk_usuario INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+    email VARCHAR(200) NOT NULL
+    senha VARCHAR(100) NOT NULL
+}
+
+entity banda{
+    pk_banda INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+}
+
+entity album{
+    pk_album INTEGER <<PK>> NOT NULL
+    pk_banda <<FK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+    genero VARCHAR(100) NOT NULL
+    duracao VARCHAR(9) NOT NULL
+    tipo VARCHAR(30) NOT NULL
+}
+
+entity avaliacao_album{
+    pk_avaliacao_album <<PK>> NOT NULL
+    pk_album <<FK>> NOT NULL
+    pk_usuario <<FK>> NOT NULL
+    --
+    avaliacao TEXT
+    nota INTEGER
+}
+
+entity turne{
+    pk_turne INTEGER <<PK>> NOT NULL
+    pk_banda <<FK>> NOT NULL
+    --
+    data DATE NOT NULL
+}
+
+entity avaliacao_turne{
+    pk_avaliacao_turne INTEGER <<PK>> NOT NULL
+    pk_turne <<FK>> NOT NULL
+    pk_usuario <<FK>> NOT NULL
+    --
+    avaliacao TEXT
+    nota INTEGER
+}
+
+usuario ||--o{ avaliacao_album
+album ||--o{ avaliacao_album
+banda ||--o{ turne
+banda ||--o{ album
+usuario ||--o{ avaliacao_turne
+turne ||--o{ avaliacao_turne
+
+@enduml

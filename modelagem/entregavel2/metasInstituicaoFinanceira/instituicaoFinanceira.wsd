@@ -1,17 +1,17 @@
 @startuml Instituição Financeira
 
 entity metas{
-    *pk_metas INT <<PK>> NOT NULL
-    pk_funcionario <<FK>>
+    *pk_metas INTEGER <<PK>> NOT NULL
+    pk_funcionario <<FK>> NOT NULL
     --
-    seguros_vendidos INT
-    contas_abertas INT
-    financiamentos INT
-    emprestimos_realizados INT
+    seguros_vendidos INTEGER
+    contas_abertas INTEGER
+    financiamentos INTEGER
+    emprestimos_realizados INTEGER
 }
 
 entity funcionario{
-    *pk_funcionario INT <<PK>> NOT NULL
+    *pk_funcionario INTEGER <<PK>> NOT NULL
     --
     nome VARCHAR(100)
     gerente BOOL
