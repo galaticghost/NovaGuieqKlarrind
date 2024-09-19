@@ -8,9 +8,9 @@ INSERT INTO funcionario(nome, gerente) VALUES ('Daniela Lima', 1);
 INSERT INTO funcionario(nome, gerente) VALUES ('Eduardo Mendes', 0);
 INSERT INTO funcionario(nome, gerente) VALUES ('Fernanda Rocha', 1);
 INSERT INTO funcionario(nome, gerente) VALUES ('Gabriel Torres', 0);
-INSERT INTO funcionario(nome, gerente) VALUES ('Helena Ferreira',0');
+INSERT INTO funcionario(nome, gerente) VALUES ('Helena Ferreira',0);
 INSERT INTO funcionario(nome, gerente) VALUES ('Igor Martins', 1);
-INSERT INTO funcionario(nome, gerente) VALUES ('Juliana Ribeiro', 0');
+INSERT INTO funcionario(nome, gerente) VALUES ('Juliana Ribeiro', 0);
 
 
 

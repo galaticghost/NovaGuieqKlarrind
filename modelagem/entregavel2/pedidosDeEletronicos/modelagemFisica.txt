@@ -1,0 +1,51 @@
+CREATE TABLE cliente(
+    pk_cliente INTEGER PRIMARY KEY NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    endereco TEXT NOT NULL,
+    endereco_2 TEXT
+);
+
+CREATE TABLE telefone(
+    pk_telefone INTEGER PRIMARY KEY NOT NULL,
+    pk_cliente REFERENCES cliente NOT NULL,
+    telefone VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE funcionario(
+    pk_funcionario INTEGER PRIMARY KEY NOT NULL,
+    matricula VARCHAR(50) NOT NULL UNIQUE,
+    nome VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE inspetor(
+    pk_inspetor INTEGER PRIMARY KEY NOT NULL,
+    nome VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE produto(
+    pk_produto INTEGER PRIMARY KEY NOT NULL,
+    sku VARCHAR(50) NOT NULL UNIQUE,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT NOT NULL,
+    preco NUMERIC CHECK(preco >= 0) NOT NULL,
+    quantidade INTEGER CHECK(quantidade >= 0) NOT NULL
+);
+
+CREATE TABLE pedido(
+    pk_pedido INTEGER PRIMARY KEY NOT NULL,
+    pk_cliente REFERENCES cliente NOT NULL,
+    pk_funcionario REFERENCES funcionario NOT NULL,
+    pk_inspetor REFERENCES inspetor NOT NULL,
+    verificado BOOLEAN NOT NULL,
+    data DATE NOT NULL
+);
+
+CREATE TABLE pedido_produto(
+    pk_pedido_produto INTEGER PRIMARY KEY NOT NULL,
+    pk_pedido REFERENCES pedido NOT NULL,
+    pk_produto REFERENCES produto NOT NULL,
+    quantidade INTEGER CHECK(quantidade >= 0) NOT NULL,
+    valor_total NUMERIC CHECK(valor_total >= 0) NOT NULL
+);
+

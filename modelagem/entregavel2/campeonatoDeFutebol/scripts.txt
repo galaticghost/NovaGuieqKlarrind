@@ -69,6 +69,6 @@ SELECT gols FROM partida WHERE pk_visitante = 5;
 
 SELECT nome FROM jogador;
 
-SELECT nome FROM equipe WHERE = pk_equipe > 4;
+SELECT nome FROM equipe WHERE pk_equipe > 4;
 
 SELECT * FROM jogador WHERE nome LIKE 'Rafa%';
