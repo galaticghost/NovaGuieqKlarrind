@@ -1,6 +1,59 @@
 @startuml pedidos de eletrônicos
 
+@startchen
 
+entity produto{
+id <<key>>
+sku
+nome
+descrição
+preço
+quantidade
+}
+
+entity cliente{
+id <<key>>
+email
+senha
+endereço
+endereço 2
+
+}
+
+entity telefone{
+id <<key>>
+telefone
+}
+
+relationship faz_parte{
+id <<key>>
+quantidade
+valor total
+}
+
+relationship pedido{
+id <<key>>
+data
+valor total
+verificado
+}
+
+entity funcionario{
+id <<key>>
+matricula
+nome
+}
+
+relationship tem{
+}
+
+cliente -1- tem
+telefone -(1,n)- tem
+
+cliente -(0,n)- pedido
+
+
+@endchen
 
 
 @enduml 

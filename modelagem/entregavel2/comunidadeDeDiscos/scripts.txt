@@ -95,4 +95,14 @@ INSERT INTO avaliacao_turne(pk_turne, pk_usuario, avaliacao, nota) VALUES (14, 1
 INSERT INTO avaliacao_turne(pk_turne, pk_usuario, avaliacao, nota) VALUES (15, 15, 'Muito bom', 4);
 
 
+SELECT * FROM usuario;
 
+SELECT pk_usuario,avaliacao,nota FROM avaliacao_turne WHERE pk_turne = 15;
+
+SELECT * FROM avaliacao_album;
+
+SELECT * FROM banda;
+
+SELECT pk_album,avaliacao,nota FROM avaliacao_album WHERE pk_usuario > 10;
+
+SELECT * FROM album WHERE genero LIKE '%metal%';

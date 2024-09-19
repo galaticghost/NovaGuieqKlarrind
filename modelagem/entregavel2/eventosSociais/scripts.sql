@@ -1,0 +1,32 @@
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Rua A, 123', 'Alice', 'F', 30);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Av. B, 456', 'Bruno', 'M', 25);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Praça C, 789', 'Carla', 'F', 28);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Rua D, 321', 'David', 'M', 35);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Av. E, 654', 'Elena', 'F', 22);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Rua F, 987', 'Felipe', 'M', 40);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Travessa G, 147', 'Gabriela', 'F', 27);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Rua H, 258', 'Henrique', 'M', 31);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Av. I, 369', 'Isabela', 'F', 29);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Rua J, 159', 'Jorge', 'M', 26);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Praça K, 753', 'Karine', 'F', 33);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Rua L, 852', 'Lucas', 'M', 24);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Av. M, 951', 'Mariana', 'F', 32);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Rua N, 159', 'Nicolas', 'M', 36);
+INSERT INTO cliente (endereco, nome, genero, idade) VALUES ('Praça O, 357', 'Olivia', 'F', 23);
+
+INSERT INTO administrador (email, senha) VALUES ('admin1@example.com', 'senha123');
+INSERT INTO administrador (email, senha) VALUES ('admin2@example.com', 'senha456');
+INSERT INTO administrador (email, senha) VALUES ('admin3@example.com', 'senha789');
+INSERT INTO administrador (email, senha) VALUES ('admin4@example.com', 'senha101');
+INSERT INTO administrador (email, senha) VALUES ('admin5@example.com', 'senha202');
+INSERT INTO administrador (email, senha) VALUES ('admin6@example.com', 'senha303');
+INSERT INTO administrador (email, senha) VALUES ('admin7@example.com', 'senha404');
+INSERT INTO administrador (email, senha) VALUES ('admin8@example.com', 'senha505');
+INSERT INTO administrador (email, senha) VALUES ('admin9@example.com', 'senha606');
+INSERT INTO administrador (email, senha) VALUES ('admin10@example.com', 'senha707');
+INSERT INTO administrador (email, senha) VALUES ('admin11@example.com', 'senha808');
+INSERT INTO administrador (email, senha) VALUES ('admin12@example.com', 'senha909');
+INSERT INTO administrador (email, senha) VALUES ('admin13@example.com', 'senha111');
+INSERT INTO administrador (email, senha) VALUES ('admin14@example.com', 'senha222');
+INSERT INTO administrador (email, senha) VALUES ('admin15@example.com', 'senha333');
+
