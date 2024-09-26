@@ -16,5 +16,3 @@ Ponto de Referênecia: {self.ponto_referencia or "Sem ponto de Referência"}\nN�
 endereco = Endereco("Soares","Rua","89220-212")
 endereco2 = Endereco("Centro","Bairro","59548-129","Perto do parque")
 endereco3 = Endereco("Brasil","Avenida","76539-192",None,"950")
-print(endereco)
-print(endereco2)
