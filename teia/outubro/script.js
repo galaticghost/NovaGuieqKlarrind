@@ -89,7 +89,12 @@ const futuro = invertString("FUTURO!");
 console.log(futuro);
 
 function futuro2(str,indice){
-    return str.at(indice,-1);
+    return str.slice(indice);
+}
+
+function futuro3(str,indice){
+    return str.slice(0,indice);
 }
 
 console.log(futuro2("FUturo?",2));
+console.log(futuro3('FUTURO!',5));
