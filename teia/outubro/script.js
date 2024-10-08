@@ -52,7 +52,7 @@ console.log(hora)
 
 function dinheiro(dinero){
     return "R$:" + dinero;
-};
+}
 
 const numeros = [2,1,3,4]
 
@@ -75,7 +75,7 @@ function parOuImpar(numero){
     else{
         return 'par';
     }
-};
+}
 
 const xina = parOuImpar(5);
 const xina2 = parOuImpar(4);
