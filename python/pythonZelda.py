@@ -86,7 +86,7 @@ class LinkedList:
         position = 1
         while node.data != data:
             if node.next == None:
-                return "No node found in this linked list"
+                print ("No node found in this linked list")
             node = node.next
             position += 1
-        return f"{data} found at position {position}"
+        print (f"{data} found at position {position}")
