@@ -65,52 +65,30 @@ class LinkedList:
     def add_alfabetico(self,value):
         node = Node(value)
         if self.head is None:
-            self.__add_first(node)
+            self.head = node
         else:
-            if self.head.value.nome > node.value.nome:
+            if min(self.head.value.nome,node.value.nome) == self.head.value:
                 node.next = self.head
                 self.head = node
                 return None
             current = self.head
-            while True:
-                if node.value.nome > current.value.nome:
-                    if current.next is None:
-                        current.next = node
-                        return None
+            while current.next is not None:
+                if min(node.value.nome,current.value.nome) == current.value.nome:
                     current = current.next
-                    continue
                 else:
                     node.next = current.value
                     current.next = node
-                    break
-            
-    def remove(self,valor = None,position = None):
-        if position == 1:
-            self.head = self.head.next
-            return None
-        
-        node = self.head
-        pointer = 1
-        
-        while pointer != position - 1:
-            node = node.next
-            if node == None:
-                print("No node in this position")
+            if current.next is None:
+                current.next = node
                 return None
-            pointer += 1
-        
-        node.next = node.next.next
         
     def __repr__(self):
         node = self.head
         nodes = []
         
         while node is not None:
-            nodes.append(node.next)
-            try:
-                node = node.next
-            except:
-                break
+            nodes.append(node)
+            node = node.next
         
         nodes.append("None")
         
@@ -120,8 +98,8 @@ bola = LinkedList()
 arroz = Produto("Arroz",50)
 food = Produto("Food",56)
 agua = Produto("Agua",5)
-bola.add_alfabetico(agua)
 bola.add_alfabetico(food)
+bola.add_alfabetico(agua)
 
 bola.add_alfabetico(arroz)
 
