@@ -118,6 +118,6 @@ function numbersToWords(num){
     }
 }
 
-const num = "dois"
+const num = "dois";
 
 console.log(numbersToWords(num));

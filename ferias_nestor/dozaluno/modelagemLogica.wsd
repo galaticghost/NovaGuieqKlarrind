@@ -1,0 +1,57 @@
+@startuml Dozaluno
+
+title Dozaluno
+
+entity pessoa{
+    pk_pessoa INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(200) NOT NULL
+    cpf VARCHAR(20) NOT NULL
+    cod_matricula VARCHAR(20) NOT NULL
+    endereco TEXT
+}
+
+entity aluno{
+    pk_pessoa INTEGER <<FK>> NOT NULL
+    pk_curso INTEGER <<FK>> NOT NULL
+    --
+}
+
+entity professor{
+    pk_pessoa INTEGER <<FK>> NOT NULL
+    --
+    titulacao TEXT NOT NULL
+    disponibilidade INTEGER
+}
+
+entity curso{
+    pk_curso INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+    area VARCHAR(100) NOT NULL
+}
+
+entity disciplina{
+    pk_disciplina INTEGER <<PK>> NOT NULL
+    pk_professor INTEGER <<FK>> NOT NULL
+    pk_sala
+    --
+
+}
+
+entity curso_disciplina{
+    pk_curso_disciplina INTEGER <<PK>> NOT NULL
+    pk_curso INTEGER <<FK>> NOT NULL
+    pk_disciplina <<FK>> NOT NULL
+    --
+}
+
+
+
+pessoa ||--o{ aluno
+pessoa ||--o{ professor
+aluno }o--|| curso
+
+curso ||--o{ curso_disciplina
+disciplina ||--o{ curso_disciplina
+@enduml 
