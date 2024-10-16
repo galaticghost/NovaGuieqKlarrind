@@ -7,7 +7,7 @@ entity pessoa{
     --
     nome VARCHAR(200) NOT NULL
     cpf VARCHAR(20) NOT NULL
-    cod_matricula VARCHAR(20) NOT NULL
+    cod_matricula VARCHAR(20) NOT NULL UNIQUE
     endereco TEXT
 }
 
@@ -36,7 +36,6 @@ entity disciplina{
     pk_professor INTEGER <<FK>> NOT NULL
     pk_sala
     --
-
 }
 
 entity curso_disciplina{
