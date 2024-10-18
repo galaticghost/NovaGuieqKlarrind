@@ -22,7 +22,7 @@ entity professor{
     pk_pessoa INTEGER <<FK>> NOT NULL
     --
     titulacao TEXT NOT NULL
-    disponibilidade INTEGER
+    disponibilidade INTEGER NOT NULL
 }
 
 entity curso{
@@ -49,6 +49,7 @@ entity curso_disciplina{
 
 entity sala{
     pk_sala INTEGER <<PK>> NOT NULL
+    --
     nome_sala VARCHAR(100) NOT NULL
     capacidade INTEGER NOT NULL
 }
@@ -90,5 +91,7 @@ professor ||--o{ turma
 professor ||--|{ disciplina
 
 aluno }|--|| turma
+
+curso ||--o{ turma
 
 @enduml 
