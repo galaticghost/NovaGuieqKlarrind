@@ -5,7 +5,7 @@ title Dozaluno
 entity pessoa{
     pk_pessoa INTEGER <<PK>> NOT NULL
     --
-    nome VARCHAR(200) NOT NULL
+    nome_pessoa VARCHAR(200) NOT NULL
     cpf VARCHAR(20) NOT NULL
     cod_matricula VARCHAR(20) NOT NULL UNIQUE
     endereco TEXT
@@ -14,6 +14,7 @@ entity pessoa{
 entity aluno{
     pk_pessoa INTEGER <<FK>> NOT NULL
     pk_curso INTEGER <<FK>> NOT NULL
+    pk_turma INTEGER <<FK>> NOT NULL
     --
 }
 
@@ -27,15 +28,16 @@ entity professor{
 entity curso{
     pk_curso INTEGER <<PK>> NOT NULL
     --
-    nome VARCHAR(100) NOT NULL
+    nome_curso VARCHAR(100) NOT NULL
     area VARCHAR(100) NOT NULL
 }
 
 entity disciplina{
     pk_disciplina INTEGER <<PK>> NOT NULL
     pk_professor INTEGER <<FK>> NOT NULL
-    pk_sala
+    pk_sala INTEGER <<FK>> NOT NULL 
     --
+    nome_disciplina VARCHAR(100) NOT NULL
 }
 
 entity curso_disciplina{
@@ -45,6 +47,31 @@ entity curso_disciplina{
     --
 }
 
+entity sala{
+    pk_sala INTEGER <<PK>> NOT NULL
+    nome_sala VARCHAR(100) NOT NULL
+    capacidade INTEGER NOT NULL
+}
+
+entity turma{
+    pk_turma INTEGER <<PK>> NOT NULL
+    pk_professor INTEGER <<FK>> NOT NULL
+    pk_curso INTEGER <<FK>> NOT NULL
+    --
+    semestre INTEGER NOT NULL
+}
+
+entity comodidades{
+    pk_comodidades INTEGER <<PK>> NOT NULL
+    --
+    nome_comodidades VARCHAR(100) NOT NULL
+}
+
+entity comodidades_sala{
+    pk_comodidades_sala INTEGER <<PK>> NOT NULL
+    pk_comodidades INTEGER <<FK>> NOT NULL
+    pk_sala INTEGER <<FK>> NOT NULL
+}
 
 
 pessoa ||--o{ aluno
@@ -53,4 +80,15 @@ aluno }o--|| curso
 
 curso ||--o{ curso_disciplina
 disciplina ||--o{ curso_disciplina
+
+comodidades  ||--o{ comodidades_sala
+sala ||--o{ comodidades_sala
+
+sala ||--o{ disciplina
+
+professor ||--o{ turma
+professor ||--|{ disciplina
+
+aluno }|--|| turma
+
 @enduml 
