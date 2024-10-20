@@ -62,15 +62,15 @@ entity turma{
     semestre INTEGER NOT NULL
 }
 
-entity comodidades{
-    pk_comodidades INTEGER <<PK>> NOT NULL
+entity comodidade{
+    pk_comodidade INTEGER <<PK>> NOT NULL
     --
-    nome_comodidades VARCHAR(100) NOT NULL
+    nome_comodidade VARCHAR(100) NOT NULL
 }
 
-entity comodidades_sala{
-    pk_comodidades_sala INTEGER <<PK>> NOT NULL
-    pk_comodidades INTEGER <<FK>> NOT NULL
+entity comodidade_sala{
+    pk_comodidade_sala INTEGER <<PK>> NOT NULL
+    pk_comodidade INTEGER <<FK>> NOT NULL
     pk_sala INTEGER <<FK>> NOT NULL
 }
 

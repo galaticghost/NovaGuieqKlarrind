@@ -50,13 +50,13 @@ CREATE TABLE curso_disciplina(
     pk_disciplina REFERENCES disciplina NOT NULL
 );
 
-CREATE TABLE comodidades(
-    pk_comodidades INTEGER PRIMARY KEY NOT NULL,
-    nome_comodidades VARCHAR(100) NOT NULL
+CREATE TABLE comodidade(
+    pk_comodidade INTEGER PRIMARY KEY NOT NULL,
+    nome_comodidade VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE comodidades_sala(
-    pk_comodidades_sala INTEGER PRIMARY KEY NOT NULL,
-    pk_comodidades INTEGER REFERENCES comodidades NOT NULL,
+CREATE TABLE comodidade_sala(
+    pk_comodidade_sala INTEGER PRIMARY KEY NOT NULL,
+    pk_comodidade INTEGER REFERENCES comodidade NOT NULL,
     pk_sala INTEGER REFERENCES sala NOT NULL
 );

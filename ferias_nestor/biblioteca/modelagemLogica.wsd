@@ -1,0 +1,63 @@
+@startuml biblioteca
+
+entity livro{
+    pk_livro INTEGER <<PK>> NOT NULL
+    --
+    isbn VARCHAR(20) NOT NULL UNIQUE
+    nome_livro VARCHAR(100) NOT NULL 
+    genero VARCHAR(100) NOT NULL
+    status BOOL DEFAULT 0 NOT NULL
+}
+
+entity autor{
+    pk_autor INTEGER <<PK>> NOT NULL
+    --
+    nome_autor VARCHAR(200) NOT NULL
+}
+
+entity autor_livro{
+    pk_autor_livro INTEGER <<PK>> NOT NULL
+    pk_autor INTEGER <<FK>> NOT NULL
+    pk_livro <<FK>> NOT NULL
+    --
+}
+
+entity usuario{
+    pk_usuario INTEGER <<PK>> NOT NULL
+    --
+    nome_usuario VARCHAR(200) NOT NULL
+    data_nascimento DATE NOT NULL
+}
+
+entity interesse{
+    pk_interesse INTEGER <<PK>> NOT NULL
+    --
+    interesse VARCHAR(100) NOT NULL
+}
+
+entity usuario_interesse{
+    pk_usuario_interesse INTEGER <<PK>> NOT NULL
+    pk_usuario INTEGER <<FK>> NOT NULL
+    pk_interesse <<FK>> NOT NULL
+    --
+}
+
+entity emprestimo{
+    pk_emprestimo INTEGER <<PK>> NOT NULL
+    pk_usuario INTEGER <<FK>> NOT NULL
+    pk_livro INTEGER <<FK>> NOT NULL
+    --
+    data_emprestimo DATE NOT NULL
+    data_vencimento DATE NOT NULL
+}
+
+
+livro ||--|{ autor_livro
+autor ||--|{ autor_livro
+livro ||--o{ emprestimo
+usuario ||--o{ emprestimo
+usuario ||--o{ usuario_interesse
+interesse ||--o{ usuario_interesse
+
+
+@enduml

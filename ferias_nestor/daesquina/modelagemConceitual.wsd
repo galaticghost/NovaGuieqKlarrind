@@ -1,0 +1,54 @@
+@startchen
+
+entity produto{
+id <<key>>
+nome
+quantidade
+vencimento
+}
+
+entity fornecedor{
+id <<key>>
+nome
+cpfcnpj
+}
+
+entity lanche{
+id <<key>>
+nome
+preco
+}
+
+entity passo{
+id <<key>>
+passo
+}
+
+entity cliente{
+id <<key>>
+nome
+telefone
+tipo de alimentação
+}
+
+relationship receita{
+id <<key>>
+}
+
+relationship requer{
+id <<key>>
+}
+
+relationship fornece{
+id <<key>>
+}
+
+produto -(1,N)- fornece
+fornecedor -(1,N)- fornece
+
+produto -- requer
+lanche -- requer
+
+lanche -- receita
+passo -- receita
+@endchen

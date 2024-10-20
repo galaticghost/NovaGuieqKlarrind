@@ -1,0 +1,61 @@
+@startuml Daesquina
+
+entity produto{
+    pk_produto INTEGER <<PK>> NOT NULL
+    --
+    nome_produto VARCHAR(100) NOT NULL
+    quantidade INTEGER NOT NULL
+    vencimento DATE NOT NULL 
+}
+
+entity fornecedor{
+    pk_fornecedor INTEGER <<PK>> NOT NULL
+    --
+    nome_fornecedor VARCHAR(100) NOT NULL
+    cpf_cnpj VARCHAR(18) NOT NULL
+}
+
+entity produto_fornecedor{
+    pk_produto_fornecedor INTEGER <<PK>> NOT NULL
+    pk_produto INTEGER <<FK>> NOT NULL
+    pk_fornecedor INTEGER <<FK>> NOT NULL
+}
+
+entity lanche{
+    pk_lanche INTEGER <<PK>> NOT NULL
+    --
+    nome_lanche VARCHAR(100) NOT NULL
+    preco NUMERIC CHECK(preco > 0) NOT NULL
+}
+
+entity produto_lanche{
+    pk_produto_lanche INTEGER <<PK>> NOT NULL
+    pk_produto INTEGER <<FK>> NOT NULL
+    pk_lanche INTEGER <<FK>> NOT NULL
+}
+
+entity passo{
+    pk_passo INTEGER <<PK>> NOT NULL
+    pk_lanche INTEGER <<FK>> NOT NULL
+    --
+    numero_passo INTEGER NOT NULL
+    passo TEXT NOT NULL
+}
+
+entity cliente{
+    pk_cliente INTEGER <<PK>> NOT NULL
+    --
+    nome_cliente VARCHAR(200) NOT NULL
+    telefone VARCHAR(30) NOT NULL
+    vegetariano BOOLEAN DEFAULT 0
+}
+
+produto ||--|{ produto_fornecedor
+fornecedor ||--|{ produto_fornecedor
+
+lanche ||--|{ produto_lanche
+produto ||--o{ produto_lanche
+
+passo }|--|| lanche
+
+@enduml

@@ -1,0 +1,52 @@
+@startchen bola
+
+entity livro{
+id <<key>>
+isbn
+titulo
+status
+genero
+}
+
+entity autor{
+id <<key>>
+nome
+}
+
+entity usuario{
+id <<key>>
+nome
+data de nascimento
+}
+
+entity interesse{
+id <<key>>
+interesse
+}
+
+entity emprestimo{
+}
+
+relationship escreve{
+id <<key>>
+}
+
+relationship interessa{
+id <<key>>
+}
+
+relationship empresta{
+id <<key>>
+data de emprestimo
+data de vencimento
+}
+
+livro -(1,N)- escreve
+autor -(1,N)- escreve
+
+usuario -- interessa
+interesse -- interessa
+
+livro -(0,1)- empresta
+usuario -(0,N)- empresta
+@endchen
