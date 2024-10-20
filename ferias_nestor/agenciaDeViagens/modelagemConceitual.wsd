@@ -1,0 +1,11 @@
+@startchen
+
+entity leads{
+id <<key>>
+nome
+faixa etária
+poder aquisitivo
+composição familiar
+}
+
+@endchen
