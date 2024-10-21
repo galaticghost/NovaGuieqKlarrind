@@ -1,11 +1,40 @@
 @startchen
 
-entity leads{
+entity cliente{
 id <<key>>
 nome
+}
+
+entity leads{
 faixa etária
 poder aquisitivo
 composição familiar
 }
+
+entity saida{
+id <<key>>
+preco
+data
+}
+
+entity pacote{
+id <<key>>
+dias
+destino
+}
+
+relationship oferta{
+}
+
+relationship compra{
+id <<key>>
+}
+saida -(0,N)- oferta
+pacote -1- oferta
+
+cliente ->- o {leads}
+
+cliente -(0,N)- compra
+saida -(0,N)- compra
 
 @endchen

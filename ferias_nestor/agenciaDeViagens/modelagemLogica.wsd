@@ -1,0 +1,44 @@
+@startuml Agencia
+
+entity pacote{
+    pk_pacote INTEGER <<PK>> NOT NULL
+    --
+    dias INTEGER CHECK(dias > 0) NOT NULL
+    destino TEXT
+}
+
+entity saida{
+    pk_saida INTEGER <<PK>> NOT NULL
+    pk_pacote INTEGER <<FK>> NOT NULL
+    --
+    preco NUMERIC CHECK(preco > 0) NOT NULL
+    data DATE NOT NULL
+}
+
+entity cliente{
+    pk_cliente INTEGER <<PK>> NOT NULL
+    --
+    nome_cliente VARCHAR(100) NOT NULL
+}
+
+entity leads{
+    pk_cliente INTEGER <<FK>> NOT NULL
+    --
+    faixa_etaria VARCHAR(20) NOT NULL
+    poder_aquisitivo VARCHAR(50) NOT NULL
+    composicao_familiar VARCHAR(100) NOT NULL
+}
+
+entity cliente_saida{
+    pk_cliente_saida <<PK>> NOT NULL
+    pk_cliente INTEGER <<FK>> NOT NULL
+    pk_saida INTEGER <<FK>> NOT NULL
+    --
+}
+
+pacote ||--|{ saida
+saida ||--o{ cliente_saida
+cliente ||--o{ cliente_saida
+cliente ||--o{ leads
+
+@enduml
