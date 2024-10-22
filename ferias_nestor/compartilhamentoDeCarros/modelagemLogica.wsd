@@ -1,0 +1,38 @@
+@startuml Carros
+
+entity bairro{
+    pk_bairro INTEGER <<PK>> NOT NULL
+    --
+    nome_bairro VARCHAR(100) NOT NULL
+}
+
+entity carro{
+    pk_carro INTEGER <<PK>> NOT NULL
+    pk_bairro INTEGER <<FK>> NOT NULL
+    --
+    modelo VARCHAR(100) NOT NULL
+    combustivel NUMERIC CHECK(combustivel >= 0) NOT NULL
+    disponibilidade VARCHAR(100) NOT NULL
+}
+
+entity cliente{
+    pk_cliente INTEGER <<PK>> NOT NULL
+    --
+    nome_cliente VARCHAR(100) NOT NULL
+    endereco TEXT NOT NULL
+    cnh VARCHAR(30) NOT NULL
+}
+
+entity carro_cliente{
+    pk_carro_cliente INTEGER <<PK>> NOT NULL
+    pk_carro INTEGER <<FK>> NOT NULL
+    pk_cliente INTEGER <<FK>> NOT NULL
+    --
+    horas INTEGER CHECK(horas >= 0) NOT NULL
+}
+
+cliente ||--o{ carro_cliente
+carro ||--o{ carro_cliente
+bairro ||--o{ carro
+
+@enduml

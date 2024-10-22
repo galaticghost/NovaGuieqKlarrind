@@ -1,0 +1,36 @@
+@startchen
+
+entity carro{
+id <<key>>
+modelo
+disponibilidade
+combustível
+}
+
+entity cliente{
+id <<key>>
+nome
+cnh
+endereço
+}
+
+entity bairro{
+id <<key>>
+nome
+}
+
+relationship localiza{
+}
+
+relationship aluga{
+id <<key>>
+horas
+}
+
+carro -(0,N)- aluga
+cliente -(0,N)- aluga
+
+bairro -1- localiza
+carro -(0,N)- localiza
+
+@endchen
