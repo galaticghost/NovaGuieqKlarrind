@@ -4,7 +4,7 @@ entity pacote{
     pk_pacote INTEGER <<PK>> NOT NULL
     --
     dias INTEGER CHECK(dias > 0) NOT NULL
-    destino TEXT
+    destino TEXT NOT NULL
 }
 
 entity saida{

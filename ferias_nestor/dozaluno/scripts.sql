@@ -212,3 +212,14 @@ INSERT INTO aluno(pk_pessoa, pk_curso, pk_turma) VALUES
 (30, 15, 15),
 (31, 1, 2),
 (32, 2, 5);
+
+SELECT * FROM pessoa;
+SELECT * FROM aluno;
+SELECT * FROM curso;
+SELECT * FROM professor;
+SELECT * FROM turma;
+SELECT * FROM disciplina;
+SELECT * FROM sala;
+SELECT * FROM comodidade;
+SELECT * FROM comodidade_sala;
+SELECT * FROM curso_disciplina;
