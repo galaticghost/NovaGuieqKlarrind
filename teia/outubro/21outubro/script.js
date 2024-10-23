@@ -58,3 +58,7 @@ button.onclick = counterGuiltyGear;
 document.getElementById("botaodobola").onclick = ver;
 
 document.getElementById("aa").onclick = helpme;
+
+
+let listas = document.getElementById("lista");
+listas.appendChild("p");
