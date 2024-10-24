@@ -1,0 +1,26 @@
+#centro{
+    position: absolute;
+    display: flex;
+    background-color: gray;
+    border: 5px ridge greenyellow;
+    padding: 50px;
+    text-align: center;
+    flex-direction: column;
+    top: 30vh;
+    left: 75vh;
+}
+
+#centro h1{
+    color: whitesmoke;
+}
+
+#centro button{
+    background-color: aqua;
+    margin: 5%;
+    padding: 5px;
+}
+
+#centro p{
+    background-color: red;
+    color: blue;
+}
