@@ -3,6 +3,8 @@ const f = document.getElementById("fundo");
 const conts = document.getElementById("counter");
 const button = document.getElementById("bottao");
 const aaaa = document.querySelectorAll(".aaa")
+const end = document.getElementById("acabo");
+
 let fundo = document.body;
 let contador = 0;
 function trocaTexto(){
@@ -59,6 +61,21 @@ document.getElementById("botaodobola").onclick = ver;
 
 document.getElementById("aa").onclick = helpme;
 
+function addLista(){
+    const ueli = document.getElementById("charlos");
+    const carlis = document.createElement("li");
+    carlis.innerText = "FUNCIONA POR FAVOR";
+    ueli.appendChild(carlis);
+}
 
-let listas = document.getElementById("lista");
-listas.appendChild("p");
+const boton = document.getElementById("bolajoedois");
+
+boton.onclick = addLista;
+
+const lista = document.getElementById("lista");
+
+function countLista(){
+    let xsd = lista.children.length;
+    document.getElementById("listaconta").innerText = xsd;
+}
+end.onclick = countLista;
