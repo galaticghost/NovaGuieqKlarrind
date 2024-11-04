@@ -1,0 +1,68 @@
+@startuml pedidos de eletrônicos
+
+entity cliente{
+    pk_cliente INTEGER <<PK>> NOT NULL
+    --
+    email VARCHAR(200) NOT NULL 
+    senha VARCHAR(100) NOT NULL
+    endereco TEXT NOT NULL
+    endereco_2 TEXT
+}
+
+entity funcionario{
+    pk_funcionario INTEGER <<PK>> NOT NULL
+    --
+    matricula VARCHAR(50) NOT NULL UNIQUE
+    nome VARCHAR(100) NOT NULL
+}
+
+entity produto{
+    pk_produto INTEGER <<PK>> NOT NULL
+    --
+    sku VARCHAR(50) NOT NULL UNIQUE
+    nome VARCHAR(100) NOT NULL 
+    descricao TEXT NOT NULL
+    preco NUMERIC CHECK(preco >= 0) NOT NULL
+    quantidade INTEGER CHECK(quantidade >= 0) NOT NULL 
+}
+
+entity telefone{
+    pk_telefone INTEGER <<PK>> NOT NULL
+    pk_cliente <<FK>> NOT NULL
+    --
+    telfone VARCHAR(30) NOT NULL
+}
+
+entity inspetor{
+    pk_inspetor INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+}
+
+entity pedido_produto{
+    pk_pedido_produto INTEGER <<PK>> NOT NULL
+    pk_pedido <<FK>> NOT NULL
+    pk_produto <<FK>> NOT NULL
+    --
+    quantidade INTEGER CHECK (quantidade >= 0) NOT NULL
+    valor_total NUMERIC CHECK(valor_total >= 0) NOT NULL
+}
+
+entity pedido{
+    pk_pedido INTEGER <<PK>> NOT NULL
+    pk_cliente <<FK>> NOT NULL 
+    pk_funcionario <<FK>> NOT NULL
+    pk_inspetor <<FK>> NOT NULL
+    --
+    verificado BOOLEAN NOT NULL
+    data DATE NOT NULL
+}
+
+cliente ||--o{ telefone
+produto ||--o{ pedido_produto
+pedido ||--o{ pedido_produto
+inspetor ||--o{ pedido
+funcionario ||--o{ pedido
+cliente ||--o{ pedido
+
+@enduml 

@@ -1,0 +1,52 @@
+@startuml eventos sociais
+
+entity evento{
+    pk_evento INTEGER <<PK>> NOT NULL
+    pk_administrador <<FK>>
+    --
+    nome VARCHAR(100) NOT NULL
+    data DATE NOT NULL
+    local TEXT NOT NULL
+}
+
+entity cliente{
+    pk_cliente INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+    genero VARCHAR(2) NOT NULL
+    idade INTEGER CHECK(idade >= 0) NOT NULL
+    endereco TEXT NOT NULL
+}
+
+entity administrador{
+    pk_administrador INTEGER <<PK>> NOT NULL
+    email VARCHAR(200) NOT NULL
+    senha VARCHAR(100) NOT NULL
+}
+
+entity cliente_evento{
+    pk_cliente_evento <<PK>>
+    pk_cliente <<FK>>
+    pk_evento  <<FK>>
+}
+
+entity lista_categoria{
+    pk_lista_categoria <<PK>> NOT NULL
+    pk_categoria <<FK>> NOT NULL
+    pk_evento <<FK>> NOT NULL
+    --
+}
+
+entity categoria{
+    pk_categoria INTEGER <<PK>> NOT NULL
+    --
+    nome VARCHAR(100) NOT NULL
+}
+
+cliente ||--o{ cliente_evento
+evento ||--o{ cliente_evento
+evento }o--|| administrador
+categoria ||--o{ lista_categoria
+evento ||--|{ lista_categoria
+
+@enduml
