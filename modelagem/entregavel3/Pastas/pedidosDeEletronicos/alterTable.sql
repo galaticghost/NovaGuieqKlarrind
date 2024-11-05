@@ -13,7 +13,6 @@ INSERT INTO telefone(pk_cliente, telefone) VALUES
 (5, '5678-9012'),
 (5, '5432-1098');
 
-
 --eu
 ALTER TABLE produto ADD COLUMN categoria VARCHAR(100);
 -- eu e gpt
@@ -44,5 +43,36 @@ INSERT INTO pedido(pk_cliente, pk_funcionario, pk_inspetor, verificado, data, st
 (1, 1, 1, TRUE, '2024-11-02', 'PEDIDO FEITO'),
 (2, 2, 2, TRUE, '2024-11-03', 'EM SEPARAÇÃO'),
 (2, 2, 2, TRUE, '2024-11-04', 'PEDIDO FEITO'),
-(3, 3, 3, TRUE, '2024-11-05', 'PEDIDO FEITO'),
+(3, 3, 3, TRUE, '2024-11-05', 'ENVIADO'),
 (3, 3, 3, TRUE, '2024-11-06', 'CANCELADO');
+
+--eu
+ALTER TABLE pedido ADD COLUMN data_envio DATE DEFAULT null;
+UPDATE pedido SET data_envio = '2024-04-01' WHERE pk_pedido = 5;
+
+
+-- gpt
+INSERT INTO pedido_produto(pk_pedido, pk_produto, quantidade, valor_total) VALUES
+(1, 1, 2, 3999.80),
+(1, 5, 1, 349.90),
+(1, 10, 3, 899.70),
+
+(2, 2, 1, 4599.00),
+(2, 4, 2, 799.80),
+(2, 8, 1, 249.99),
+
+(3, 6, 2, 499.00),
+(3, 7, 1, 699.90),
+(3, 12, 2, 1398.00),
+
+(4, 3, 1, 1999.90),
+(4, 9, 3, 629.70),
+(4, 11, 2, 1498.00),
+
+(5, 14, 1, 89.90),
+(5, 16, 2, 699.80),
+(5, 20, 3, 1049.70),
+
+(6, 17, 2, 799.00),
+(6, 18, 1, 799.90),
+(6, 30, 3, 2097.00);

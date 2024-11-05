@@ -1,3 +1,8 @@
+
+
+-- Provavelmente esses scripts já estão no banco, então só use scripts mesmo;
+
+
 DELETE FROM metas;
 DELETE FROM funcionario;
 
