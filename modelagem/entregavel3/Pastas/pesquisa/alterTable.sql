@@ -38,9 +38,19 @@ INSERT INTO produto(nome, data) VALUES
 ('Produto S', '2024-11-05'),
 ('Produto T', '2024-11-05');
 
+-- eu
+INSERT INTO pesquisa(nome,data) VALUES ('Sabor produto','2024-11-11');
 
+DELETE FROM texto;
+DELETE FROM likert;
+DELETE FROM questao;
 
+INSERT INTO questao(questao,tipo) VALUES ('O sabor é bom?',0),('Gostou?',0),
+('1 a 5: comer?',0),('Escala comeria de novo',0),('Sim ou não',0),('food scale',0),('COMER bo?',1)
+,('Diga se é bom',1);
 
+ALTER TABLE questao ADD COLUMN pk_pesquisa REFERENCES pesquisa;
+UPDATE questao SET pk_pesquisa = 1;
 
 
 

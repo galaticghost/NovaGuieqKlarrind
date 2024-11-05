@@ -61,3 +61,23 @@ UPDATE mensagem SET proxima_mensagem = 3 WHERE pk_mensagem = 2;
 UPDATE mensagem SET proxima_mensagem = 4 WHERE pk_mensagem = 3;
 UPDATE mensagem SET proxima_mensagem = 5 WHERE pk_mensagem = 4;
 UPDATE mensagem SET proxima_mensagem = 6 WHERE pk_mensagem = 5;
+
+ALTER TABLE evento ADD COLUMN pk_categoria REFERENCES categoria;
+
+UPDATE evento SET pk_categoria = 1 WHERE pk_evento = 1;
+UPDATE evento SET pk_categoria = 4 WHERE pk_evento = 2;
+UPDATE evento SET pk_categoria = 5 WHERE pk_evento = 3;
+UPDATE evento SET pk_categoria = 8 WHERE pk_evento = 4;
+UPDATE evento SET pk_categoria = 9 WHERE pk_evento = 5;
+UPDATE evento SET pk_categoria = 1 WHERE pk_evento = 6;
+UPDATE evento SET pk_categoria = 13 WHERE pk_evento = 7;
+UPDATE evento SET pk_categoria = 11 WHERE pk_evento = 8;
+UPDATE evento SET pk_categoria = 12 WHERE pk_evento = 9;
+UPDATE evento SET pk_categoria = 14 WHERE pk_evento = 10;
+UPDATE evento SET pk_categoria = 3 WHERE pk_evento = 11;
+INSERT INTO categoria(nome) VALUES ('Caminhada');
+UPDATE evento SET pk_categoria = 16 WHERE pk_evento = 12;
+UPDATE evento SET pk_categoria = 6 WHERE pk_evento = 13;
+UPDATE evento SET pk_categoria = 10 WHERE pk_evento = 14;
+INSERT INTO categoria(nome) VALUES ('Lançamento');
+UPDATE evento SET pk_categoria = 17 WHERE pk_evento = 15;
