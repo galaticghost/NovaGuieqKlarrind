@@ -3,4 +3,4 @@ SELECT (
   (SELECT AVG(quantidade) FROM metas WHERE categoria = 'empréstimo') AS 'Empréstimos',
   (SELECT AVG(quantidade) FROM metas WHERE categoria = 'seguros') AS 'Seguros',
   (SELECT AVG(quantidade) FROM metas WHERE categoria = 'financiamentos') AS 'Financiamentos'
- FROM metas;
+ FROM metas ORDER BY ;
