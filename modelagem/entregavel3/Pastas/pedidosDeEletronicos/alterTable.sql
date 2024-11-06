@@ -76,3 +76,8 @@ INSERT INTO pedido_produto(pk_pedido, pk_produto, quantidade, valor_total) VALUE
 (6, 17, 2, 799.00),
 (6, 18, 1, 799.90),
 (6, 30, 3, 2097.00);
+
+-- Eu
+ALTER TABLE pedido ADD COLUMN tipo VARCHAR(100);
+UPDATE pedido SET tipo = 'Online' WHERE pk_pedido < 5;
+UPDATE pedido SET tipo = 'Telefone' WHERE pk_pedido > 4;

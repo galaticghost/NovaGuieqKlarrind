@@ -114,3 +114,6 @@ INSERT INTO avaliacao_show(pk_show, pk_usuario, avaliacao, nota) VALUES
 (8, 8, 'O show foi ótimo, mas a organização deixou a desejar', 3),
 (8, 9, 'Espetacular! A energia da banda foi contagiante', 5),
 (8, 10, 'Banda boa, mas faltou algo nas músicas mais lentas', 4);
+
+ALTER TABLE album ADD COLUMN midia VARCHAR(50);
+UPDATE album SET midia = 'CD' WHERE pk_album < 7;

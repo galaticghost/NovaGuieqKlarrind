@@ -10,3 +10,6 @@ SELECT c.nome FROM categoria c FULL JOIN evento e ON c.pk_categoria = e.pk_categ
 SELECT nome,texto FROM mensagem INNER JOIN cliente c ON mensagem.pk_cliente = c.pk_cliente -- 5, o contéudo das mensagem está correto, é nonsense mesmo
 
                                         --6
+
+SELECT a.email, COUNT(e.pk_administrador) AS 'Eventos administrados' FROM administrador a INNER JOIN evento e ON a.pk_administrador = e.pk_administrador
+GROUP BY (e.pk_administrador) -- 7 Seleciona o email e a quantidade de eventos administrado por cada administrador

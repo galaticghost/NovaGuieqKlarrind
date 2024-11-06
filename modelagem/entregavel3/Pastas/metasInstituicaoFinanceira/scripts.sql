@@ -4,3 +4,5 @@ SELECT AVG(nota) FROM metas INNER JOIN funcionario f GROUP BY f.gerente HAVING g
 
 SELECT nome, categoria, (7 - quantidade ) AS faltando FROM funcionario f INNER JOIN metas m ON m.pk_funcionario = f.pk_funcionario WHERE faltando > 0  -- 4
 
+SELECT f.nome FROM metas m INNER JOIN funcionario f ON f.pk_funcionario = m.pk_funcionario
+GROUP BY m.pk_funcionario HAVING AVG(quantidade) > 10 AND SUM(nota) > 250;  -- 5 Nome do funcionario que tiver uma quantidade media acima de 10 e a soma das notas maior que 250; 
