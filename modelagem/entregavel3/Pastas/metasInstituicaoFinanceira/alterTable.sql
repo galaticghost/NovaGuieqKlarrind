@@ -1,6 +1,7 @@
 
 
 -- Provavelmente esses scripts já estão no banco, então só use scripts mesmo;
+-- E ISSO VALE PARA TODOS OS BANCO DE DADOS !!!!111!!!!!. ok?
 
 
 DELETE FROM metas;
