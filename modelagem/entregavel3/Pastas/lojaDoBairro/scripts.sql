@@ -7,6 +7,9 @@ SELECT p.nome,p.quantidade,COUNT(DISTINCT v.pk_cliente) FROM produto p INNER JOI
 SELECT AVG(valor_total) FROM venda GROUP BY pk_cliente; -- 4
 SELECT AVG(valor_total) FROM venda; -- 4.5
 
+SELECT strftime('%w',data), SUM(quantidade) FROM venda
+GROUP BY strftime('%w',data); -- 5, ele retorna os dias da semana como 0 a 6 sendo 0 domingo e assim por diante
+
 SELECT SUM(v.quantidade), f.nome FROM fornecedor f
 INNER JOIN produto p ON p.pk_fornecedor = f.pk_fornecedor
 INNER JOIN venda v ON v.pk_produto = p.pk_produto
