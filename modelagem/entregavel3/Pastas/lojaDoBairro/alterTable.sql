@@ -22,3 +22,5 @@ INSERT INTO venda (pk_cliente, pk_produto, quantidade, valor_total, data) VALUES
 
 -- Eu
 UPDATE produto SET preco = ((preco * 0.10) + preco) WHERE pk_produto < 6;
+INSERT INTO venda(pk_cliente,pk_produto,quantidade,valor_total,data) VALUES (1,1,2,110,'2024-11-07');
+INSERT INTO venda(pk_cliente,pk_produto,quantidade,valor_total,data) VALUES (1,1,3,165,'2024-11-07');

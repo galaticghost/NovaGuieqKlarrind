@@ -1,3 +1,5 @@
+-- Todo Select tem um comentário
+
 SELECT * FROM funcionario WHERE pk_funcionario IN (SELECT pk_funcionario FROM metas GROUP BY pk_funcionario HAVING SUM(nota) >= 400);-- 1 vai dar 0 pq não tem nenhuma. se quiser um resultado poe 320 ou 328
 
 SELECT (SELECT AVG(quantidade) FROM metas GROUP BY categoria ORDER BY AVG(quantidade) DESC LIMIT 1) AS Melhor,

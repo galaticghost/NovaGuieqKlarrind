@@ -20,6 +20,10 @@ INNER JOIN produto p ON v.pk_produto = p.pk_produto
 INNER JOIN fornecedor f ON p.pk_fornecedor = f.pk_fornecedor
 INNER JOIN cliente c ON v.pk_cliente = c.pk_cliente WHERE v.pk_produto = 1; -- 7
 
+SELECT v.quantidade,p.nome,v.data,v.valor_total FROM venda v
+INNER JOIN produto p ON p.pk_produto = v.pk_produto
+WHERE v.pk_produto = 1 AND v.quantidade = 3 -- 8
+
 SELECT c.nome, SUM(v.valor_total) FROM cliente c
 INNER JOIN venda v ON v.pk_cliente = c.pk_cliente
 GROUP BY v.pk_cliente
