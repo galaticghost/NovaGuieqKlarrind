@@ -4,6 +4,15 @@ INNER JOIN produto pr ON pr.pk_produto = pp.pk_pedido
 GROUP BY p.tipo
 ORDER BY MAX(pp.quantidade); -- 1
 
+SELECT SUM(verificado) * 100/COUNT(verificado) AS porcento FROM pedido; -- 2, retorna 100 pq não tem nenhum verificado, mas se colocar um não verificado retornaria 85
+
+SELECT COUNT(pp.pk_produto), pr.nome FROM pedido_produto pp
+INNER JOIN produto pr ON pp.pk_produto = pr.pk_produto
+INNER JOIN pedido p ON p.pk_pedido = pp.pk_pedido
+WHERE p.verificado = 1
+GROUP BY pp.pk_pedido
+ORDER BY SUM(p.verificado) DESC; -- 3, da todos, pois todos foram verificados
+
 
 SELECT p.categoria, SUM(pp.valor_total) AS 'Valor total' FROM produto p
 INNER JOIN pedido_produto pp ON pp.pk_produto = p.pk_produto

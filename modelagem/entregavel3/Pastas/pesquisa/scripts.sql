@@ -15,7 +15,7 @@ INNER JOIN pesquisa pe ON pe.pk_pesquisa = p.pk_pesquisa
 INNER JOIN questao q ON pe.pk_pesquisa = q.pk_pesquisa
 INNER JOIN likert l ON l.pk_questao = q.pk_questao
 GROUP BY p.pk_produto
-HAVING AVG(l.resposta) >= 3 -- 3, vai dar nada, mas se colocar 3 dá os dois
+HAVING AVG(l.resposta) >= 4 -- 3, vai dar nada, mas se colocar 3 dá os dois
 
 SELECT q.questao,AVG(l.resposta) FROM questao q
 INNER JOIN likert l ON l.pk_questao = q.pk_questao
