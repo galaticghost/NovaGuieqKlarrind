@@ -1,80 +1,71 @@
+from typing import Callable
+import argparse
 import json
 import os
 
-def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear")
+def main() -> None:
+    args = get_queries()
 
-def main():
-    while True:
-        try:
-            with open("task.json", "r") as r:
-                json_file = json.load(r)
-                break
-        except:
-            with open("task.json","w") as json_file:
-                
-                default_data = {
-                    "next_id":1,
-                    "tasks":[]
-                }
-                
-                json.dump(default_data,json_file)
+    DATABASE_LOCATION: str = os.path.expanduser("~/task.json")
 
-    while True:
-        clear_screen()
-        print("1 - List tasks")
-        print("2 - Add task")
-        print("3 - Update task")
-        print("4 - Delete task")
-        print("5 - Exit")
+    database: dict = load_database(DATABASE_LOCATION)
 
-        choice = input("Type your choice: ")
+    match args.command:
+        case "add":
+            add_task(database,args.description)
+        case "update":
+            update_task(database,args.id,args.description)
+        case "delete":
+            delete_task(database,args.id)
+        case "list":
+            list_all(database)
 
-        match choice:
-            case "1":
-                list_tasks(json_file)
-            case "2":
-                add_task(json_file)
-            case "3":
-                update_task(json_file)
-            case "4":
-                delete_task(json_file)
-            case "5":
-                with open("task.json","w") as file:
-                    json.dump(json_file,file)
-                exit()
-            case _:
-                print("XJIGF")
+    save_database(database,DATABASE_LOCATION)
 
-def list_tasks(json_file):
-    while True:
-        clear_screen()
-        print("1 - List all tasks")
-        print("2 - List tasks that are done")
-        print("3 - List tasks that are not done")
-        print("4 - List tasks in progress")
-        print("5 - Exit")
+def load_database(path: str) -> dict:
+    try:
+        with open(path,"r") as json_file:
+            database = json.load(json_file)
+    except:
+        database = {
+            "next_id":1,
+            "tasks":[]
+        }
 
-        choice = input("Type your choice: ")
+    return database   
 
-        match choice:
-            case "1":
-                list_all(json_file)
-            case "2":
-                list_done(json_file)
-            case "3":
-                list_todo(json_file)
-            case "4":
-                list_in_progress(json_file)
-            case "5":
-                return None
-            case _:
-                continue
+def save_database(database: dict, location: str) -> None:
+    with open(location,"w") as path:
+        json.dump(database,path)
+
+def get_queries():
+    parser = argparse.ArgumentParser()
+
+    sub_parsers = parser.add_subparsers(dest="command",required="true")
+
+    add = sub_parsers.add_parser('add', help="Add a task")
+    add.add_argument("description", help="The description of the task")
+
+    update = sub_parsers.add_parser('update',help="Update a task")
+    update.add_argument("id",help="The id of the task")
+    update.add_argument("description",help="The description of the task")
+
+    delete = sub_parsers.add_parser("delete", help="Delete a task")
+    delete.add_argument("id",help="The id of the task")
+
+    list_task = sub_parsers.add_parser("list", help="List tasks")
+    list_task.add_argument("-a","--all",help="List all tasks")
+    list_task.add_argument("-t","--todo",help="List all tasks that are not done")
+    list_task.add_argument("-i","--in-progress",help="List all tasks that are in progress")
+    list_task.add_argument("-d","--done",help="List all tasks that are done")
+
+    args = parser.parse_args()
+
+    return args
 
 def list_all(json_file):
     for task in json_file["tasks"]:
         print(task)
-    input("\nPress <<ENTER>> to continue")
 
 def list_todo(json_file):
     check = 0
@@ -84,7 +75,6 @@ def list_todo(json_file):
             print(task)
     if check == 0:
         print("There are no task that are not done")
-    input("\nPress <<ENTER>> to continue")
 
 def list_in_progress(json_file):
     check = 0
@@ -94,7 +84,6 @@ def list_in_progress(json_file):
             print(task)
     if check == 0:
         print("There are no tasks that are in progress")
-    input("\nPress <<ENTER>> to continue")
 
 def list_done(json_file):
     check = 0
@@ -104,11 +93,8 @@ def list_done(json_file):
             print(task)
     if check == 0:
         print("There are no tasks that are done")
-    input("\nPress <<ENTER>> to continue")
 
-def add_task(json_file):
-    description = input("Type the description of your task: ")
-    
+def add_task(json_file: dict, description: str) -> None:
     id = json_file["next_id"]
     
     task = {
@@ -118,49 +104,16 @@ def add_task(json_file):
         "createdAt":0,
         "updatedAt":0
     }
-    
-    json_file["next_id"] += 1
 
+    json_file["next_id"] += 1
     json_file["tasks"].append(task)
 
-    return None
-
-def update_task(json_file): # TODO id not exists
-    clear_screen()
-
-    while True:
-        print("1 - Update description")
-        print("2 - Update status")
-
-        choice = input("Type your choice: ")
-
-        match choice:
-            case "1":
-                update_task_description(json_file)
-                break
-            case "2":
-                update_task_status(json_file)
-                break
-            case _:
-                continue
-
-def update_task_description(json_file):
-    while True:
-        try:
-            id = int(input("Type the ID of the task: "))
-            break
-        except:
-            clear_screen()
-            print("The typed ID is not valid")
-            continue
-    description = input("Type the new description: ")
+def update_task(json_file: dict, id: int, description: str) -> None:
     for task in json_file["tasks"]:
         if task["id"] == id:
             task["description"] = description 
             return None
-    
-    print("There is no task with this ID")
-    input("Press <<ENTER>> to continue")
+    print(f"No task with id {id} was found")
         
 def update_task_status(json_file):
     while True:
@@ -168,7 +121,6 @@ def update_task_status(json_file):
             id = int(input("Type the ID of the task: "))
             break
         except:
-            clear_screen()
             print("The typed ID is not valid")
             continue
     for task in json_file["tasks"]:
@@ -185,21 +137,12 @@ def update_task_status(json_file):
     print("There is no task with this ID")
     input("Press <<ENTER>> to continue")
 
-def delete_task(json_file):
-    clear_screen()
-
-    while True:
-        try:
-            id = int(input("Type the ID of the task:"))
-            break
-        except:
-            clear_screen()
-            print("The typed ID is not valid")
-            continue
-    
+def delete_task(json_file: dict,id:int) -> None:
     for task in json_file["tasks"]:
         if task["id"] == id:
             json_file["tasks"].pop(json_file["tasks"].index(task))
             return None
+    print(f"No task with id {id} was found")
     
-main()
+if __name__ == "__main__":
+    main()
