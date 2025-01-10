@@ -26,7 +26,7 @@ def print_activity(activity) -> None:
                 case "PushEvent":
                     print(f"- {user} pushed {len(action["payload"]["commits"])} commits to {repo}")
                 case "WatchEvent":
-                    print(f"- {user} started watching {repo}") # Todo
+                    print(f"- {user} started watching {repo}")
                 case "CreateEvent":
                     print(f"- {user} started {repo}")
                 case "DeleteEvent":
@@ -34,28 +34,25 @@ def print_activity(activity) -> None:
                 case "ForkEvent":
                     print(f"- {user} has forked {repo}")
                 case "GollumEvent":
-                    print(f"- {user}")
+                    print(f"- {user} has updated a wiki on {repo}")
                 case "IssueCommentEvent":
                     print(f"- {user} has comment on {repo}")
                 case "IssuesEvent":
                     print(f"- {user} has issue on {repo}")
                 case "MemberEvent":
-                    print("-")
+                    print(f"- {user} has accepted {action["payload"]["member"]} at {repo}")
                 case "PublicEvent":
-                    pass
+                    print(f"- {user} has made {repo} public")
                 case "PullRequestEvent":
-                    pass
+                    print(f"- {user} has made a pull request at {repo}")
                 case "PullRequestReviewEvent":
-                    pass
+                    print(f"- {user} has review a pull request at {repo}")
                 case "PullRequestReviewCommentEvent":
-                    pass
+                    print(f"- {user} has made a comment at {repo} ")
                 case "PullRequestReviewThreadEvent":
-                    pass
+                    print(f"- {user} has marked {action["payload"]["thread"]} as {action["payload"]["action"]}")
                 case "ReleaseEvent":
-                    pass
+                    print(f"- {user} released at {repo}")
                 case "SponsorshipEvent":
-                    pass
-                case _:
-                    print(action)
-
+                    print(f"- {user} has started sponsoring {repo}")
 main()
