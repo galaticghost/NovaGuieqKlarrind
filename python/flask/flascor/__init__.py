@@ -1,0 +1,9 @@
+from flask import Flask, render_template
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_mapping(
+        SECRET_KEY='BOLA'
+    )
+
+    return app

@@ -63,7 +63,7 @@ def get_queries():
 
     return args
 
-def list_all(json_file):
+def list_all(json_file: json):
     for task in json_file["tasks"]:
         print(task)
 
