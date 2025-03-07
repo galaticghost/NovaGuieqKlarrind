@@ -1,3 +1,4 @@
+import dicionario
 mensagem_criptografada = "ÔZÜZ.QÓÇK#CÕ,RI#!Ó,ÕÓAÜÕB#Z#,ÃZC!#ÔZÜZ#;!,ÜÀ?ÜZÜ#Z#?ÜZÇ!#Ç!,Ü!AZ#,ÕÓAÀÓB!#Ç!BÇ#!ÇAB;ÕÇ#!#A!ÓÃZ#ÍBÀAÕ#ÇB,!ÇÇÕKK#" #string criptografada
 
 lista = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N',
@@ -5,6 +6,8 @@ lista = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N',
     '?','Á','Ã','À','Â','É','Ê','Í','Ó','Õ','Ô','Ú','Ü','Ç'] # lista em ordem
 
 chave = 0 # Chave inicial
+
+frases = []
 
 while chave < 44: # 44 loops
     frase = list(mensagem_criptografada) # Separa a frase em caracteres separados 
@@ -19,5 +22,12 @@ while chave < 44: # 44 loops
             letra = lista[index_descriptografado]
         frase[pos] = letra
         pos += 1
-    print(''.join(frase))
+    frase = ''.join(frase)
+    print(frase)
+    frases.append(frases)
     chave += 1
+
+for frase in frases:
+    palavras = frase.split()
+    for palavra in palavras:
+        pass
