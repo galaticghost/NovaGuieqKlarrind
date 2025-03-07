@@ -9,6 +9,8 @@ chave = 0 # Chave inicial
 
 frases = []
 
+dicionario_set = dicionario.ler_dict()
+
 while chave < 44: # 44 loops
     frase = list(mensagem_criptografada) # Separa a frase em caracteres separados 
     pos=0 # pega a posição inicial
@@ -22,12 +24,20 @@ while chave < 44: # 44 loops
             letra = lista[index_descriptografado]
         frase[pos] = letra
         pos += 1
-    frase = ''.join(frase)
-    print(frase)
-    frases.append(frases)
+    frase = str(''.join(frase))
+    frases.append(frase)
     chave += 1
+
+chave = 0
+counters = []
 
 for frase in frases:
     palavras = frase.split()
+    counter = 0
     for palavra in palavras:
-        pass
+        if palavra.lower() in dicionario_set:
+             counter += 1
+    if counters == [] or counters[1] < counter:
+        counters = [chave,counter]
+    chave += 1
+print(counters)
