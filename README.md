@@ -4,6 +4,7 @@
 - 1º: 12134252
 - 2º: b e w
 - 3º: poton/paiton
+- 4º: bancos e dados de 6 lados
 
 # Conteúdo
 - modelagem: Diagramas em UML
