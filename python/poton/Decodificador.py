@@ -40,4 +40,6 @@ for frase in frases:
     if counters == [] or counters[1] < counter:
         counters = [chave,counter]
     chave += 1
+    
 print(counters)
+print(frases[counters[0]])
