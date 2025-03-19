@@ -6,4 +6,11 @@ body {
 
 p {
   color: whitesmoke;
+  text-decoration-line: underline;
+  text-decoration-color: blue;
+  text-decoration-style: double;
+  letter-spacing: 3px;
+  line-height: 5px;
+  text-indent: 50px;
+  word-spacing: -20px;  
 }
