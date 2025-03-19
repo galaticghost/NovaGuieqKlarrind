@@ -8,7 +8,7 @@ class Queue:
         self.queue = [None for i in range(size)]
         self.front = self.rear = -1
 
-    # favor refazer essa merda interia
+    # favor refazer esse código intero
     def enqueue(self,item):
         if self.front == self.rear - 1:
             print("Fila cheia")

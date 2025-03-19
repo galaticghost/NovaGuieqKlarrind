@@ -1,7 +1,7 @@
 CREATE TABLE funcionario(
     pk_funcionario INTEGER PRIMARY KEY NOT NULL,
     nome VARCHAR(100) NOT NULL,
-    gerente BOOLEAN NOT NULL DEFAULT 0
+    gerente REFERENCES funcionario(pk_funcionario) NOT NULL DEFAULT 0
 );
 
 
