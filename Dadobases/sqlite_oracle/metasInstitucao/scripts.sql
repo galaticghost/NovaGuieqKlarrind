@@ -14,76 +14,12 @@ WHERE
             SUM(nota) >= 400
     );
 
-SELECT
-    (
-        SELECT
-            AVG(quantidade)
-        FROM
-            metas
-        GROUP BY
-            categoria
-        ORDER BY
-            AVG(quantidade) DESC
-        LIMIT
-            1
-    ) AS Melhor,
-    (
-        SELECT
-            AVG(quantidade)
-        FROM
-            metas
-        GROUP BY
-            categoria
-        ORDER BY
-            AVG(quantidade)
-        LIMIT
-            1
-    ) AS Pior,
-    (
-        SELECT
-            AVG(quantidade)
-        FROM
-            metas
-        GROUP BY
-            categoria
-        ORDER BY
-            AVG(quantidade)
-        LIMIT
-            1
-        OFFSET
-            1
-    ) AS Mediano,
-    (
-        SELECT
-            AVG(quantidade)
-        FROM
-            metas
-        GROUP BY
-            categoria
-        ORDER BY
-            AVG(quantidade)
-        LIMIT
-            1
-        OFFSET
-            2
-    ) AS Mediano
-FROM
-    metas
-GROUP BY
-    categoria
-LIMIT
-    1;
-
 -- 2
-SELECT
-    AVG(nota)
-FROM
-    metas
-    INNER JOIN funcionario f
-GROUP BY
-    f.gerente
-HAVING
-    gerente = 0;
+SELECT (SELECT AVG(quantidade) FROM metas GROUP BY categoria ORDER BY AVG(quantidade) DESC FETCH NEXT 1 ROWS ONLY) AS Melhor,
+(SELECT AVG(quantidade) FROM metas GROUP BY categoria ORDER BY AVG(quantidade) FETCH NEXT 1 ROWS ONLY) AS Pior,
+(SELECT AVG(quantidade) FROM metas GROUP BY categoria ORDER BY AVG(quantidade) OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY ) AS Mediano,
+(SELECT AVG(quantidade) FROM metas GROUP BY categoria ORDER BY AVG(quantidade) OFFSET 2 ROWS FETCH NEXT 1 ROWS ONLY ) AS Mediano
+FROM metas GROUP BY categoria FETCH NEXT 1 ROWS ONLY;
 
 SELECT -- 3 vai dar só 1 por que só há uma equipe
     AVG(nota)
