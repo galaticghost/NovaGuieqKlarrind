@@ -1,9 +1,10 @@
 public class UrlGenerator {
     public UrlGenerator(String url, String pagina, String[] args) {
         StringBuilder sb = new StringBuilder();
-        sb.append(url).append(pagina);
+        String urlBase = url + "/" + pagina;
+        sb.append(urlBase);
         for (String id : args) {
-            sb.append(id);
+            sb.append("?id=" + id);
         }
         System.out.println(sb.toString());
     }
