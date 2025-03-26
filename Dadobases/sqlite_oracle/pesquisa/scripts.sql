@@ -57,7 +57,30 @@ FROM
             'Sim ou não',
             'food scale'
         )
-    )
+    );
+
+SELECT * -- 5
+FROM (
+    SELECT p.nome, 
+           l.RESPOSTA, 
+           CASE 
+               WHEN pa.IDADE BETWEEN 18 AND 24 THEN 1
+               WHEN pa.IDADE BETWEEN 25 AND 30 THEN 2
+               WHEN pa.IDADE BETWEEN 31 AND 40 THEN 3
+				ELSE 4
+           END AS FaixaEtaria
+    FROM produto p
+    INNER JOIN pesquisa pe ON pe.PK_PESQUISA = p.PK_PESQUISA
+    INNER JOIN QUESTAO q ON q.PK_PESQUISA = p.PK_PESQUISA
+    INNER JOIN LIKERT l ON l.PK_QUESTAO = q.pk_questao
+    INNER JOIN PARTICIPANTE pa ON pa.PK_PARTICIPANTE = l.PK_PARTICIPANTE
+    WHERE l.RESPOSTA >= 4
+)
+PIVOT (
+    COUNT(RESPOSTA)
+    FOR FaixaEtaria IN (1 AS "18-24", 2 AS "25-30", 3 AS "31-40", 4 AS "41+")
+);
+
 SELECT --6 Seleciona a questao com a média superior a três.
     q.questao,
     AVG(l.resposta)
