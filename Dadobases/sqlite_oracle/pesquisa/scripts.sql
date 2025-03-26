@@ -36,9 +36,9 @@ GROUP BY
 HAVING
     AVG(l.resposta) >= 4;
 
-SELECT -- 4 TODO
-    *
-FROM
+SELECT -- 4 
+    *  --Eu demorei decadas para perceber que eu já terminei a consulta 
+FROM   -- ao inves de colocar o produto pivotado nas questões
     (
         SELECT
             q.questao,
