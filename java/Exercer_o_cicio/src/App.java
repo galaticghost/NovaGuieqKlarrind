@@ -15,5 +15,6 @@ public class App {
          * carro.andar(50, 50);
          */
         // ListaCompras lc = new ListaCompras(new String[] {});
+        //Erro error = new Erro("erro erro erro dois");
     }
 }
