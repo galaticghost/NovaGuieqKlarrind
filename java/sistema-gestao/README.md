@@ -1,0 +1,6 @@
+- [x] Listar pacientes
+- [x] Listar consultas por data
+- [ ] Listar médicos
+- [ ] Listar consultas marcadas do médico
+- [ ] Listar consultas realizadas pelo médico
+- [ ] Gerar receita
