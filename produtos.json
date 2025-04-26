@@ -1,0 +1,65 @@
+[
+  {
+    "nome": "Notebook Dell",
+    "preco": 4500.99,
+    "estoque": 10,
+    "categorias": ["Informática", "Eletrônicos"],
+    "ativo": true
+  },
+  {
+    "nome": "Smartphone Samsung",
+    "preco": 2999.49,
+    "estoque": 25,
+    "cores_disponiveis": ["Preto", "Azul", "Vermelho"],
+    "dimensoes": {
+      "altura_cm": 15.2,
+      "largura_cm": 7.1,
+      "peso_gramas": 168
+    },
+    "ativo": true
+  },
+  {
+    "nome": "Fone Bluetooth",
+    "preco": 199.99,
+    "estoque": 100,
+    "ativo": false
+  },
+  {
+    "nome": "Livro - Clean Code",
+    "preco": 89.90,
+    "autor": "Robert C. Martin",
+    "paginas": 464,
+    "categorias": ["Livros", "Programação"],
+    "estoque": 40,
+    "ativo": true
+  },
+  {
+    "nome": "Pen Drive 128GB",
+    "preco": 119.50,
+    "estoque": 300,
+    "fabricante": "SanDisk",
+    "velocidade_leitura": 150.0,
+    "ativo": true
+  },
+  {
+    "nome": "Cadeira Gamer",
+    "preco": 999.00,
+    "estoque": 5,
+    "cores_disponiveis": ["Preto", "Vermelho"],
+    "material": "Couro sintético",
+    "dimensoes": {
+      "altura_cm": 125,
+      "largura_cm": 70
+    },
+    "ativo": true
+  },
+  {
+    "nome": "Câmera de Segurança",
+    "preco": 650.75,
+    "estoque": 12,
+    "resolucao": "1080p",
+    "gravacao_em_nuvem": true,
+    "imagem_base64": "iVBORw0KGgoAAAANSUhEUgAAAAUA...",
+    "ativo": true
+  }
+]
