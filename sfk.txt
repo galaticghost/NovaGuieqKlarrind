@@ -1,0 +1,48 @@
+workspace "Name" "Description" {
+
+    !identifiers hierarchical 
+
+    model {
+        u = person "usuario"
+        sc = softwareSystem "Spotify clone" {
+            wa = container "Aplicação web" "Renderiza o template" "Django"
+            pw = container "Aplicação página web" "Provém todas as funcionalidades para o usuário" "Javascript"
+            db = container "Banco de dados" "Armazena os usuários, comunidades e informações sobre as músicas" "Banco oracle"{
+                tags "Database"
+            }
+            sw = container "Servidor web" "Gerencia requisições https" " Django"
+        }
+        
+        u -> sc "Comenta e escuta músicas"
+        u -> sc.wa "Vista o www.spotifyclone.com.br usando https" 
+        u -> sc.pw "Comenta e escuta músicas"
+        sc.wa -> sc.pw "Manda a página para o usuário"
+        sc.pw -> sc.sw "Manda requisições https"
+        sc.sw -> sc.db "Lê e escreve"
+        
+    }
+    
+    views {
+        systemContext sc {
+            include *
+            autoLayout lr
+        }
+    
+       container sc "LayoutWeb" {
+            include u sc.wa sc.db sc.pw sc.sw
+            autolayout lr
+        }
+        
+        styles {
+            element "Person"{
+                color blue
+                shape person
+            }
+            
+            element "Database"{
+                shape cylinder
+            }
+        }
+    }
+
+}
