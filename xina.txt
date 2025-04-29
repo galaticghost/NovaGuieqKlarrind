@@ -1,0 +1,10 @@
+@startuml
+start
+fork
+:Insere nome;
+fork again
+:Insere sobre;
+end fork
+:Envia comunidade;
+stop
+@enduml
