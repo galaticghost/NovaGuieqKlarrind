@@ -35,7 +35,6 @@ workspace "Name" "Description" {
         
         styles {
             element "Person"{
-                color blue
                 shape person
             }
             
