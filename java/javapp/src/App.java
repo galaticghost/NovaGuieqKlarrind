@@ -33,6 +33,7 @@ public class App {
                     app.leTodas();
                     break;
                 case 5:
+                    teclado.close();
                     System.exit(0);
                 default:
                     throw new AssertionError();
