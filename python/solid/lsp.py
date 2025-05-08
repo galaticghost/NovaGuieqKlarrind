@@ -3,14 +3,15 @@ class FormaGeometrica():
         pass
 
 class Quadrado(FormaGeometrica):
-    def __init__(self,lado):
+    def set_lado(self,lado):
         self.lado = lado
     def calcular_area(self):
         return self.lado * self.lado
     
 class Retangulo(FormaGeometrica):
-    def __init__(self,altura,largura):
+    def set_altura(self,altura):
         self.altura = altura
+    def set_largura(self,largura):
         self.largura = largura
     def calcular_area(self):
         return self.largura * self.altura

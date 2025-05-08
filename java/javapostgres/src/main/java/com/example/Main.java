@@ -7,7 +7,7 @@ public class Main {
         try {
             ClienteDao clienteDao = new ClienteDao();
             Scanner scanner = new Scanner(System.in);
-            while (true) { 
+            while (true) {
                 System.out.println("1 - Criar tabela cliente");
                 System.out.println("2 - Inserir cliente");
                 System.out.println("3 - Listar clientes");
@@ -18,8 +18,8 @@ public class Main {
                 System.out.println("8 - Sair");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
-    
-                switch(choice){
+
+                switch (choice) {
                     case 1:
                         clienteDao.criarTabelaCliente();
                         break;
