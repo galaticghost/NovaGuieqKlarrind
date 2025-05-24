@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes</title>
+</head>
+<body>
+    <h1>Cadastro de Clientes</h1>
+
+    <input type="text" id="nome" placeholder="Nome">
+    <input type="text" id="email" placeholder="Email">
+    <button onclick="salvarCliente()">Salvar</button>
+
+    <h2>Lista de Clientes</h2>
+    <ul id="lista"></ul>
+
+    <script>
+        const API = "http://localhost:80/api/clientes";
+
+        function listarClientes() {
+            fetch(API)
+                .then(res => res.json())
+                .then(dados => {
+                    const lista = document.getElementById("lista");
+                    lista.innerHTML = "";
+                    dados.forEach(c => {
+                        const item = document.createElement("li");
+                        item.innerText = `${c.nome} (${c.email})`;
+                        lista.appendChild(item);
+                    });
+                });
+        }
+
+        function salvarCliente() {
+            const nome = document.getElementById("nome").value;
+            const email = document.getElementById("email").value;
+            fetch(API, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: Date.now(), nome, email })
+            }).then(() => listarClientes());
+        }
+
+        listarClientes();
+    </script>
+</body>
+</html>
