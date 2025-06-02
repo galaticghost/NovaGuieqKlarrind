@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        try{
+        try {
             QuadrinhoDao quadrinhoDao = new QuadrinhoDao("jdbc:sqlite:java/comics2/quadrinhos.db");
             Scanner scanner = new Scanner(System.in);
             while (true) {
@@ -24,15 +24,13 @@ public class Main {
                 switch (choice) {
                     case 1: {
                         Quadrinho quadrinho1 = new Quadrinho("Hellboy - Caçada Selvagem",
-                        "Mike Mignola", "Duncan Fegredo", "Dark Horse");
+                                "Mike Mignola", "Duncan Fegredo", "Dark Horse");
 
-                        Quadrinho quadrinho2 = new Quadrinho("O Anel do Nibelungo", "P.Craig Rusell"
-                        , "P.Craig Rusell", "Dark Horse");
-                        
+                        Quadrinho quadrinho2 = new Quadrinho("O Anel do Nibelungo", "P.Craig Rusell", "P.Craig Rusell",
+                                "Dark Horse");
 
                         Quadrinho quadrinho3 = new Quadrinho("Demolidor - A Queda de Murdock",
-                         "Frank Miller", "David Mazzucchelli", "Marvel");
-                        
+                                "Frank Miller", "David Mazzucchelli", "Marvel");
 
                         quadrinhoDao.inserir(quadrinho1);
                         quadrinhoDao.inserir(quadrinho2);
@@ -46,10 +44,10 @@ public class Main {
 
                         System.out.println("Digite o autor: ");
                         String autor = scanner.nextLine();
-                        
+
                         System.out.println("Digite o artista: ");
                         String artista = scanner.nextLine();
-                        
+
                         System.out.println("Digite a editora: ");
                         String editora = scanner.nextLine();
 
@@ -64,12 +62,11 @@ public class Main {
                         ResultSet resultSet = quadrinhoDao.consultar();
                         while (resultSet.next()) {
                             Quadrinho quadrinho = new Quadrinho(
-                                resultSet.getString("titulo"),
-                                resultSet.getString("autor"),
-                                resultSet.getString("artista"),
-                                resultSet.getString("editora"),
-                                resultSet.getInt("id")
-                            );
+                                    resultSet.getString("titulo"),
+                                    resultSet.getString("autor"),
+                                    resultSet.getString("artista"),
+                                    resultSet.getString("editora"),
+                                    resultSet.getInt("id"));
                             System.out.println(quadrinho);
                         }
                         break;
@@ -80,7 +77,7 @@ public class Main {
                         String titulo = scanner.next();
 
                         ResultSet resultSet = quadrinhoDao.consultarPorTitulo(titulo);
-//TODO
+                        // TODO
                         resultSet.next();
                         Quadrinho cliente = new Quadrinho(resultSet.getString("titulo"),
                                 resultSet.getString("autor"),
@@ -101,14 +98,14 @@ public class Main {
 
                         System.out.println("Digite o autor: ");
                         String autor = scanner.nextLine();
-                        
+
                         System.out.println("Digite o artista: ");
                         String artista = scanner.nextLine();
-                        
+
                         System.out.println("Digite a editora: ");
                         String editora = scanner.nextLine();
 
-                        Quadrinho quadrinho = new Quadrinho(titulo, autor, artista, editora,id);
+                        Quadrinho quadrinho = new Quadrinho(titulo, autor, artista, editora, id);
 
                         quadrinhoDao.atualizar(quadrinho);
                     }
@@ -119,6 +116,7 @@ public class Main {
                     }
 
                     case 8: {
+                        scanner.close();
                         System.exit(0);
                     }
                 }

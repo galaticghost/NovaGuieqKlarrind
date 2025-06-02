@@ -11,5 +11,6 @@ public class StringGnirts {
         sb.append(string);
 
         System.out.println(sb.reverse().toString());
+        x.close();
     }
 }
