@@ -28,7 +28,7 @@ BEGIN
 	return v_porcentagem;
 END;
 
-CREATE OR REPLACE PROCEDURE adicionar_notas_metas( -- 3 em andamento
+CREATE OR REPLACE PROCEDURE adicionar_notas_metas( -- 3
 	p_nome IN VARCHAR2
 )
 AS
@@ -56,6 +56,33 @@ BEGIN
 	EXECUTE IMMEDIATE v_sql USING v_nota,v_id_funcionario;
 	
 	COMMIT;
+	
+	EXCEPTION 
+		WHEN NO_DATA_FOUND THEN
+			DBMS_OUTPUT.PUT_LINE('Não foi encontrado nenhum funcionario com esse nome no banco de dados.');
+		WHEN OTHERS THEN
+			DBMS_OUTPUT.PUT_LINE('Um erro ocorreu durante o procedimento.');
+			ROLLBACK;
 END;
 
+
+CREATE OR REPLACE PROCEDURE backup_metas -- 4
+AS
+	v_sql VARCHAR2(500);
+	v_nome_tabela VARCHAR2(50);
+BEGIN
+	v_nome_tabela := 'log_backup_' || TO_CHAR(current_date,'YYYYMM');
+	DBMS_OUTPUT.PUT_LINE(v_nome_tabela);
+	v_sql := 'CREATE TABLE '|| v_nome_tabela ||' AS SELECT * FROM metas';
+	EXECUTE IMMEDIATE v_sql;
+	
+	EXCEPTION
+		WHEN OTHERS THEN
+			IF SQLCODE = -955 THEN
+				DBMS_OUTPUT.PUT_LINE('Já existe uma tabela com esse nome nesse schema');
+			ELSE
+				DBMS_OUTPUT.PUT_LINE('Um erro ocorreu durante a execução do procedimento');
+				ROLLBACK;
+			END IF;
+END;
 	
