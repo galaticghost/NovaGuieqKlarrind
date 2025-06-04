@@ -15,7 +15,8 @@ CREATE TABLE -- Res é de restaurante, já tinha tabela produto da pesquisa
         produto_id NUMBER PRIMARY KEY,
         nome VARCHAR2 (100) NOT NULL,
         preco NUMBER CHECK (preco > 0) NOT NULL,
-        restaurante_id INTEGER REFERENCES restaurante NOT NULL
+        restaurante_id INTEGER REFERENCES restaurante NOT NULL,
+        estoque NUMBER default 50
     );
 
 CREATE TABLE
@@ -26,7 +27,8 @@ CREATE TABLE
         senha VARCHAR2 (100) NOT NULL,
         criacao DATE DEFAULT CURRENT_TIMESTAMP,
         ultima_atualizacao DATE DEFAULT CURRENT_TIMESTAMP,
-        admin NUMBER DEFAULT 0 NOT NULL
+        admin NUMBER DEFAULT 0 NOT NULL,
+        ativo INTEGER DEFAULT 0 NOT NULL
     );
 
 CREATE TABLE
