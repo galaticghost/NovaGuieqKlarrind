@@ -38,3 +38,52 @@ BEGIN
 	v_nps := (v_promotores - v_detratores) / v_res_total;
 	RETURN v_nps;
 END;
+
+CREATE OR REPLACE TYPE palavra_divida AS TABLE OF VARCHAR2(1000); -- 3
+
+CREATE OR REPLACE FUNCTION dividir_palavras(p_texto IN VARCHAR2)
+RETURN palavra_divida PIPELINED
+AS
+    v_posicao INTEGER := 1;
+    v_tamanho INTEGER;
+    v_palavra VARCHAR2(100);
+    v_texto VARCHAR2(32767) := TRIM(p_texto);
+BEGIN
+    LOOP
+        v_tamanho := INSTR(v_texto || ' ', ' ', v_posicao) - v_posicao;
+        EXIT WHEN v_tamanho < 0;
+        v_palavra := SUBSTR(v_texto, v_posicao, v_tamanho);
+        IF v_palavra IS NOT NULL THEN
+            PIPE ROW(v_palavra);
+        END IF;
+        v_posicao := v_posicao + v_tamanho + 1;
+    END LOOP;
+
+    RETURN;
+END dividir_palavras;
+
+
+CREATE OR REPLACE FUNCTION contar_palavras(p_texto IN VARCHAR2)
+RETURN INTEGER
+AS
+    v_contador INTEGER := 0;
+BEGIN
+    FOR palavra IN (SELECT * FROM TABLE(dividir_palavras(p_texto))) LOOP
+        v_contador := v_contador + 1;
+    END LOOP;
+
+    RETURN v_contador;
+END contar_palavras;
+
+DECLARE
+    v_texto_total VARCHAR2(500);
+    v_contador    INTEGER;
+BEGIN
+    FOR linha IN (SELECT resposta FROM texto WHERE pk_questao = 5) LOOP
+        v_texto_total := v_texto_total || ' ' || linha.resposta;
+    END LOOP;
+
+    v_contador := contar_palavras(v_texto_total);
+
+    DBMS_OUTPUT.PUT_LINE('Total palavras: ' || v_contador);
+END;
