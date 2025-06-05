@@ -47,7 +47,7 @@ AS
     v_posicao INTEGER := 1;
     v_tamanho INTEGER;
     v_palavra VARCHAR2(100);
-    v_texto VARCHAR2(32767) := TRIM(p_texto);
+    v_texto VARCHAR2(500) := TRIM(p_texto);
 BEGIN
     LOOP
         v_tamanho := INSTR(v_texto || ' ', ' ', v_posicao) - v_posicao;
