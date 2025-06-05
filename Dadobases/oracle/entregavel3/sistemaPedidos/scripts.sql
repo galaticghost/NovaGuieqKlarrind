@@ -83,3 +83,48 @@ CREATE OR REPLACE PACKAGE BODY clientes_pkg AS
 		END LOOP;
 	END;
 END;
+
+DECLARE -- 3
+	v_venda_id NUMBER;
+	v_usuario_id INTEGER;
+	i NUMBER := 1;
+BEGIN
+	LOOP
+		v_usuario_id := DBMS_RANDOM.VALUE(1,5);
+		INSERT INTO venda(valor,usuario_id,restaurante_id) VALUES (64,v_usuario_id,2);
+		SELECT venda_id INTO v_venda_id FROM venda ORDER BY venda_id desc FETCH FIRST 1 ROWS ONLY;
+		UPDATE res_produto SET estoque = estoque - 2 WHERE produto_id = 2;
+		INSERT INTO venda_produto(venda_id,produto_id,quantidade,valor_total) VALUES
+		(v_venda_id,2,2,64);
+		i := 1 + i;
+		EXIT WHEN i > 15;
+	END LOOP;
+END;
+
+DECLARE -- 3
+	v_venda_id NUMBER;
+	v_usuario_id INTEGER;
+	v_estoque NUMBER;
+	v_sql VARCHAR2(1000);
+BEGIN
+	v_sql := 'SELECT estoque FROM res_produto WHERE produto_id = :id';
+	EXECUTE IMMEDIATE v_sql INTO v_estoque USING 60;
+	IF 2 > v_estoque THEN
+		v_usuario_id := DBMS_RANDOM.VALUE(1,5);
+		INSERT INTO venda(valor,usuario_id,restaurante_id) VALUES (80,v_usuario_id,15);
+		SELECT venda_id INTO v_venda_id FROM venda ORDER BY venda_id desc FETCH FIRST 1 ROWS ONLY;
+		UPDATE res_produto SET estoque = estoque - 2 WHERE produto_id = 2;
+		INSERT INTO venda_produto(venda_id,produto_id,quantidade,valor_total) VALUES
+		(v_venda_id,60,2,80);
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('Estoque indisponível');
+	END IF;
+END;
+
+
+BEGIN -- 4
+	clientes_pkg.inativar_clientes;
+END;
+
+
+
