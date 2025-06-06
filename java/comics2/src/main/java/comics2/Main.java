@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         try {
             QuadrinhoDao quadrinhoDao = new QuadrinhoDao("jdbc:sqlite:java/comics2/quadrinhos.db");
+            QuadrinhoFileDao quadrinhoFileDao = new QuadrinhoFileDao();
             Scanner scanner = new Scanner(System.in);
             while (true) {
                 System.out.println("1 - Inserir valores de teste");
@@ -16,7 +17,8 @@ public class Main {
                 System.out.println("5 - Atualizar quadrinhos");
                 System.out.println("6 - Deletar quadrinhos");
                 System.out.println("7 - Gravar quadrinhos do CSV");
-                System.out.println("8 -  Sair");
+                System.out.println("8 - Deletar tudo");
+                System.out.println("9 -  Sair");
 
                 int choice = scanner.nextInt();
                 scanner.nextLine();
@@ -74,17 +76,17 @@ public class Main {
 
                     case 4: {
                         System.out.println("Digite o titulo: ");
-                        String titulo = scanner.next();
-
+                        String titulo = scanner.nextLine();
+                        System.out.println(titulo);
                         ResultSet resultSet = quadrinhoDao.consultarPorTitulo(titulo);
-                        // TODO
-                        resultSet.next();
-                        Quadrinho cliente = new Quadrinho(resultSet.getString("titulo"),
-                                resultSet.getString("autor"),
-                                resultSet.getString("artista"),
-                                resultSet.getString("editora"),
-                                resultSet.getInt("id"));
-                        System.out.println(cliente);
+                        while (resultSet.next()) {
+                            Quadrinho cliente = new Quadrinho(resultSet.getString("titulo"),
+                                    resultSet.getString("autor"),
+                                    resultSet.getString("artista"),
+                                    resultSet.getString("editora"),
+                                    resultSet.getInt("id"));
+                            System.out.println(cliente);
+                        }
                         break;
                     }
 
@@ -113,9 +115,20 @@ public class Main {
                         System.out.println("Digite o id: ");
                         int id = scanner.nextInt();
                         quadrinhoDao.deletarPorId(id);
+                        break;
+                    }
+
+                    case 7: {
+                        quadrinhoFileDao.gravarQuadrinhos();
+                        break;
                     }
 
                     case 8: {
+                        quadrinhoDao.deletarTudo();
+                        break;
+                    }
+
+                    case 9: {
                         scanner.close();
                         System.exit(0);
                     }

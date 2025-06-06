@@ -18,5 +18,6 @@ public class App {
         // Erro error = new Erro("erro erro erro dois");
         // Username us = new Username("cadu@gmail.com");
         // RemoveEspaco re = new RemoveEspaco(" boasodko ksdoffkdso ");
+        System.out.println("Programa?");
     }
 }
