@@ -23,6 +23,30 @@ BEGIN
 	RETURN resultado;
 END;
 
+CREATE OR REPLACE TYPE funcionario_obj AS OBJECT ( -- 5
+  id NUMBER,
+  nome VARCHAR2(100),
+  codigo VARCHAR2(10),
+  departamento VARCHAR2(100)
+);
+
+CREATE OR REPLACE TYPE t_funcionarios AS TABLE OF funcionario_obj; -- 5
+
+CREATE OR REPLACE FUNCTION listar_funcionarios_departamento( -- 5
+	p_codigo VARCHAR2
+) RETURN t_funcionarios PIPELINED
+AS
+BEGIN
+	FOR l IN (SELECT id,nome, d.codigo,departamento FROM ARTHUR.DEPARTAMENTOS d 
+	INNER JOIN EMPREGADOS e ON e.codigo = d.codigo
+	WHERE d.CODIGO = p_codigo) 
+	LOOP
+		PIPE ROW (funcionario_obj(l.id,l.nome,l.codigo,l.departamento));
+	END LOOP;
+
+	RETURN;
+END;
+SELECT
 
 CREATE OR REPLACE TYPE palavra_divida AS TABLE OF VARCHAR2(1000); -- 6
 

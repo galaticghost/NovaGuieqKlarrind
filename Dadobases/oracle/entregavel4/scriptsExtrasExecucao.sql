@@ -19,6 +19,9 @@ SELECT -- 4
 FROM
     dual;
 
+-- 5 (Eu não criei um bloco pq não fazia sentido, só se fizesse um put_line mas um select já basta)
+SELECT listar_funcionarios_departamento('NUSYEWJS') FROM dual;
+
 SELECT -- 6
     dividir_palavras ('BOLA ZAUL AZULAZ ZUKS ASe eu não sei ler!')
 FROM
