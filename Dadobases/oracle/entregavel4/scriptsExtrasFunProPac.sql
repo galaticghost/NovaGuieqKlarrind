@@ -6,6 +6,42 @@ BEGIN
 	RETURN p_valor * 0.9;
 END;
 
+CREATE OR REPLACE PROCEDURE aumentar_estoque ( -- 2
+	p_quantidade IN OUT NUMBER
+)
+AS
+BEGIN
+	p_quantidade := p_quantidade + 10;
+END;
+
+CREATE OR REPLACE PROCEDURE consultar_email ( -- 3 
+	p_id IN INTEGER,
+	p_email OUT VARCHAR2
+) AS
+	v_code NUMBER;
+	E_ID_INVALIDO EXCEPTION;
+BEGIN
+	IF p_id < 1 THEN
+		RAISE E_ID_INVALIDO;
+	END IF;
+
+	SELECT email INTO p_email FROM usuario WHERE usuario_id = p_id;
+	
+	EXCEPTION
+		WHEN E_ID_INVALIDO THEN
+			DBMS_OUTPUT.PUT_LINE('O id inserido deve ser maior que 1');
+			p_email := 'Não encontrado';
+		WHEN NO_DATA_FOUND THEN
+			DBMS_OUTPUT.PUT_LINE('Não foi encontrado nenhuma linha com esse id');
+			p_email := 'Não encontrado';
+		WHEN OTHERS THEN
+			DBMS_OUTPUT.PUT_LINE('Ocorreu um erro na execução desse procedimento');
+			v_code := SQLCODE;
+			DBMS_OUTPUT.PUT_LINE('Erro: ' || v_code);
+			p_email := 'Não encontrado';
+END;
+
+
 CREATE OR REPLACE TYPE t_quadrado AS TABLE OF NUMBER; -- 4
 
 CREATE OR REPLACE FUNCTION random_squared( -- 4

@@ -102,3 +102,119 @@ EXCEPTION
 	WHEN OTHERS THEN
 		DBMS_OUTPUT.PUT_LINE('Ocorreu um erro na execução do procedimento');
 END;
+
+
+CREATE OR REPLACE PACKAGE mydj AS -- 6
+	FUNCTION constructor (p_username VARCHAR2) RETURN NUMBER;
+	PROCEDURE gerar_playlist_genero(p_genero IN VARCHAR2);
+	PROCEDURE sugerir_musicas;
+	FUNCTION artista_mais_curtido RETURN VARCHAR2;
+END mydj;
+
+CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
+	v_user_id NUMBER;
+
+	FUNCTION constructor(
+		p_username VARCHAR2
+	) RETURN NUMBER
+	AS
+		v_sql VARCHAR2(500);
+	BEGIN
+		v_sql := 'SELECT id FROM auth_user WHERE username = :username';
+		EXECUTE IMMEDIATE v_sql INTO v_user_id USING p_username;
+		RETURN v_user_id;
+	END;
+
+	PROCEDURE gerar_playlist_genero(
+		p_genero IN VARCHAR2
+	) AS
+		CURSOR c_musica IS SELECT id
+		FROM (SELECT id
+		FROM musica_musicasalva mm
+		WHERE genero = p_genero
+		ORDER BY DBMS_RANDOM.VALUE
+		)
+		FETCH FIRST 25 ROWS ONLY;
+	
+        v_id_musica musica_musicasalva.id%TYPE;
+        v_id_playlist musica_playlist.id%TYPE;
+	BEGIN
+		
+		INSERT INTO MUSICA_PLAYLIST(nome, descricao, user_id,playlist_curtir)
+	    VALUES ('Playlist '|| p_genero, 'Playlist de '|| p_genero || ' gerada automaticamente', v_user_id,0)
+	    RETURNING id INTO v_id_playlist;
+
+
+		OPEN c_musica;
+        
+        LOOP
+        	FETCH c_musica INTO v_id_musica;
+        	EXIT WHEN c_musica%NOTFOUND;
+        	INSERT INTO MUSICA_MUSICASALVA_PLAYLISTS(MUSICASALVA_ID,PLAYLIST_ID) VALUES (v_id_musica,v_id_playlist);
+        END LOOP;
+        CLOSE c_musica;
+	END;
+
+	PROCEDURE sugerir_musicas AS
+		CURSOR c_musica IS SELECT nome, artista
+				FROM (
+				  SELECT nome, artista
+				  FROM MUSICA_MUSICASALVA mm
+				  WHERE mm.id NOT IN (
+				    SELECT MUSICASALVA_ID
+				    FROM MUSICA_MUSICASALVA_CURTIDA
+				    WHERE USER_ID = v_user_id
+				  )
+				  ORDER BY DBMS_RANDOM.VALUE
+				)
+				WHERE ROWNUM <= 10;
+		v_nome musica_musicasalva.nome%TYPE;
+		v_artista musica_musicasalva.artista%TYPE;
+	BEGIN
+		OPEN c_musica;
+		
+		LOOP
+			FETCH c_musica INTO v_nome,v_artista;
+			EXIT WHEN c_musica%NOTFOUND;
+			DBMS_OUTPUT.PUT_LINE('Nome: ' || v_nome || '. Artista: ' || v_artista);
+		END LOOP;
+		CLOSE c_musica;
+	END;
+	FUNCTION artista_mais_curtido RETURN VARCHAR2
+	AS
+		v_artista VARCHAR2(200);
+	BEGIN
+		SELECT artista INTO v_artista FROM MUSICA_MUSICASALVA mm
+		INNER JOIN MUSICA_MUSICASALVA_CURTIDA mmc 
+		ON mm.ID = mmc.MUSICASALVA_ID
+		WHERE mmc.USER_ID = v_user_id
+		GROUP BY ARTISTA
+		ORDER BY COUNT(1) DESC
+		FETCH FIRST 1 ROWS ONLY;
+		
+		RETURN v_artista;
+	END;
+END;
+
+
+CREATE OR REPLACE PROCEDURE listar_musica_playlist_mais_ouvidas -- 7
+AS
+	v_i NUMBER := 0;
+	v_musica VARCHAR2(200);
+	v_count NUMBER;
+BEGIN
+	WHILE v_i < 15 LOOP
+		SELECT nome,COUNT(1) INTO v_musica,v_count FROM MUSICA_MUSICASALVA mm 
+		INNER JOIN MUSICA_MUSICASALVA_PLAYLISTS mmp
+		ON mm.ID = mmp.MUSICASALVA_ID 
+		GROUP BY nome
+		ORDER BY COUNT(1) DESC
+		OFFSET v_i ROWS
+		FETCH NEXT 1 ROWS ONLY;
+		
+		DBMS_OUTPUT.PUT_LINE(v_musica || ' está em ' || v_count || ' playlists');
+
+		v_i := v_i + 1;
+	END LOOP;
+	
+END;

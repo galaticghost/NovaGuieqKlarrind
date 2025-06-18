@@ -66,3 +66,21 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Usuário: ' || v_user_max_seguidores);
     DBMS_OUTPUT.PUT_LINE('Quantidade: ' || v_user_max);
 END;
+
+DECLARE -- 6
+	v_id NUMBER;
+	v_genero VARCHAR2(50) := 'rock';
+	v_artista VARCHAR2(200);
+BEGIN
+  v_id := mydj.constructor('ricardao');
+  DBMS_OUTPUT.PUT_LINE('ID: ' || v_id);
+  mydj.gerar_playlist_genero(v_genero);
+  mydj.sugerir_musicas;
+  v_artista := mydj.artista_mais_curtido;
+  DBMS_OUTPUT.PUT_LINE('Artista mais curtido: ' || v_artista);
+END;
+
+-- 7
+BEGIN listar_musica_playlist_mais_ouvidas ();
+
+END;
