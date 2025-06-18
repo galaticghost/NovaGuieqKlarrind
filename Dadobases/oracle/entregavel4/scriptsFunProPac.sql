@@ -128,21 +128,21 @@ CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
 	PROCEDURE gerar_playlist_genero(
 		p_genero IN VARCHAR2
 	) AS
-		CURSOR c_musica IS SELECT id
+		CURSOR c_musica IS SELECT id -- Pega o id de umas músicas com base no genero
 		FROM (SELECT id
 		FROM musica_musicasalva mm
 		WHERE genero = p_genero
 		ORDER BY DBMS_RANDOM.VALUE
 		)
-		FETCH FIRST 25 ROWS ONLY;
+		FETCH FIRST 25 ROWS ONLY; 
 	
         v_id_musica musica_musicasalva.id%TYPE;
-        v_id_playlist musica_playlist.id%TYPE;
+        v_id_playlist musica_playlist.id%TYPE; -- Isso daqui é um elemento surpresa que vamos utilizar mais tarde
 	BEGIN
 		
 		INSERT INTO MUSICA_PLAYLIST(nome, descricao, user_id,playlist_curtir)
 	    VALUES ('Playlist '|| p_genero, 'Playlist de '|| p_genero || ' gerada automaticamente', v_user_id,0)
-	    RETURNING id INTO v_id_playlist;
+	    RETURNING id INTO v_id_playlist; -- Isso daqui retorna o id da playlist que ele acabou de criar
 
 
 		OPEN c_musica;
