@@ -25,7 +25,7 @@ BEGIN
 		RAISE E_ID_INVALIDO;
 	END IF;
 
-	SELECT email INTO p_email FROM usuario WHERE usuario_id = p_id;
+	SELECT email INTO p_email FROM arthur.usuario WHERE usuario_id = p_id;
 	
 	EXCEPTION
 		WHEN E_ID_INVALIDO THEN
@@ -131,4 +131,42 @@ BEGIN
     v_contador := contar_palavras(v_texto_total);
 
     DBMS_OUTPUT.PUT_LINE('Total palavras: ' || v_contador);
+END;
+
+-- 8 não tem, só bloco anônimo mesmo
+
+CREATE OR REPLACE PROCEDURE desconto_porcento ( -- 9
+	p_id NUMBER,
+	p_porcento NUMBER
+)
+AS
+	E_PORCENTAGEM_INVALIDA EXCEPTION;
+BEGIN
+	IF p_porcento < 0 THEN
+		RAISE E_PORCENTAGEM_INVALIDA;
+	END IF;
+	
+	UPDATE ARTHUR.res_produto SET preco = preco * ( 1 - p_porcento / 100) WHERE restaurante_id = p_id;
+
+	EXCEPTION
+		WHEN E_PORCENTAGEM_INVALIDA THEN
+        	DBMS_OUTPUT.PUT_LINE('Erro: A porcentagem de desconto não pode ser negativa.');
+		WHEN OTHERS THEN
+			DBMS_OUTPUT.PUT_LINE('Ocorreu um erro na execução do procedimento.');
+			
+END;
+
+CREATE OR REPLACE PROCEDURE grant_permissions( -- 10
+	p_usuario VARCHAR2,
+	p_tabela VARCHAR2,
+	p_permissao VARCHAR2
+) AS
+	v_sql VARCHAR2(1000);
+BEGIN
+	v_sql := 'GRANT ' || p_permissao || ' ON "' || p_tabela || '" TO "' || p_usuario || '"';
+	EXECUTE IMMEDIATE v_sql;
+EXCEPTION
+	WHEN OTHERS THEN
+		DBMS_OUTPUT.PUT_LINE('Erro ao executar: ' || v_sql);
+		DBMS_OUTPUT.PUT_LINE(SQLERRM);
 END;

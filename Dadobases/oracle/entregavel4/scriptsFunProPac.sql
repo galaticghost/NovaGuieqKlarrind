@@ -58,9 +58,9 @@ CREATE OR REPLACE PROCEDURE buscar_usuario_por_campo ( -- 3
 	p_coluna IN VARCHAR2,
 	p_query IN VARCHAR2
 ) AS
-	v_sql   VARCHAR2(500);
+	v_sql VARCHAR2(500);
 	v_cursor SYS_REFCURSOR; -- Esse SYS_REFCURSOR é declara que isso daqui é um cursor
-	v_id  NUMBER;
+	v_id NUMBER;
 	v_nome VARCHAR2(200);
 	v_curtida NUMBER;
 	v_curtida_musica NUMBER;
@@ -103,6 +103,47 @@ EXCEPTION
 		DBMS_OUTPUT.PUT_LINE('Ocorreu um erro na execução do procedimento');
 END;
 
+CREATE OR REPLACE PROCEDURE comunidade_recomendacao -- 5 
+AS
+    CURSOR c_comunidade IS
+        SELECT id, nome, sobre FROM comunidade_community;
+
+    v_palavra VARCHAR2(100);
+    v_genero_encontrado VARCHAR2(100);
+BEGIN
+    FOR comu IN c_comunidade LOOP
+        FOR palavra IN (
+            SELECT * FROM TABLE(dividir_palavras(LOWER(comu.nome || ' ' || comu.sobre))) -- Essa dividir palavras é aquela do entregável 3
+        ) LOOP
+            v_palavra := palavra.COLUMN_VALUE;
+            FOR genero_usuario IN (
+                SELECT DISTINCT genero
+                FROM usuario_generos
+                WHERE LOWER(genero) = v_palavra
+            ) LOOP
+                v_genero_encontrado := LOWER(genero_usuario.genero);
+                FOR usuario_interessado IN (
+                    SELECT email
+                    FROM auth_user au
+                    JOIN usuario_generos ug ON ug.user_id = au.id
+                    WHERE LOWER(ug.genero) = v_genero_encontrado
+                ) LOOP
+                    DBMS_OUTPUT.PUT_LINE(
+                        'Gênero: ' || v_genero_encontrado ||
+                        ', Comunidade: ' || comu.nome ||
+                        ', Email: ' || usuario_interessado.email
+                    );
+                END LOOP;
+            END LOOP;
+    		EXIT;
+        END LOOP;
+    END LOOP;
+            
+    EXCEPTION
+    	WHEN OTHERS THEN
+    		DBMS_OUTPUT.PUT_LINE(SQLERRM);
+END;
+
 
 CREATE OR REPLACE PACKAGE mydj AS -- 6
 	FUNCTION constructor (p_username VARCHAR2) RETURN NUMBER;
@@ -120,7 +161,7 @@ CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
 	AS
 		v_sql VARCHAR2(500);
 	BEGIN
-		v_sql := 'SELECT id FROM auth_user WHERE username = :username';
+		v_sql := 'SELECT id FROM arthur.auth_user WHERE username = :username';
 		EXECUTE IMMEDIATE v_sql INTO v_user_id USING p_username;
 		RETURN v_user_id;
 	END;
@@ -130,7 +171,7 @@ CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
 	) AS
 		CURSOR c_musica IS SELECT id -- Pega o id de umas músicas com base no genero
 		FROM (SELECT id
-		FROM musica_musicasalva mm
+		FROM arthur.musica_musicasalva mm
 		WHERE genero = p_genero
 		ORDER BY DBMS_RANDOM.VALUE
 		)
@@ -140,7 +181,7 @@ CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
         v_id_playlist musica_playlist.id%TYPE; -- Isso daqui é um elemento surpresa que vamos utilizar mais tarde
 	BEGIN
 		
-		INSERT INTO MUSICA_PLAYLIST(nome, descricao, user_id,playlist_curtir)
+		INSERT INTO arthur.MUSICA_PLAYLIST(nome, descricao, user_id,playlist_curtir)
 	    VALUES ('Playlist '|| p_genero, 'Playlist de '|| p_genero || ' gerada automaticamente', v_user_id,0)
 	    RETURNING id INTO v_id_playlist; -- Isso daqui retorna o id da playlist que ele acabou de criar
 
@@ -150,7 +191,7 @@ CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
         LOOP
         	FETCH c_musica INTO v_id_musica;
         	EXIT WHEN c_musica%NOTFOUND;
-        	INSERT INTO MUSICA_MUSICASALVA_PLAYLISTS(MUSICASALVA_ID,PLAYLIST_ID) VALUES (v_id_musica,v_id_playlist);
+        	INSERT INTO arthur.MUSICA_MUSICASALVA_PLAYLISTS(MUSICASALVA_ID,PLAYLIST_ID) VALUES (v_id_musica,v_id_playlist);
         END LOOP;
         CLOSE c_musica;
 	END;
@@ -159,10 +200,10 @@ CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
 		CURSOR c_musica IS SELECT nome, artista
 				FROM (
 				  SELECT nome, artista
-				  FROM MUSICA_MUSICASALVA mm
+				  FROM arthur.MUSICA_MUSICASALVA mm
 				  WHERE mm.id NOT IN (
 				    SELECT MUSICASALVA_ID
-				    FROM MUSICA_MUSICASALVA_CURTIDA
+				    FROM arthur.MUSICA_MUSICASALVA_CURTIDA
 				    WHERE USER_ID = v_user_id
 				  )
 				  ORDER BY DBMS_RANDOM.VALUE
@@ -184,8 +225,8 @@ CREATE OR REPLACE PACKAGE BODY mydj AS -- 6
 	AS
 		v_artista VARCHAR2(200);
 	BEGIN
-		SELECT artista INTO v_artista FROM MUSICA_MUSICASALVA mm
-		INNER JOIN MUSICA_MUSICASALVA_CURTIDA mmc 
+		SELECT artista INTO v_artista FROM arthur.MUSICA_MUSICASALVA mm
+		INNER JOIN arthur.MUSICA_MUSICASALVA_CURTIDA mmc 
 		ON mm.ID = mmc.MUSICASALVA_ID
 		WHERE mmc.USER_ID = v_user_id
 		GROUP BY ARTISTA
@@ -204,8 +245,8 @@ AS
 	v_count NUMBER;
 BEGIN
 	WHILE v_i < 15 LOOP
-		SELECT nome,COUNT(1) INTO v_musica,v_count FROM MUSICA_MUSICASALVA mm 
-		INNER JOIN MUSICA_MUSICASALVA_PLAYLISTS mmp
+		SELECT nome,COUNT(1) INTO v_musica,v_count FROM arthur.MUSICA_MUSICASALVA mm 
+		INNER JOIN arthur.MUSICA_MUSICASALVA_PLAYLISTS mmp
 		ON mm.ID = mmp.MUSICASALVA_ID 
 		GROUP BY nome
 		ORDER BY COUNT(1) DESC

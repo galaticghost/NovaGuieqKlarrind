@@ -1,5 +1,5 @@
 SELECT
-    genero_mais_curtido() -- 1
+    arthur.genero_mais_curtido() -- 1
 FROM
     DUAL;
 
@@ -9,7 +9,7 @@ DECLARE -- 2 (Tomei a liberdade de adicionar o nome do artista caso exista music
 	p_artista VARCHAR2(50) := 'Sewesrslvt'; -- Essa daqui da erro devido não achar a musica no banco
 	p_user_id NUMBER := 1;
 BEGIN
-	favoritar(p_musica,p_artista,p_user_id);
+	arthur.favoritar(p_musica,p_artista,p_user_id);
 END;
 
 DECLARE -- 2 Essa da erro por a musica já estar curtida
@@ -17,7 +17,7 @@ DECLARE -- 2 Essa da erro por a musica já estar curtida
 	p_artista VARCHAR2(50) := 'Kendrick Lamar';
 	p_user_id NUMBER := 1;
 BEGIN
-	favoritar(p_musica,p_artista,p_user_id);
+	arthur.favoritar(p_musica,p_artista,p_user_id);
 END;
 
 DECLARE -- 2 Essa deve funcionar
@@ -25,20 +25,20 @@ DECLARE -- 2 Essa deve funcionar
 	p_artista VARCHAR2(50) := 'Gojira';
 	p_user_id NUMBER := 1;
 BEGIN
-	favoritar(p_musica,p_artista,p_user_id);
+	arthur.favoritar(p_musica,p_artista,p_user_id);
 END;
 
 
 DECLARE -- 3 (Isso daqui retorna todos os usuarios pq eles sempres são 0)
 	p_coluna VARCHAR2(50) := 'IS_STAFF'; -- Se quiser mudar é só trocar os valores do auth_user
-	p_query  VARCHAR2(50) := '0';
+	p_query VARCHAR2(50) := '0';
 BEGIN
-	buscar_usuario_por_campo(p_coluna, p_query);
+	arthur.buscar_usuario_por_campo(p_coluna, p_query);
 END;
 
 DECLARE -- 4
 	CURSOR c_usuarios IS -- Pega os usuários
-		SELECT username FROM auth_user;
+		SELECT username FROM arthur.auth_user;
 
 	v_cursor SYS_REFCURSOR; -- recebe um cursor
 	v_username VARCHAR2(200); 
@@ -67,20 +67,24 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Quantidade: ' || v_user_max);
 END;
 
+BEGIN -- 5 (Tu pediu uma procedure que retorne o email,etc em pipelined, mas até onde eu sei isso não é possível)
+    comunidade_recomendacao;
+END;
+
 DECLARE -- 6
 	v_id NUMBER;
 	v_genero VARCHAR2(50) := 'rock';
 	v_artista VARCHAR2(200);
 BEGIN
-  v_id := mydj.constructor('ricardao');
+  v_id := arthur.mydj.constructor('ricardao');
   DBMS_OUTPUT.PUT_LINE('ID: ' || v_id);
-  mydj.gerar_playlist_genero(v_genero);
-  mydj.sugerir_musicas;
-  v_artista := mydj.artista_mais_curtido;
+  arthur.mydj.gerar_playlist_genero(v_genero);
+  arthur.mydj.sugerir_musicas;
+  v_artista := arthur.mydj.artista_mais_curtido;
   DBMS_OUTPUT.PUT_LINE('Artista mais curtido: ' || v_artista);
 END;
 
 -- 7
-BEGIN listar_musica_playlist_mais_ouvidas ();
-
+BEGIN 
+	arthur.listar_musica_playlist_mais_ouvidas();
 END;
