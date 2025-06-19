@@ -106,26 +106,26 @@ END;
 CREATE OR REPLACE PROCEDURE comunidade_recomendacao -- 5 
 AS
     CURSOR c_comunidade IS
-        SELECT id, nome, sobre FROM comunidade_community;
+        SELECT id, nome, sobre FROM arthur.comunidade_community;
 
     v_palavra VARCHAR2(100);
     v_genero_encontrado VARCHAR2(100);
 BEGIN
     FOR comu IN c_comunidade LOOP
         FOR palavra IN (
-            SELECT * FROM TABLE(dividir_palavras(LOWER(comu.nome || ' ' || comu.sobre))) -- Essa dividir palavras é aquela do entregável 3
+            SELECT * FROM TABLE(arthur.dividir_palavras(LOWER(comu.nome || ' ' || comu.sobre))) -- Essa dividir palavras é aquela do entregável 3
         ) LOOP
             v_palavra := palavra.COLUMN_VALUE;
             FOR genero_usuario IN (
                 SELECT DISTINCT genero
-                FROM usuario_generos
+                FROM arthur.usuario_generos
                 WHERE LOWER(genero) = v_palavra
             ) LOOP
                 v_genero_encontrado := LOWER(genero_usuario.genero);
                 FOR usuario_interessado IN (
                     SELECT email
-                    FROM auth_user au
-                    JOIN usuario_generos ug ON ug.user_id = au.id
+                    FROM arthur.auth_user au
+                    INNER JOIN arthur.usuario_generos ug ON ug.user_id = au.id
                     WHERE LOWER(ug.genero) = v_genero_encontrado
                 ) LOOP
                     DBMS_OUTPUT.PUT_LINE(
