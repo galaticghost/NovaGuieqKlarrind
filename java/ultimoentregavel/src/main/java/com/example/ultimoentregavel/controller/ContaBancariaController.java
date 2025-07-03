@@ -3,6 +3,7 @@ package com.example.ultimoentregavel.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +26,8 @@ public class ContaBancariaController {
     }
 
     @PostMapping
-    public ContaBancaria criarConta(@RequestBody ContaBancaria contaBancaria) {
-        return contaBancariaService.criarConta(contaBancaria);
+    public ResponseEntity<ContaBancaria> criarConta(@RequestBody ContaBancaria contaBancaria) {
+        return ResponseEntity.ok(contaBancariaService.criarConta(contaBancaria));
     }
 
     @GetMapping
@@ -35,22 +36,22 @@ public class ContaBancariaController {
     }
 
     @GetMapping("/{id}")
-    public ContaBancaria buscarContaPorId(@PathVariable Long id) {
-        return contaBancariaService.buscarContaPorId(id);
+    public ResponseEntity<ContaBancaria> buscarContaPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(contaBancariaService.buscarContaPorId(id));
     }
 
     @PutMapping("/{id}/depositar")
-    public ContaBancaria depositar(@PathVariable Long id, @RequestBody Map<String, Double> payload) {
-        return contaBancariaService.depositar(id, payload.get("valor"));
+    public ResponseEntity<ContaBancaria> depositar(@PathVariable Long id, @RequestBody Map<String, Double> payload) {
+        return ResponseEntity.ok(contaBancariaService.depositar(id, payload.get("valor")));
     }
 
     @PutMapping("/{id}/sacar")
-    public ContaBancaria sacar(@PathVariable Long id, @RequestBody Map<String, Double> payload) {
-        return contaBancariaService.sacar(id, payload.get("valor"));
+    public ResponseEntity<ContaBancaria> sacar(@PathVariable Long id, @RequestBody Map<String, Double> payload) {
+        return ResponseEntity.ok(contaBancariaService.sacar(id, payload.get("valor")));
     }
 
     @PutMapping("/{id}/status")
-    public ContaBancaria ativarDesativarConta(@PathVariable Long id, @RequestParam boolean ativa) {
-        return contaBancariaService.ativarDesativarConta(id, ativa);
+    public ResponseEntity<ContaBancaria> ativarDesativarConta(@PathVariable Long id, @RequestParam boolean ativa) {
+        return ResponseEntity.ok(contaBancariaService.ativarDesativarConta(id, ativa));
     }
 }

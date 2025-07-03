@@ -17,7 +17,7 @@ public class ContaBancaria {
     @Column(unique = true)
     private String numeroConta;
     private String nomeTitular;
-    private Double saldo;
+    private Double saldo = 0.00;
     private boolean ativo;
 
     public ContaBancaria() {
