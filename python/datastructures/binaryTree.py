@@ -83,17 +83,50 @@ class BinaryTree:
     def __search_rec(self,node,data):
         if node == None:
             return False
-        print(node.data)
         if node.data == data:
-            return True
+            return node
         elif node.data > data:
             return self.__search_rec(node.left,data)
         else:
             return self.__search_rec(node.right,data)
+    
+    def __minValueNode(self,node):
+        current_node = node
+        while current_node.left is not None:
+            current_node = current_node.left
+        return current_node
+    
+    def delete(self,data):
+        return self.__delete_rec(self.root,data)
 
-nodes_values = [] * 500
+    def __delete_rec(self,node, data):
+        if not node:
+            return None
 
-for _ in range(0,500):
+        if data < node.data:
+            node.left = self.__delete_rec(node.left, data)
+        elif data > node.data:
+            node.right = self.__delete_rec(node.right, data)
+        else:
+            if not node.left:
+                temp = node.right
+                node = None
+                return temp
+            elif not node.right:
+                temp = node.left
+                node = None
+                return temp
+
+            node.data = self.__minValueNode(node.right).data
+            node.right = self.__delete_rec(node.right, node.data)
+
+        return node
+
+nodes_values = [randint(1,9999) for _ in range(0,300)]
+    
+nodes_values.append(1000)
+
+for _ in range(0,198):
     nodes_values.append(randint(1,9999))
 
 root = BinaryTree(nodes_values[0])
@@ -101,4 +134,5 @@ root = BinaryTree(nodes_values[0])
 for x in nodes_values[1:]:
     root.insert(x)
 
-print(root.search(50))
+x = root.search(1000)
+root.bfs()
