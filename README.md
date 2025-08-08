@@ -11,6 +11,7 @@
 - poton: Era para ser python mas eu só fiz um script
 - python: python! (data structures, experimentos carlosboneldianos e outras bobagems)
 - teia: Front-end web
+- estruturas de dados
 
 # Agradecimentos
 - Vim
