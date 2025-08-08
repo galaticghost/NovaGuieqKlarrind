@@ -57,16 +57,47 @@ class AVLTree(BinaryTree):
     def delete(self,value: int) -> int | None:
         if not self.root:
             return None
-        return self.__delete_recursive(self.root,value)
+        return self.__delete_recursive(self.root,value).data
     
     def __delete_recursive(self,parent: AVLTreeNode, value: int):
+        if parent is None:
+            return None        
         if parent.data < value:
-            return self.__delete_recursive(parent.right)
+            parent.right = self.__delete_recursive(parent.right,value)
         elif parent.data > value:
-            return self.__delete_recursive(parent.left)
-        #TODO
+            parent.left = self.__delete_recursive(parent.left,value)
+        else:
+            if not parent.left:
+                temp = parent.right
+                parent = None
+                return temp
+            elif not parent.right:
+                temp = parent.left
+                parent = None
+                return temp
+            else:
+                parent.data = self.__minValueNode(parent.right).data
+                parent.right = self.__delete_recursive(parent.right,parent.data)
+        parent.height = 1 + max(self.getHeight(parent.left),self.getHeight(parent.right))
         
-                
+        balance_factor = self.getBalance(parent)
+
+        if balance_factor > 1:
+            if self.getBalance(parent.left) >= 0:
+                return self.right_rotation(parent)
+            else:
+                parent.left = self.left_rotation(parent.left)
+                return self.right_rotation(parent)
+        
+        if balance_factor < -1:
+            if self.getBalance(parent.right) <= 0:
+                return self.left_rotation(parent)
+            else:
+                parent.right = self.right_rotation(parent.right)
+                return self.left_rotation(parent)
+        
+        return parent
+        
     def left_rotation(self,node):
         y = node.right
         x = y.left
@@ -77,6 +108,7 @@ class AVLTree(BinaryTree):
         y.height = 1 + max(self.getHeight(y.left),self.getHeight(y.right))
 
         return y
+    
     def right_rotation(self,node):
         y = node.left
         x = y.right
@@ -94,4 +126,6 @@ tree.insert(532)
 for x in x:
     tree.bfs()
     tree.insert(x)
+tree.bfs()
+print(tree.delete(532))
 tree.bfs()

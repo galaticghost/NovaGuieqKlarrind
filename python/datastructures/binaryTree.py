@@ -97,7 +97,7 @@ class BinaryTree:
         return current_node
     
     def delete(self,data):
-        return self.__delete_rec(self.root,data)
+        return self.__delete_rec(self.root,data).data
 
     def __delete_rec(self,node, data):
         if not node:
