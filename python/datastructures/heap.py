@@ -19,7 +19,14 @@ def max_heap(arr):
 
 def insert(arr,value):
     arr.append(value)
-    max_heap(arr)
+    current_index = len(arr) - 1
+    while current_index > 0:
+        parent = (current_index - 1) // 2
+        if arr[parent] < arr[current_index]:
+            arr[parent], arr[current_index] = arr[current_index], arr[parent]
+            current_index = parent
+        else:
+            break
 
 def delete(arr,value):
     for current_value in arr:
@@ -38,6 +45,9 @@ def delete(arr,value):
 arr = [0,6,32,2,1,65,7]
 max_heap(arr)
 print(arr)
+insert(arr,53)
 print(arr)
 delete(arr,65)
+insert(arr,64)
+insert(arr,23)
 print(arr)

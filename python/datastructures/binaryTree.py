@@ -122,17 +122,19 @@ class BinaryTree:
 
         return node
 
-nodes_values = [randint(1,9999) for _ in range(0,300)]
-    
-nodes_values.append(1000)
+if __name__ == "__main__":
 
-for _ in range(0,198):
-    nodes_values.append(randint(1,9999))
+    nodes_values = [randint(1,9999) for _ in range(0,300)]
+        
+    nodes_values.append(1000)
 
-root = BinaryTree(nodes_values[0])
+    for _ in range(0,198):
+        nodes_values.append(randint(1,9999))
 
-for x in nodes_values[1:]:
-    root.insert(x)
+    root = BinaryTree(nodes_values[0])
 
-x = root.search(1000)
-root.bfs()
+    for x in nodes_values[1:]:
+        root.insert(x)
+
+    x = root.search(1000)
+    root.bfs()
