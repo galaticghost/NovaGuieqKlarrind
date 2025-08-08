@@ -90,14 +90,14 @@ class BinaryTree:
         else:
             return self.__search_rec(node.right,data)
     
-    def __minValueNode(self,node):
+    def _minValueNode(self,node):
         current_node = node
         while current_node.left is not None:
             current_node = current_node.left
         return current_node
     
     def delete(self,data):
-        return self.__delete_rec(self.root,data).data
+        self.__delete_rec(self.root,data).data
 
     def __delete_rec(self,node, data):
         if not node:
@@ -117,7 +117,7 @@ class BinaryTree:
                 node = None
                 return temp
 
-            node.data = self.__minValueNode(node.right).data
+            node.data = self._minValueNode(node.right).data
             node.right = self.__delete_rec(node.right, node.data)
 
         return node

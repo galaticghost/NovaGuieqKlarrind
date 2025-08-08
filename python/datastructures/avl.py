@@ -55,14 +55,12 @@ class AVLTree(BinaryTree):
         return parent
     
     def delete(self,value: int) -> int | None:
-        if not self.root:
-            return None
-        return self.__delete_recursive(self.root,value).data
+        self.root = self.__delete_recursive(self.root,value)
     
     def __delete_recursive(self,parent: AVLTreeNode, value: int):
-        if parent is None:
-            return None        
-        if parent.data < value:
+        if not parent:
+            return parent     
+        elif parent.data < value:
             parent.right = self.__delete_recursive(parent.right,value)
         elif parent.data > value:
             parent.left = self.__delete_recursive(parent.left,value)
@@ -75,11 +73,14 @@ class AVLTree(BinaryTree):
                 temp = parent.left
                 parent = None
                 return temp
-            else:
-                parent.data = self.__minValueNode(parent.right).data
-                parent.right = self.__delete_recursive(parent.right,parent.data)
-        parent.height = 1 + max(self.getHeight(parent.left),self.getHeight(parent.right))
+            parent.data = self._minValueNode(parent.right).data
+            parent.right = self.__delete_recursive(parent.right,parent.data)
+
+        if parent is None:
+            return parent
         
+        parent.height = 1 + max(self.getHeight(parent.left),self.getHeight(parent.right))
+
         balance_factor = self.getBalance(parent)
 
         if balance_factor > 1:
@@ -120,12 +121,12 @@ class AVLTree(BinaryTree):
 
         return y
 
-x = [randint(1,500) for _ in range(1,7)]
+x = [randint(1,999) for _ in range(1,7)]
 tree = AVLTree()
 tree.insert(532)
 for x in x:
     tree.bfs()
     tree.insert(x)
 tree.bfs()
-print(tree.delete(532))
+tree.delete(532)
 tree.bfs()
