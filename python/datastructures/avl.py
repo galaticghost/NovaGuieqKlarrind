@@ -8,18 +8,21 @@ class AVLTreeNode():
         self.left = None
         self.height = 1
 
+    def __str__(self):
+        return f"{self.data}"
+
 class AVLTree(BinaryTree):
     root: AVLTreeNode
 
     def __init__(self):
         self.root = None
 
-    def getHeight(self, node: AVLTreeNode):
+    def getHeight(self, node: AVLTreeNode) -> int:
         if not node:
             return 0
         return node.height
     
-    def getBalance(self,node: AVLTreeNode):
+    def getBalance(self,node: AVLTreeNode) -> int:
         if not node:
             return 0
         return self.getHeight(node.left) - self.getHeight(node.right)
@@ -27,7 +30,7 @@ class AVLTree(BinaryTree):
     def insert(self,value:int):
         self.root = self.__insert_recursive(self.root,value)
 
-    def __insert_recursive(self,parent: AVLTreeNode | None,value: int):
+    def __insert_recursive(self,parent: AVLTreeNode | None,value: int) -> AVLTreeNode | None:
         if not parent:
             return AVLTreeNode(value)
         elif value < parent.data:
@@ -54,10 +57,10 @@ class AVLTree(BinaryTree):
         
         return parent
     
-    def delete(self,value: int) -> int | None:
+    def delete(self,value: int):
         self.root = self.__delete_recursive(self.root,value)
     
-    def __delete_recursive(self,parent: AVLTreeNode, value: int):
+    def __delete_recursive(self,parent: AVLTreeNode, value: int) -> AVLTreeNode | None:
         if not parent:
             return parent     
         elif parent.data < value:
@@ -99,7 +102,7 @@ class AVLTree(BinaryTree):
         
         return parent
         
-    def left_rotation(self,node):
+    def left_rotation(self,node: AVLTreeNode) -> AVLTreeNode:
         y = node.right
         x = y.left
         y.left = node
@@ -110,7 +113,7 @@ class AVLTree(BinaryTree):
 
         return y
     
-    def right_rotation(self,node):
+    def right_rotation(self,node: AVLTreeNode) -> AVLTreeNode:
         y = node.left
         x = y.right
         y.right = node
@@ -121,12 +124,19 @@ class AVLTree(BinaryTree):
 
         return y
 
-x = [randint(1,999) for _ in range(1,7)]
-tree = AVLTree()
-tree.insert(532)
-for x in x:
+if __name__ == "__main__":
+    x = [randint(1,999) for _ in range(1,7)]
+
+    tree = AVLTree()
+    tree.insert(532)
+    
+    for x in x:
+        tree.bfs()
+        tree.insert(x)
+    
     tree.bfs()
-    tree.insert(x)
-tree.bfs()
-tree.delete(532)
-tree.bfs()
+    tree.delete(532)
+    tree.insert(825)
+    tree.bfs()
+    x = tree.search(825)
+    print(x)

@@ -82,7 +82,7 @@ class BinaryTree:
 
     def __search_rec(self,node,data):
         if node == None:
-            return False
+            return None
         if node.data == data:
             return node
         elif node.data > data:
