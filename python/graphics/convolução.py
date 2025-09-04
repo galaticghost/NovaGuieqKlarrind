@@ -6,6 +6,8 @@ IMG_PATH = "atitus1-small.png" #Path da imagem
 img = np.array(Image.open(IMG_PATH).convert("L"))
 
 kernel = np.array([[-1,-1,-1],[-1,8,-1],[-1,-1,-1]])
+
+#Isso daqui funciona, mas só com um canal
 def convolution(image, kernel):
 
     input_height, input_width = image.shape
@@ -22,7 +24,7 @@ def convolution(image, kernel):
     
     return convolved_image
 
-img = convolution(img, kernel)
+img2 = convolution(img, kernel)
 
-pyplot.imshow(img,cmap='gray')
+pyplot.imshow(img2,cmap='gray')
 pyplot.show()
