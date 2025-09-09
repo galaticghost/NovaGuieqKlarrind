@@ -9,8 +9,11 @@ eroded = cv2.erode(binary, kernel, iterations=1)
 opened = cv2.dilate(eroded, kernel, iterations=1)
 dilated = cv2.dilate(opened, kernel, iterations=1)
 
-cv2.imshow("ga",eroded)
-cv2.imshow("g2a",opened)
+contours, hierarchy = cv2.findContours(dilated, cv2.RETR_EXTERNAL,
+cv2.CHAIN_APPROX_SIMPLE)
+
+
+cv2.imshow("g2a",hierarchy)
 cv2.imshow("g3a",dilated)
 
 

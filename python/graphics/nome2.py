@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from PIL import Image
 
 canvas = np.zeros((600,800,3),dtype=np.uint8)
 
@@ -39,7 +38,9 @@ cv2.line(canvas,(500,500),(500,300),(255,0,0),5)
 cv2.line(canvas,(500,500),(600,500),(255,0,0),5)
 
 # R
-cv2.rectangle(canvas,(650,250),(700,380),(255,0,0),5)
+
+retangulo = np.array((600,250),(700,350),dtype=np.uint8)
+cv2.rectangle(canvas,(600,250),(700,350),(255,0,0),5)
 cv2.line(canvas,(600,380),(700,480),(255,0,0),5)
 
 cv2.imshow("Canvas",canvas)
