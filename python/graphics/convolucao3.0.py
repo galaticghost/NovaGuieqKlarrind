@@ -4,11 +4,9 @@ import cv2
 IMG_PATH = "3.jpg" #Path da imagem
 img = np.array(cv2.imread(IMG_PATH))
 
-kernel = np.array ([[0.003,  0.013,  0.022,  0.013,  0.003],
-                    [0.013,  0.059,  0.097,  0.059,  0.013],
-                    [0.022,  0.097,  0.159,  0.097,  0.022],
-                    [0.013,  0.059,  0.097,  0.059,  0.013],
-                    [0.003,  0.013,  0.022,  0.013,  0.003]])
+kernel = np.array([[-1,-1,-1],
+                    [ 0, 0, 0],
+                    [ 1, 1, 1]])
 
 
 def convolution(image, kernel):
@@ -16,18 +14,25 @@ def convolution(image, kernel):
     input_height, input_width, channels = image.shape
     kernel_height, kernel_width = kernel.shape
 
-    convolved_image = np.zeros((input_height - kernel_height + 1,
-                                 input_width - kernel_width + 1,
-                                 channels))
-    
+    # padding para manter o mesmo tamanho
+    pad_h, pad_w = kernel_height // 2, kernel_width // 2
+    padded = np.pad(image,
+                    ((pad_h, pad_h), (pad_w, pad_w), (0, 0)),
+                    mode='constant')
+
+    # saída do mesmo tamanho e tipo
+    convolved_image = np.zeros_like(image, dtype=np.float32)
+
     for c in range(channels):
-        for i in range(0,len(convolved_image) ):
-            for j in range(0, len(convolved_image[0])):
-                for ii in range(0, kernel_height):
-                    for jj in range(0, kernel_width):
-                        convolved_image[i,j,c] += image[i+ii, j+jj,c] * kernel[ii,jj]
-    
+        for i in range(input_height):
+            for j in range(input_width):
+                region = padded[i:i+kernel_height, j:j+kernel_width, c]
+                convolved_image[i, j, c] = np.sum(region * kernel)
+
+    # clipping + volta para uint8
+    convolved_image = np.clip(convolved_image, 0, 255).astype(np.uint8)
     return convolved_image
+
 
 img2 = convolution(img, kernel)
 img3 = cv2.filter2D(img,-1,kernel)
