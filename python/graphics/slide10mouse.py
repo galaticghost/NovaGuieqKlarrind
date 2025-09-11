@@ -26,7 +26,6 @@ def mouse_callback(event,x,y,flags,params):
         cv2.circle(canvas,center=(100,400),radius=50,color=(0,green,red),thickness=-1)
         cv2.imshow("Canvas",canvas)
 
-
 def main():
     global color
     cv2.imshow("Canvas",canvas)

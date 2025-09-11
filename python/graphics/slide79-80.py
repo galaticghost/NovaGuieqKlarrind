@@ -1,36 +1,33 @@
 import cv2
 import numpy as np
 
-
 img = cv2.imread("opencvlogo.png")
-# --- Coordenadas do quadrado azul ---
-x1, y1 = 178, 156
-x2, y2 = 322, 300
 
-# 1. Recortar o quadrado azul da imagem original
-roi = img[y1:y2, x1:x2]
-(h, w) = roi.shape[:2]
-center = (w // 2, h // 2)
+canvas = img.copy()
 
-# 2. Criar a matriz de rotação e rotacionar 45°
-M = cv2.getRotationMatrix2D(center, 45, 1.0)
-rotated = cv2.warpAffine(roi, M, (w, h))
+print('Resolucao da imagem (Altura x Largura x Canais):', canvas.shape)
+print('Data type da imagem:', canvas.dtype)
 
-# 3. Criar máscara para o círculo (onde é diferente de preto)
-gray = cv2.cvtColor(rotated, cv2.COLOR_BGR2GRAY)
-_, mask = cv2.threshold(gray, 1, 255, cv2.THRESH_BINARY)
+blue = canvas[143:300,170:333].copy()
 
-# 4. Remover a área antiga da imagem original
-roi_original = img[y1:y2, x1:x2]
-background = cv2.bitwise_and(roi_original, roi_original, mask=cv2.bitwise_not(mask))
+def rotate_image(image, angle):
+    image_center = tuple(np.array(image.shape[1::-1]) / 2)
+    rot_mat = cv2.getRotationMatrix2D(image_center, angle, 1.0)
+    result = cv2.warpAffine(image, rot_mat, image.shape[1::-1], flags=cv2.INTER_LINEAR)
+    return result
 
-# 5. Colar a parte rotacionada por cima
-final_roi = cv2.add(background, rotated)
+blue = rotate_image(blue,57)
 
-# 6. Substituir de volta na imagem original
-img[y1:y2, x1:x2] = final_roi
+altura, largura, _ = blue.shape
 
-# 7. Mostrar resultado
-cv2.imshow("Imagem com azul rotacionado", img)
+for i in range(altura):
+    for j in range(largura):
+        if blue[i,j].sum() != 414:
+            blue[i,j] = [255,255,255]
+
+canvas[143:300,170:333] = blue
+
+cv2.imshow("image",canvas)
+#cv2.imwrite("desenho123.opencv.png",canvas)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
