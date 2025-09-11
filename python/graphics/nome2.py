@@ -3,14 +3,6 @@ import numpy as np
 
 canvas = np.zeros((600,800,3),dtype=np.uint8)
 
-x = 0
-y = 0
-while y != 700:
-    cv2.line(canvas,(0,y),(800,y),(0,0,255),5)
-    y += 100
-while x != 900:
-    cv2.line(canvas,(x,0),(x,600),(255,0,255),5)
-    x += 100
 # A
 cv2.line(canvas,(70,500),(150,300),(255,0,0),5)
 cv2.line(canvas,(150,300),(230,500),(255,0,0),5)
@@ -38,10 +30,13 @@ cv2.line(canvas,(500,500),(500,300),(255,0,0),5)
 cv2.line(canvas,(500,500),(600,500),(255,0,0),5)
 
 # R
+cv2.line(canvas,(630,280),(600,350),(255,0,0),5)
+cv2.line(canvas,(630,280),(700,310),(255,0,0),5)
+cv2.line(canvas,(600,350),(700,380),(255,0,0),5)
+cv2.line(canvas,(700,310),(700,380),(255,0,0),5)
 
-retangulo = np.array((600,250),(700,350),dtype=np.uint8)
-cv2.rectangle(canvas,(600,250),(700,350),(255,0,0),5)
-cv2.line(canvas,(600,380),(700,480),(255,0,0),5)
+cv2.line(canvas,(600,350),(570,420),(255,0,0),5)
+cv2.line(canvas,(600,350),(670,420),(255,0,0),5)
 
 cv2.imshow("Canvas",canvas)
 
