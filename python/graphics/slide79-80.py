@@ -27,7 +27,10 @@ for i in range(altura):
 
 canvas[143:300,170:333] = blue
 
+cv2.rectangle(canvas,(11,327),(341,409),(255,255,255),-1)
+cv2.putText(canvas,"Arthur",(11,396),cv2.FONT_HERSHEY_SIMPLEX,3,color=(0,0,0),thickness=2)
+
 cv2.imshow("image",canvas)
-#cv2.imwrite("desenho123.opencv.png",canvas)
+cv2.imwrite("desenho123.opencv.png",canvas)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

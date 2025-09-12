@@ -1,13 +1,17 @@
 import numpy as np
 import cv2
+import time
 
-IMG_PATH = "3.jpg" #Path da imagem
+IMG_PATH = "templo1.jpg" #Path da imagem
 img = np.array(cv2.imread(IMG_PATH))
 
-kernel = np.array([[-1,-1,-1],
-                    [ 0, 0, 0],
-                    [ 1, 1, 1]])
+kernel_sharpen = np.array([[0,-1,0],
+                    [ -1, 5, -1],
+                    [ 0, -1, 0]])
 
+kernel_sobel = np.array([[-1,0,1],[-2,0,2],[-1,0,1]])
+
+kernel_blur = np.ones((3,3), np.float32) / 9
 
 def convolution(image, kernel):
 
@@ -33,9 +37,16 @@ def convolution(image, kernel):
     convolved_image = np.clip(convolved_image, 0, 255).astype(np.uint8)
     return convolved_image
 
+start_time = time.time()
+img2 = convolution(img, kernel_sharpen)
 
-img2 = convolution(img, kernel)
-img3 = cv2.filter2D(img,-1,kernel)
+print("--- %s seconds ---" % (time.time() - start_time))
+start_time = time.time()
+
+img3 = cv2.filter2D(img,-1,kernel_sharpen)
+
+print("--- %s seconds ---" % (time.time() - start_time))
+cv2.imshow("djf",img)
 cv2.imshow('32',img2)
 cv2.imshow('843',img3)
 cv2.waitKey(0)
