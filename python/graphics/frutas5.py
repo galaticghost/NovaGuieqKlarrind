@@ -15,7 +15,7 @@ num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(thresh, 
 
 for i in range(1, num_labels):
     area = stats[i, cv2.CC_STAT_AREA]
-    if area > 1000:  # ignora ruídos pequenos
+    if area > 1000:
         x = stats[i, cv2.CC_STAT_LEFT]
         y = stats[i, cv2.CC_STAT_TOP]
         w = stats[i, cv2.CC_STAT_WIDTH]
