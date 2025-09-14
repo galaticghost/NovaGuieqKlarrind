@@ -15,6 +15,7 @@ num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(thresh, 
 
 for i in range(1, num_labels):
     area = stats[i, cv2.CC_STAT_AREA]
+    cx, cy = centroids[i]
     if area > 1000:
         x = stats[i, cv2.CC_STAT_LEFT]
         y = stats[i, cv2.CC_STAT_TOP]
@@ -22,6 +23,9 @@ for i in range(1, num_labels):
         h = stats[i, cv2.CC_STAT_HEIGHT]
 
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        cv2.circle(img, (int(cx), int(cy)), 5, (0,0,255), -1)
+        cv2.putText(img, f"Fruta {i}", (x, y-10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,255,0), 2)
 
 cv2.imshow("Frutas", img)
 cv2.imshow("thresh",thresh)

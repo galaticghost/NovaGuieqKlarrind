@@ -4,12 +4,15 @@ import numpy as np
 canvas = np.zeros((600,800,3),dtype=np.uint8)
 color = (255,0,0)
 shape = "rectangle"
+thickness = 1
 
 x1 = x2 = y1 = y2 = 0
 
 def mouse_callback(event,x,y,flags,param):
     global x1,x2,y1,y2
     global shape
+    global thickness
+
     if event == cv2.EVENT_LBUTTONDOWN:
         x1 = x
         y1 = y
@@ -27,12 +30,21 @@ def mouse_callback(event,x,y,flags,param):
             shape = "rectangle"
     
     if event == cv2.EVENT_MOUSEWHEEL:
-        pass
+        if flags > 0: 
+            thickness += 1
+        else:         
+            if thickness > -1: 
+                thickness -= 1
+                print(thickness)
+        if thickness == 0:
+            thickness = 1
 
 def main():
     global color
     global x1,x2,y1,y2
     global shape
+    global thickness
+
     cv2.imshow("Canvas",canvas)
     cv2.setMouseCallback('Canvas',mouse_callback)
     
@@ -41,13 +53,13 @@ def main():
         cv2.putText(canvas,shape,(641,556),cv2.FONT_HERSHEY_SIMPLEX,1,color=(255,255,255),thickness=2)
         if x1 and x2 and y1 and y2:
             if shape == "rectangle":
-                cv2.rectangle(canvas,(x1,y1),(x2,y2),color,4)
+                cv2.rectangle(canvas,(x1,y1),(x2,y2),color,thickness)
             elif shape == "line":
-                cv2.line(canvas,(x1,y1),(x2,y2),color,4)
+                cv2.line(canvas,(x1,y1),(x2,y2),color,thickness)
             else: # TODO
-                radius = abs(int((((x2-x1) + (y2-y1))/2)))
-                print(f"{x1} {x2} {y1} {y2} {radius}")
-                cv2.circle(canvas,(x1,y1),radius=radius,color=color,thickness=4)
+                raiz = np.sqrt((x2-x1) ** 2 + (y2-y1) ** 2)
+                radius = int(raiz)
+                cv2.circle(canvas,(x1,y1),radius=radius,color=color,thickness=thickness)
             x1 = x2 = y1 = y2 = 0
         cv2.imshow("Canvas",canvas)
         key = cv2.waitKey(1) & 0xFF
