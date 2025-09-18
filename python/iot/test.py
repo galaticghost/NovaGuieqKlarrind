@@ -3,8 +3,9 @@ import paho.mqtt.client as mqtt
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Conectado ao broker MQTT")
-        client.subscribe("test_topic")
-        print("Assinatura do tópico 'test_topic' realizada")
+        client.subscribe("fome")
+        client.subscribe("feliz")
+        client.subscribe("cansado")
     else:
         print(f"Falha na conexão. Código: {rc}")
 

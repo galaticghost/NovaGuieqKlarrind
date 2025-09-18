@@ -1,4 +1,5 @@
 import time
+from bicho import Bicho
 import paho.mqtt.client as mqtt
 
 client = mqtt.Client()
@@ -6,12 +7,18 @@ client.connect("localhost", 1883, 60)
 
 client.loop_start()
 
+bicho = Bicho("Jonas")
+
 try:
     while True:
-        msg = input("Escreva sua mensagem: ")
-        client.publish("test_topic", msg)
-        print(f"Enviada: {msg}")
-        time.sleep(1)
+        client.publish("fome", bicho.fome)
+        print(f"Enviada: {bicho.fome}")
+        client.publish("feliz", bicho.feliz)
+        print(f"Enviada: {bicho.feliz}")
+        client.publish("cansado", bicho.cansado)
+        print(f"Enviada: {bicho.cansado}")
+        time.sleep(3)
+        bicho.status()
 except KeyboardInterrupt:
     pass
 finally:
