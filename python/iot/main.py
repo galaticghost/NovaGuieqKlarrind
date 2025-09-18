@@ -1,18 +1,20 @@
 import time
+import paho.mqtt.client as mqtt
 
-import paho.mqtt.client as paho
-from paho import mqtt
-
-client = paho.Client(client_id="1", userdata=None, protocol=paho.MQTTv5)
-topic = "python/mqtt"
-
-client.username_pw_set("admin", "hivemq")
-
+client = mqtt.Client()
 client.connect("localhost", 1883, 60)
 
-while True:
+client.loop_start()
 
-    client.publish("test_topic", "WORK WORKIO WORKI RKOKIW !!!!!!", 0,retain=True)
-    client.publish("encyclopedia/temperature", payload="hot", qos=1)
-
-    client.loop_forever()
+try:
+    while True:
+        msg = input("Escreva sua mensagem: ")
+        client.publish("test_topic", msg)
+        print(f"Enviada: {msg}")
+        time.sleep(1)
+except KeyboardInterrupt:
+    pass
+finally:
+    print("\nohno")
+    client.loop_stop()
+    client.disconnect()
