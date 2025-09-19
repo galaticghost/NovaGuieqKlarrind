@@ -12,16 +12,16 @@ bicho = Bicho("Jonas")
 try:
     while True:
         client.publish("fome", bicho.fome)
-        print(f"Enviada: {bicho.fome}")
+        print(f"Status fome: {bicho.fome}")
         client.publish("feliz", bicho.feliz)
-        print(f"Enviada: {bicho.feliz}")
+        print(f"Status feliz: {bicho.feliz}")
         client.publish("cansado", bicho.cansado)
-        print(f"Enviada: {bicho.cansado}")
+        print(f"Status cansado: {bicho.cansado}")
         time.sleep(3)
         bicho.status()
 except KeyboardInterrupt:
     pass
 finally:
-    print("\nohno")
+    print("\nDesconectando")
     client.loop_stop()
     client.disconnect()
