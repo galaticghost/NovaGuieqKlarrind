@@ -62,22 +62,6 @@ def main():
         
         glEnd() # Finaliza a primitiva
 
-        glBegin(GL_QUADS)
-        # Vertice 1: Inferior esquerdo
-        glColor3f(1, 0, 0)
-        glVertex2f(-0.25, 0.25)
-        # Vertice 2: Inferior direito
-        glColor3f(0, 1, 0)
-        glVertex2f(-0.25, 0.75)
-        # Vertice 3: Superior direito
-        glColor3f(0, 0, 1)
-        glVertex2f(0.25, 0.75)
-        # Vertice 4: Superior esquerdo
-        glColor3f(1, 1, 1)
-        glVertex2f(0.25, 0.25)
-        glEnd() 
-
-
         # Verifica e processa eventos da janela
         glfw.poll_events()
         # Troca os buffers front e back para exibir a imagem renderizada
