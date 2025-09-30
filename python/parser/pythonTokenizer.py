@@ -15,3 +15,5 @@ def tokenizer(file_name: str):
         for match in re.finditer(r">\s*([^<>]+)(?=<|$)",y):
             tokens.append(('TAG_TEXTO',match.group()))
     return tokens
+
+print(tokenizer("texto.txt"))

@@ -1,0 +1,73 @@
+import glfw
+from OpenGL.GL import *
+
+
+def main():
+    # 1. Inicialização do GLFW
+    if not glfw.init():
+        print("Erro: Não foi possível inicializar o GLFW.")
+        return
+
+    # Configuração do Contexto OpenGL (Versão 2.1)
+    # Esta é a versão mais recente que ainda suporta o pipeline fixo.
+    glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 2)
+    glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 1)
+
+    # 2. Criação da Janela de Aplicação
+    window = glfw.create_window(800, 600, "Esqueleto Pipeline Fixo", None, None)
+    if not window:
+        glfw.terminate()    
+        print("Erro: Não foi possível criar a janela GLFW.")
+        return
+
+    # Torna o contexto da janela o contexto atual do thread
+    glfw.make_context_current(window)
+
+    # 3. Configuração Inicial do Estado OpenGL
+    # As matrizes de transformação são gerenciadas por aqui.
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    glOrtho(-1, 1, -1, 1, -1, 1) # A projeção ortogonal é usada em 2D
+
+    #Espeficamos as operações de viewport
+    glViewport(0, 0, 800, 600)
+
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
+
+    # Define a cor de fundo da janela
+    glClearColor(0.3, 0.3, 0.3, 1.0)
+    
+    # 4. Loop de Renderização Principal
+    while not glfw.window_should_close(window):
+        # Limpa o buffer de cor do frame anterior
+        glClear(GL_COLOR_BUFFER_BIT)
+
+        # Reseta a matriz para o estado inicial a cada frame.
+        glLoadIdentity()
+
+        # A primitiva GL_QUADS forma um quadrado a partir de 4 vértices
+        glBegin(GL_TRIANGLES)
+        # A cor definida aqui vale para todos os próximos vértices até ser alterada
+        glColor3f(1, 0, 0)
+        # Vertice 1: Inferior esquerdo
+        glVertex2f(-0.5, -0.5)
+        # Vertice 2: Inferior direito
+        glColor3f(0, 0, 1)
+        glVertex2f(-0.5, 0.5)
+        # Vertice 3: Superior direito
+        glColor3f(0, 1, 0)
+        glVertex2f(0.5, 0.5)
+        glEnd() # Finaliza a primitiva
+
+        # Verifica e processa eventos da janela
+        glfw.poll_events()
+        # Troca os buffers front e back para exibir a imagem renderizada
+        glfw.swap_buffers(window)
+
+    # 5. Finalização
+    glfw.terminate()
+
+
+if __name__ == "__main__":
+    main()
