@@ -1,6 +1,7 @@
 import glfw
 from OpenGL.GL import *
 import math
+import time 
 
 
 def main():
@@ -27,18 +28,17 @@ def main():
     # 3. Configuração Inicial do Estado OpenGL
     # As matrizes de transformação são gerenciadas por aqui.
     glMatrixMode(GL_PROJECTION)
-    glLoadIdentity()
-    glOrtho(-1, 1, -1, 1, -1, 1) # A projeção ortogonal é usada em 2D
+    glLoadIdentity() 
+    glOrtho(0, 200, 0, 800, 0, 1) # Isso daqui foi um caos mas basicamente não ferra os meus circulos
 
     #Espeficamos as operações de viewport
     glViewport(0, 0, 200, 800)
 
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
+    tempo_1 = time.time()
 
-    # Define a cor de fundo da janela
-    glClearColor(0.3, 0.3, 0.3, 1.0)
-    
+
     # 4. Loop de Renderização Principal
     while not glfw.window_should_close(window):
         # Limpa o buffer de cor do frame anterior
@@ -46,9 +46,17 @@ def main():
 
         # Reseta a matriz para o estado inicial a cada frame.
         glLoadIdentity()
-
-        draw_circle(0.50,0.50,0.6,360)
-
+        tempo_2 = time.time()
+        tempo = tempo_2 - tempo_1
+        print(tempo)
+        if tempo < 10:
+            draw_circle(100,600,50,150,(1,0,0))
+        elif tempo >= 10 and tempo < 20 :
+            draw_circle(100,300,50,150,(1,1,0))
+        else:
+            draw_circle(100,100,50,150,(0,1,0))
+        if tempo >= 30:
+            tempo_1 = time.time()
         # Verifica e processa eventos da janela
         glfw.poll_events()
         # Troca os buffers front e back para exibir a imagem renderizada
@@ -57,9 +65,9 @@ def main():
     # 5. Finalização
     glfw.terminate()
 
-def draw_circle(x, y, radius, segments):
+def draw_circle(x, y, radius, segments,color):
     glBegin(GL_TRIANGLE_FAN)
-    glColor3f(1, 0, 0)
+    glColor3f(*color)
     glVertex2f(x, y) # centro do círculo
     for i in range(segments + 1):
         angle = 2.0 * math.pi * i / segments
