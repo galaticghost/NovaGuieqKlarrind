@@ -48,7 +48,7 @@ def main():
         glLoadIdentity()
         tempo_2 = time.time()
         tempo = tempo_2 - tempo_1
-        print(tempo)
+
         if tempo < 10:
             draw_circle(100,600,50,150,(1,0,0))
         elif tempo >= 10 and tempo < 20 :
@@ -65,7 +65,7 @@ def main():
     # 5. Finalização
     glfw.terminate()
 
-def draw_circle(x, y, radius, segments,color):
+def draw_circle(x, y, radius, segments,color : tuple):
     glBegin(GL_TRIANGLE_FAN)
     glColor3f(*color)
     glVertex2f(x, y) # centro do círculo
