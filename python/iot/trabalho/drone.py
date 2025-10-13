@@ -5,7 +5,7 @@ from time import sleep
 def start():
     client = connect("localhost",1883,60)
     client.loop_start()
-    x = randint(0,2) # Usado para o clima
+    x = randint(0,3) # Usado para o clima
     while True:
         try:
             soil_moisture = get_soil_moisture()
