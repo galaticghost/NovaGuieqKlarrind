@@ -16,6 +16,8 @@ processadores = [
     # CPUs CISC
     'Intel i9-14900K',
     'AMD Ryzen 9 7950X',
+    'AMD Ryzen Threadripper 7960X',
+    'Intel Xeon E5-2680 v4',
     # GPUs NVIDIA
     'NVIDIA RTX 4090',
     'NVIDIA RTX 4080',
@@ -39,6 +41,8 @@ tamanho_instrucao = [
     32,     # Apple M2
     64,     # Intel i9 (x86-64)
     64,     # AMD Ryzen (x86-64)
+    512,    # AMD threadripper
+    256,    # Intel Xeon
     128,    # RTX 4090 (SIMD width)
     128,    # RTX 4080
     128,    # RTX 4070
@@ -108,6 +112,8 @@ tflops_data = [
     3.6,     # Apple M2
     2.5,     # Intel i9
     2.8,     # AMD Ryzen
+    3.12,    # AMD Threadripper
+    2.5,     # Intel Xeon
     82.6,    # RTX 4090
     48.7,    # RTX 4080
     29.1,    # RTX 4070
@@ -149,6 +155,8 @@ memoria_gb = [
     24,      # Apple M2 (unificada)
     128,     # Intel i9 (DDR5, RAM do sistema)
     128,     # AMD Ryzen (DDR5, RAM do sistema)
+    1024,    # AMD Threadripper
+    1577,    # Intel Xeon
     24,      # RTX 4090 (VRAM)
     16,      # RTX 4080 (VRAM)
     12,      # RTX 4070 (VRAM)
@@ -168,6 +176,8 @@ largura_barra_bits = [
     256,     # Apple M2
     128,     # Intel i9
     128,     # AMD Ryzen
+    256,     # AMD Threadripper
+    256,     # Intel Xeon
     384,     # RTX 4090
     256,     # RTX 4080
     192,     # RTX 4070
@@ -207,6 +217,8 @@ performance_per_watt = [
     300,    # Apple M2
     45,     # Intel i9
     50,     # AMD Ryzen
+    8.57,   # AMD Threadripper
+    6.16,   # Intel Xeon
     4.5,    # RTX 4090
     5.2,    # RTX 4080
     6.1,    # RTX 4070
@@ -287,6 +299,30 @@ dados_detalhados = [
         'TFLOPS': '2.5',
         'TDP (W)': '125-253',
         'Lançamento': '2023'
+    },
+
+    {
+        'Processador': 'AMD Ryzen Threadripper 7960X',
+        'Tipo': 'CPU CISC',
+        'Arquitetura': 'Zen 4 (x86-64)',
+        'Instrução': 'AVX-512, FMA, SSE, SSE2, SSE3, SSE4',
+        'Núcleos': '24 (48 threads)',
+        'Memória (GB)': '1024',
+        'TFLOPS': '3',
+        'TDP (W)': '350',
+        'Lançamento': '2023'
+    },
+
+    {
+        'Processador': 'Intel Xeon E5-2680 v4',
+        'Tipo': 'CPU CISC',
+        'Arquitetura': 'Broadwell-EP (x86-64)',
+        'Instrução': 'AVX2, FMA3, SSE, SSE2, SSE3, SSE4',
+        'Núcleos': '14 (28 threads)',
+        'Memória (GB)': '1577',
+        'TFLOPS': '0.739',
+        'TDP (W)': '120',
+        'Lançamento': '2016'
     },
     # GPUs NVIDIA
     {
