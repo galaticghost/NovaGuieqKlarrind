@@ -25,7 +25,7 @@ def main():
     # Torna o contexto da janela o contexto atual do thread
     glfw.make_context_current(window)
 
-    texture = cv2.imread('texture.jpeg',cv2.IMREAD_COLOR)
+    texture = cv2.imread('texture.webp',cv2.IMREAD_COLOR)
     texture = cv2.cvtColor(texture, cv2.COLOR_BGR2RGB)
     texture = cv2.flip(texture, 0)
 
@@ -47,13 +47,13 @@ def main():
     vertices = np.array([
     # Posição # Textura Coords (U, V)
     # Triângulo 1
-    1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, # Canto superior direito
-    0.5, .0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, # Canto inferior direito
-    -0.5, -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0  # Canto inferior esquerdo
+    0.5, 0.5, 0.0, 1.0, 1.0,1.0,0.0,0.0, # Canto superior direito
+    0.5, -0.5, 0.0, 1.0, 0.0,0.0,1.0,0.0 , # Canto inferior direito
+    -0.5, -0.5, 0.0, 0.0, 0.0,0.0,0.0,1.0,   # Canto inferior esquerdo
     # Triângulo 2
-    -0.5, -0.5, 0.0, 0.0, 0.0,  1.0, 0.0, 0.0,# Canto inferior esquerdo
-    -0.5, 0.5, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, # Canto superior esquerdo
-    0.5, 0.5, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0  # Canto superior direito
+    -0.5, -0.5, 0.0, 0.0, 0.0,1.0,0.0,0.0,  # Canto inferior esquerdo
+    -0.5, 0.5, 0.0, 0.0, 1.0,0.0,1.0,0.0,  # Canto superior esquerdo
+    0.5, 0.5, 0.0, 1.0, 1.0, 0.0,0.0,1.0 # Canto superior direito
     ], dtype=np.float32)
 
     vao_tri, vbo_tri = setup_geometry(triangle_vertices)
@@ -63,27 +63,32 @@ def main():
 
     texture_id = glGenTextures(1)
     glBindTexture(GL_TEXTURE_2D,texture_id)
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,1000,663,0,GL_RGB, GL_UNSIGNED_BYTE,texture)
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,640,587,0,GL_RGB, GL_UNSIGNED_BYTE,texture)
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-
+    
     vshader = create_shader(GL_VERTEX_SHADER,'shader7.vert')
     fshader = create_shader(GL_FRAGMENT_SHADER,'shader78.frag')
-    vtshader = create_shader(GL_VERTEX_SHADER,'shadertex.vert')
-    ftshader = create_shader(GL_FRAGMENT_SHADER,'shadertext.frag')
+    #vtshader = create_shader(GL_VERTEX_SHADER,'shadertex.vert')
+    #ftshader = create_shader(GL_FRAGMENT_SHADER,'shadertext.frag')
 
+
+    
     shader_program = glCreateProgram()
-    glAttachShader(shader_program,vtshader)
-    glAttachShader(shader_program,ftshader)
+    #glAttachShader(shader_program,vtshader)
+    #glAttachShader(shader_program,ftshader)
     glAttachShader(shader_program,vshader)
     glAttachShader(shader_program,fshader)
     glLinkProgram(shader_program)
 
+
     glUseProgram(shader_program)
-    texture_loc = glGetUniformLocation(shader_program, "bTexture")
+    colortime_loc = glGetUniformLocation(shader_program, "colortime")
+    texture_loc = glGetUniformLocation(shader_program, "frameColor")
+    glUniform1i(colortime_loc, 0)
     glUniform1i(texture_loc, 0) # Texture unit 0
 
     #Espeficamos as operações de viewport
@@ -168,10 +173,8 @@ def setup_geometry2(vertex):
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, ctypes.c_void_p(3 * vertex.itemsize))
     glEnableVertexAttribArray(1)
 
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, ctypes.c_void_p(5 * vertex.itemsize))
     glEnableVertexAttribArray(2)
-    offset_color = 3 * vertex.itemsize
-    glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,stride,ctypes.c_void_p(offset_color))
-    # Limpeza do estado
     glBindBuffer(GL_ARRAY_BUFFER, 0)
     glBindVertexArray(0)
 
