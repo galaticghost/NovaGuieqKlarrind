@@ -50,9 +50,6 @@ def main():
         0.25,-0.5,0.0,1.0,1.0
     ],dtype=np.float32)
 
-    VAO_7, VBO_7 = setup_geometry(seila)
-
-
     matrix_proj = np.identity(4, dtype=np.float32)
 
     #Espeficamos as operações de viewport
@@ -72,10 +69,6 @@ def main():
         glBindVertexArray(VAO_sq) # Ativa o estado de leitura do Quadrado
         glDrawArrays(GL_TRIANGLES, 0, 6) # O quadrado tem 6 vértices (2 triângulos)
         glBindVertexArray(0) #unbing
-
-        glBindVertexArray(VAO_7)
-        glDrawArrays(GL_TRIANGLES,0,3)
-        glBindVertexArray(0)
 
         # Verifica e processa eventos da janela
         glfw.poll_events()
