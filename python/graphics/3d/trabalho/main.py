@@ -3,14 +3,15 @@ from OpenGL.GL import *
 import numpy as np
 import math
 from fps import FPSCounter
+import cv2
 
 def main():
-    global camera_pos, camera_front, camera_up, window, first_mouse,yaw,pitch,last_x,last_y
+    global camera_pos, camera_front, camera_up, window, first_mouse,yaw,pitch,last_x,last_y,x,y
     # 1. Initialize GLFW
     if not glfw.init():
         print("Erro: Não foi possível inicializar o GLFW.")
         return
-
+    x = y = 0
     # Request OpenGL Core Profile 3.3
     glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3)
     glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
@@ -18,7 +19,7 @@ def main():
     # glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, glfw.TRUE)  # Uncomment if needed (MacOS)
 
     # 2. Criação da Janela de Aplicação
-    window = glfw.create_window(1920, 1080, "CUBO", None, None)
+    window = glfw.create_window(800, 600, "Quadrado", None, None)
     if not window:
         glfw.terminate()
         print("Erro: Não foi possível criar a janela GLFW.")
@@ -29,74 +30,30 @@ def main():
     glfw.set_input_mode(window,glfw.CURSOR,glfw.CURSOR_DISABLED)
     glfw.set_cursor_pos_callback(window, mouse_callback)
 
-    cube_vertices_data = np.array([
-        # ---- FACE 1: FRENTE (+Z) ----
-        # Triângulo 1
-        # Posição (X, Y, Z) | Cor (R, G,B)
-        -0.5, -0.5, 0.5, 0.0, 0.0,0.0, # 0: Inferior Esquerdo
-        0.5, -0.5, 0.5, 1.0, 0.0,0.0, # 1: Inferior Direito 
-        0.5, 0.5, 0.5, 1.0, 1.0,0.0, # 2: Superior Direito
-        # Triângulo 2
-        -0.5, -0.5, 0.5, 0.0, 0.0,0.0, # 3: Inferior Esquerdo 
-        0.5, 0.5, 0.5, 1.0, 1.0,0.0, # 4: Superior Direito 
-        -0.5, 0.5, 0.5, 0.0, 1.0, 0.0, # 5: Superior Esquerdo 
-        # ---- FACE 2: TRÁS (-Z) ----
-        # Triângulo 3
-        -0.5, -0.5, -0.5, 1.0, 0.0, 0.0, # 6: Inferior Esquerdo
-        0.5, -0.5, -0.5, 0.0, 0.0, 0.0, # 7: Inferior Direito
-        0.5, 0.5, -0.5, 0.0, 1.0, 0.0, # 8: Superior Direito
-        # Triângulo 4
-        -0.5, -0.5, -0.5, 1.0, 0.0, 0.0, # 9
-        0.5, 0.5, -0.5, 0.0, 1.0, 0.0, # 10
-        -0.5, 0.5, -0.5, 1.0, 1.0, 0.0, # 11
+    texture = cv2.imread('texture.webp',cv2.IMREAD_COLOR)
+    texture = cv2.cvtColor(texture, cv2.COLOR_BGR2RGB)
+    texture = cv2.flip(texture, 0)
 
-        # ---- FACE 3: ESQUERDA (-X) ----
-        # Triângulo 5
-        -0.5, -0.5, 0.5, 1.0, 0.0, 0.0, # 12
-        -0.5, -0.5, -0.5, 0.0, 0.0, 0.0, # 13
-        -0.5, 0.5, -0.5, 0.0, 1.0, 0.0, # 14
-        # Triângulo 6
-        -0.5, -0.5, 0.5, 1.0, 0.0, 0.0, # 15
-        -0.5, 0.5, -0.5, 0.0, 1.0, 0.0, # 16
-        -0.5, 0.5, 0.5, 1.0, 1.0, 0.0, # 17
-        # ---- FACE 4: DIREITA (+X) ----
-        # Triângulo 7
-        0.5, -0.5, -0.5, 1.0, 0.0, 0.0, # 18
-        0.5, -0.5, 0.5, 0.0, 0.0, 0.0, # 19
-        0.5, 0.5, 0.5, 0.0, 1.0, 0.0, # 20
-        # Triângulo 8
-        0.5, -0.5, -0.5, 1.0, 0.0, 0.0, # 21
-        0.5, 0.5, 0.5, 0.0, 1.0, 0.0, # 22
-        0.5, 0.5, -0.5, 1.0, 1.0, 0.0, # 23
-
-        # ---- FACE 5: FUNDO (-Y) ----
-        # Triângulo 9
-        -0.5, -0.5, -0.5, 0.0, 0.0, 0.0, # 24
-        0.5, -0.5, -0.5, 1.0, 0.0, 0.0, # 25
-        0.5, -0.5, 0.5, 1.0, 1.0, 0.0, # 26
-        # Triângulo 10
-        -0.5, -0.5, -0.5, 0.0, 0.0, 0.0, # 27
-        0.5, -0.5, 0.5, 1.0, 1.0, 0.0, # 28
-        -0.5, -0.5, 0.5, 0.0, 1.0, 0.0, # 29
-        # ---- FACE 6: TOPO (+Y) ----
-        # Triângulo 11
-        -0.5, 0.5, 0.5, 0.0, 0.0, 0.0, # 30
-        0.5, 0.5, 0.5, 1.0, 0.0, 0.0, # 31
-        0.5, 0.5, -0.5, 1.0, 1.0, 0.0, # 32
-        # Triângulo 12
-        -0.5, 0.5, 0.5, 0.0, 0.0, 0.0, # 33
-        0.5, 0.5, -0.5, 1.0, 1.0, 0.0, # 34
-        -0.5, 0.5, -0.5, 0.0, 1.0, 0.0, # 35
+    quadrado = np.array([0.3, 0.3, -1.0, 1.0, 1.0, # T1 V1
+                        0.3, -0.3, -1.0, 1.0, 0.0, # T1 V2
+                        -0.3, -0.3, -1.0, 0.0, 0.0, # T1 V3
+                        -0.3, -0.3, -1.0, 0.0, 0.0, # T2 V1
+                        -0.3, 0.3, -1.0, 0.0, 1.0, # T2 V2
+                        0.3, 0.3, -1.0, 1.0, 1.0, # T2 V3
     ],dtype=np.float32)
 
-    triangle_vertices = np.array([
-    -0.5, -0.5, -1.0, 1.0, 0.0, 0.0, #V1
-    0.5, -0.5, -1.0, 0.0, 1.0, 0.0, #V2
-    0.0, 0.5, -1.0, 0.0, 0.0, 1.0 #V3
-    ], dtype=np.float32)
+    vao_qua, vbo_qua = setup_geometry(quadrado)
 
-    vao_cube, vbo_cube = setup_geometry(cube_vertices_data)
-    vao_tri, vbo_tri = setup_geometry(triangle_vertices)
+    texture_id = glGenTextures(1)
+    glBindTexture(GL_TEXTURE_2D,texture_id)
+
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,640,587,0,GL_RGB, GL_UNSIGNED_BYTE,texture)
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+    
 
     camera_pos = np.array([0.0, 0.0,3.0], dtype=np.float32) #world pos
     camera_front = np.array([0.0, 0.0, -1.0], dtype=np.float32) #facing
@@ -104,10 +61,10 @@ def main():
 
     scale_M = create_scale(1.0, 1.0, 1.0)
     rotation_M = create_rotation(0.0, "y")
-    translation_M = create_translation(2.0, 0.0, 1.0)
+    translation_M = create_translation(0.0, 0.0, 1.0)
     model = translation_M @ rotation_M @ scale_M
     view = create_view(camera_pos,camera_front,camera_up)
-    projection = create_projection(45.0,1920/1080,0.1,100.0)
+    projection = create_projection(45.0,800/600,0.1,100.0)
 
     mvpshader = create_shader(GL_VERTEX_SHADER,"shadermvp.vert")
     fragshader = create_shader(GL_FRAGMENT_SHADER,"shaderfrag.frag")
@@ -125,8 +82,11 @@ def main():
     glUniformMatrix4fv(view_loc, 1, GL_FALSE, view.flatten())
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection.flatten())
 
+    texture_loc = glGetUniformLocation(shader_program, "frameColor")
+    glUniform1i(texture_loc, 0)
+
     #Espeficamos as operações de viewport
-    glViewport(0, 0, 1920, 1080)
+    glViewport(0, 0, 800, 600)
 
     first_mouse = True
     yaw = -90.0
@@ -153,17 +113,19 @@ def main():
         #Definicao da matriz de projeção
         glUseProgram(shader_program)
 
+        rotation_x = create_rotation(x,"x")
+        rotation_y = create_rotation(y,"y")
+        rotation_M = rotation_y @ rotation_x
+
+        model = translation_M @ rotation_M @ scale_M
         view = create_view(camera_pos, camera_front, camera_up)
+        glUniformMatrix4fv(model_loc, 1, GL_FALSE, model.T.flatten())
         glUniformMatrix4fv(view_loc, 1, GL_FALSE, view.flatten())
         
-        glBindVertexArray(vao_cube)
-        glDrawArrays(GL_TRIANGLES,0,36)
+        glBindVertexArray(vao_qua)
+        glDrawArrays(GL_TRIANGLES,0,6)
         glBindVertexArray(0)
 
-        glBindVertexArray(vao_tri)
-        glDrawArrays(GL_TRIANGLES,0,3)
-        glBindVertexArray(0)
-        glUseProgram(0)
         fps_counter.render_fps(x=10, y=win_height - 30, size=2.0, color=(1.0, 1.0, 0.0))
         # Desvincular VAOs/VBOs
         # Desvincular o programa (shaders)
@@ -180,21 +142,20 @@ def main():
     #Também será necessário limpar os VAOs/VBOs e Program/Shaders
 
 def setup_geometry(vertex):
-
     vao = glGenVertexArrays(1)
     vbo = glGenBuffers(1)
     glBindVertexArray(vao)
     glBindBuffer(GL_ARRAY_BUFFER, vbo)
     glBufferData(GL_ARRAY_BUFFER, vertex.nbytes, vertex, GL_STATIC_DRAW)
 
-    stride = 6 * vertex.itemsize
+    stride = 5 * vertex.itemsize
 
     # Atributo 0: Posição (3 floats)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, ctypes.c_void_p(0))
     glEnableVertexAttribArray(0)
 
-    # Atributo 1: Cor (3 floats)
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, ctypes.c_void_p(3 * vertex.itemsize))
+    # Atributo 1: UV (2 floats)
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, ctypes.c_void_p(3 * vertex.itemsize))
     glEnableVertexAttribArray(1)
 
     glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -273,13 +234,19 @@ def create_translation(x,y,z):
     return translation
 
 def keys():
-    global camera_pos,camera_front,camera_up,window
+    global camera_pos,camera_front,camera_up,window,x,y
     camera_speed = 0.05
 
     w = glfw.get_key(window,glfw.KEY_W)
     s = glfw.get_key(window,glfw.KEY_S)
     a = glfw.get_key(window,glfw.KEY_A)
     d = glfw.get_key(window,glfw.KEY_D)
+    space = glfw.get_key(window,glfw.KEY_SPACE)
+    shift = glfw.get_key(window,glfw.KEY_LEFT_SHIFT)
+    up = glfw.get_key(window,glfw.KEY_UP)
+    down = glfw.get_key(window,glfw.KEY_DOWN)
+    left = glfw.get_key(window,glfw.KEY_LEFT)
+    right = glfw.get_key(window,glfw.KEY_RIGHT)
 
     if w == glfw.PRESS:
         camera_pos += camera_speed * camera_front
@@ -289,6 +256,18 @@ def keys():
         camera_pos -= np.cross(camera_front,camera_up) * camera_speed
     if d == glfw.PRESS:
         camera_pos += np.cross(camera_front,camera_up) * camera_speed
+    if space == glfw.PRESS:
+        camera_pos += camera_speed * camera_up
+    if shift == glfw.PRESS:
+        camera_pos -= camera_speed * camera_up
+    if up == glfw.PRESS:
+        x += 0.1
+    if down == glfw.PRESS:
+        x -= 0.1
+    if left == glfw.PRESS:
+        y += 0.1
+    if right == glfw.PRESS:
+        y -= 0.1
 
 def mouse_callback(window,xpos,ypos):
     global first_mouse, camera_front,yaw,pitch,last_x,last_y
