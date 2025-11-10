@@ -6,12 +6,12 @@ from fps import FPSCounter
 import cv2
 
 def main():
-    global camera_pos, camera_front, camera_up, window, first_mouse,yaw,pitch,last_x,last_y,x,y
+    global camera_pos, camera_front, camera_up, window, first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y
     # 1. Initialize GLFW
     if not glfw.init():
         print("Erro: Não foi possível inicializar o GLFW.")
         return
-    x = y = 0
+    rot_x = rot_y = 0.0
     # Request OpenGL Core Profile 3.3
     glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3)
     glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
@@ -59,10 +59,13 @@ def main():
     camera_front = np.array([0.0, 0.0, -1.0], dtype=np.float32) #facing
     camera_up = np.array([0.0, 1.0, 0.0], dtype=np.float32) #up
 
-    scale_M = create_scale(1.0, 1.0, 1.0)
-    rotation_M = create_rotation(0.0, "y")
-    translation_M = create_translation(0.0, 0.0, 1.0)
-    model = translation_M @ rotation_M @ scale_M
+    scale_m = create_scale(1.0, 1.0, 1.0)
+    rotation_x = create_rotation(0.0,"x")
+    rotation_y = create_rotation(0.0,"y")
+    rotation_z = create_rotation(0.0,"z")
+    rotation_m = rotation_x @ rotation_y @ rotation_z
+    translation_m = create_translation(0.0, 0.0, 1.0)
+    model = translation_m @ rotation_m @ scale_m
     view = create_view(camera_pos,camera_front,camera_up)
     projection = create_projection(45.0,800/600,0.1,100.0)
 
@@ -112,23 +115,27 @@ def main():
 
         #Definicao da matriz de projeção
         glUseProgram(shader_program)
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D,texture_id)
+        glUniform1i(texture_loc,0)
+        #Refazer a rotação TODO
+        rotation_x = create_rotation(rot_x,"x")
+        rotation_y = create_rotation(rot_y,"y")
+        rotation_z = create_rotation(0.0,"z")
+        rotation_m = rotation_y @ rotation_x @ rotation_z
 
-        rotation_x = create_rotation(x,"x")
-        rotation_y = create_rotation(y,"y")
-        rotation_M = rotation_y @ rotation_x
-
-        model = translation_M @ rotation_M @ scale_M
+        model = translation_m @ rotation_m @ scale_m
         view = create_view(camera_pos, camera_front, camera_up)
         glUniformMatrix4fv(model_loc, 1, GL_FALSE, model.T.flatten())
         glUniformMatrix4fv(view_loc, 1, GL_FALSE, view.flatten())
         
         glBindVertexArray(vao_qua)
         glDrawArrays(GL_TRIANGLES,0,6)
+        glBindTexture(GL_TEXTURE_2D,0)
         glBindVertexArray(0)
 
         fps_counter.render_fps(x=10, y=win_height - 30, size=2.0, color=(1.0, 1.0, 0.0))
-        # Desvincular VAOs/VBOs
-        # Desvincular o programa (shaders)
+        glUseProgram(0)
 
         glfw.swap_buffers(window)
         # Verifica e processa eventos da janela
@@ -139,7 +146,10 @@ def main():
 
     # 5. Finalização
     glfw.terminate()
-    #Também será necessário limpar os VAOs/VBOs e Program/Shaders
+    glDeleteVertexArrays(1,vao_qua)
+    glDeleteBuffers(1,vbo_qua)
+    glDeleteTextures(1,[texture_id])
+    print("BOLA")
 
 def setup_geometry(vertex):
     vao = glGenVertexArrays(1)
@@ -234,7 +244,7 @@ def create_translation(x,y,z):
     return translation
 
 def keys():
-    global camera_pos,camera_front,camera_up,window,x,y
+    global camera_pos,camera_front,camera_up,window,rot_x,rot_y
     camera_speed = 0.05
 
     w = glfw.get_key(window,glfw.KEY_W)
@@ -253,21 +263,23 @@ def keys():
     if s == glfw.PRESS:
         camera_pos -= camera_speed * camera_front
     if a == glfw.PRESS:
-        camera_pos -= np.cross(camera_front,camera_up) * camera_speed
+        left_matrix = np.cross(camera_front,camera_up)
+        camera_pos -= left_matrix / np.linalg.norm(left_matrix) * camera_speed
     if d == glfw.PRESS:
-        camera_pos += np.cross(camera_front,camera_up) * camera_speed
+        right_matrix = np.cross(camera_front,camera_up)
+        camera_pos += right_matrix / np.linalg.norm(right_matrix) * camera_speed
     if space == glfw.PRESS:
         camera_pos += camera_speed * camera_up
     if shift == glfw.PRESS:
         camera_pos -= camera_speed * camera_up
     if up == glfw.PRESS:
-        x += 0.1
+        rot_x += 0.05
     if down == glfw.PRESS:
-        x -= 0.1
+        rot_x -= 0.05
     if left == glfw.PRESS:
-        y += 0.1
+        rot_y += 0.05
     if right == glfw.PRESS:
-        y -= 0.1
+        rot_y -= 0.05
 
 def mouse_callback(window,xpos,ypos):
     global first_mouse, camera_front,yaw,pitch,last_x,last_y
@@ -297,7 +309,8 @@ def mouse_callback(window,xpos,ypos):
     x = math.cos(math.radians(yaw)) * math.cos(math.radians(pitch))
     y = math.sin(math.radians(pitch))
     z = math.sin(math.radians(yaw)) * math.cos(math.radians(pitch))
-    camera_front = np.array([x, y, z], dtype=np.float32)
+    direction = np.array([x, y, z], dtype=np.float32)
+    camera_front = direction / np.linalg.norm(direction)  
 
 if __name__ == "__main__":
     main()

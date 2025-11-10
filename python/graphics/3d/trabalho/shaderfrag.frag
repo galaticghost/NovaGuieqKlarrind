@@ -6,5 +6,5 @@ uniform sampler2D frameColor;
 
 void main()
 {   
-    FragText = texture2D(frameColor,vTex);
+    FragText = texture(frameColor,vTex);
 }
