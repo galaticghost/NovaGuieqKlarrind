@@ -64,7 +64,7 @@ def main():
     rotation_y = create_rotation(0.0,"y")
     rotation_z = create_rotation(0.0,"z")
     rotation_m = rotation_x @ rotation_y @ rotation_z
-    translation_m = create_translation(0.0, 0.0, 1.0)
+    translation_m = create_translation(0.0, 0.0, 0.0)
     model = translation_m @ rotation_m @ scale_m
     view = create_view(camera_pos,camera_front,camera_up)
     projection = create_projection(45.0,800/600,0.1,100.0)
@@ -118,11 +118,11 @@ def main():
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D,texture_id)
         glUniform1i(texture_loc,0)
-        #Refazer a rotação TODO
+        #Refazer a rotação TODO or not TODO (seilá se é para ser assim)
         rotation_x = create_rotation(rot_x,"x")
         rotation_y = create_rotation(rot_y,"y")
         rotation_z = create_rotation(0.0,"z")
-        rotation_m = rotation_y @ rotation_x @ rotation_z
+        rotation_m = rotation_x @ rotation_y @ rotation_z
 
         model = translation_m @ rotation_m @ scale_m
         view = create_view(camera_pos, camera_front, camera_up)
@@ -149,7 +149,9 @@ def main():
     glDeleteVertexArrays(1,vao_qua)
     glDeleteBuffers(1,vbo_qua)
     glDeleteTextures(1,[texture_id])
-    print("BOLA")
+    glDeleteProgram(shader_program)
+    glDeleteShader(mvpshader)
+    glDeleteShader(fragshader)
 
 def setup_geometry(vertex):
     vao = glGenVertexArrays(1)
@@ -310,7 +312,7 @@ def mouse_callback(window,xpos,ypos):
     y = math.sin(math.radians(pitch))
     z = math.sin(math.radians(yaw)) * math.cos(math.radians(pitch))
     direction = np.array([x, y, z], dtype=np.float32)
-    camera_front = direction / np.linalg.norm(direction)  
+    camera_front = direction / np.linalg.norm(direction)
 
 if __name__ == "__main__":
     main()
