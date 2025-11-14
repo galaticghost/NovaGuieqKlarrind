@@ -36,11 +36,12 @@ def main():
 
     # Torna o contexto da janela o contexto atual do thread
     glfw.make_context_current(window)
+    # Prepara os callbacks
     glfw.set_input_mode(window,glfw.CURSOR,glfw.CURSOR_DISABLED)
-    glfw.set_cursor_pos_callback(window, mouse_callback)
-    glfw.set_mouse_button_callback(window, mouse_button_callback)
-    glfw.set_key_callback(window,keys_callback)
-    #glfw.swap_interval(0) # Descomenta para fps enormes(esse quebrar velocidade tbm)
+    glfw.set_cursor_pos_callback(window, mouse_callback) # Callback da camera
+    glfw.set_mouse_button_callback(window, mouse_button_callback) # Callback dos controles do mouse
+    glfw.set_key_callback(window,keys_callback) # Callback dos kernels
+    #glfw.swap_interval(0) # Descomenta para fps enormes(esse quebrar velocidade tbm())
 
     # 3. Váriaveis e afins
 
@@ -187,7 +188,9 @@ def main():
 
 def keys_input():
     """
-    Essa função é basicamente o que controla os inputs do teclado
+    Essa função é basicamente o que controla os inputs da camera
+    Ela não é um callback devido não ser possível se mover repetidamente
+    com um uníco aperto da tecla
     """
     global camera_pos,camera_front,camera_up,window,rot_x,rot_y
     camera_speed = 0.05
@@ -228,7 +231,7 @@ def keys_input():
 
 def mouse_callback(window,xpos,ypos):
     """
-    Callback do mouse. 
+    Callback da câmera. 
     """
     global first_mouse, camera_front,yaw,pitch,last_x,last_y
     
@@ -268,17 +271,19 @@ def mouse_callback(window,xpos,ypos):
     camera_front = direction / np.linalg.norm(direction)
 
 def keys_callback(window,key,scancode,action,mods):
-    global translation_m,rotation_x,rotation_y,rotation_z,scale_m,camera_pos,camera_front,camera_up
-    global first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y,shader_program,start_time,time_checker_status
+    """
+    Callback do kernel
+    """
+    global shader_program,start_time,time_checker_status
 
     if action == glfw.PRESS:
         use_kernel_loc = glGetUniformLocation(shader_program,"useKernel")
-        if key == glfw.KEY_R:
+        if key == glfw.KEY_R: # Reset básico apenas do kernel
             glUseProgram(shader_program)
             glUniform1i(use_kernel_loc,False)
             glUseProgram(0)
         else:
-            match(key):
+            match(key): # gerencia os filtros (Coloca eles no frag shader e inicia o tempo)
                 case glfw.KEY_1:
                     kernel = np.array([[1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]],
                       dtype=np.float32) # Blur Gaussian 
@@ -308,10 +313,14 @@ def keys_callback(window,key,scancode,action,mods):
             start_time = time.time()
 
 def mouse_button_callback(window,button,action,mods):
+    """
+    Callback dos botões do mouse
+    """
+
     global translation_m,rotation_x,rotation_y,rotation_z,scale_m,camera_pos,camera_front,camera_up
     global first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y,shader_program,gray_color_bool
 
-    if button == glfw.MOUSE_BUTTON_LEFT and action == glfw.PRESS:
+    if button == glfw.MOUSE_BUTTON_LEFT and action == glfw.PRESS: # Tons de cinza
         grey_color_loc = glGetUniformLocation(shader_program,"greyColor")
         glUseProgram(shader_program)
         if gray_color_bool:
@@ -321,7 +330,7 @@ def mouse_button_callback(window,button,action,mods):
             glUniform1f(grey_color_loc,1.0)
             gray_color_bool = True
         glUseProgram(0)
-    if button == glfw.MOUSE_BUTTON_RIGHT and action == glfw.PRESS:
+    if button == glfw.MOUSE_BUTTON_RIGHT and action == glfw.PRESS: # Reset completo
             # Matrizes do model
             scale_m = create_scale(2.0, 1.5, 1.0)
             rotation_x = create_rotation(0.0,"x")
@@ -347,6 +356,9 @@ def mouse_button_callback(window,button,action,mods):
             glUseProgram(0)
 
 def time_checker():
+    """
+    É uma função que calcula o tempo em que um filtro é aplicado em uma textura
+    """
     global start_time,time_checker_status
     if time_checker_status:
         print(f"{(time.time() - start_time)} segundos para o nosso algoritmo")
