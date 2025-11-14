@@ -11,8 +11,7 @@ def main():
     #Globais da camera e da rotação
     global camera_pos,camera_front,camera_up,window,first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y
     #Globais do model
-    global translation_m,rotation_x,rotation_y,rotation_z,scale_m,shader_program,time_checker_status
-    time_checker_status = False
+    global translation_m,rotation_x,rotation_y,rotation_z,scale_m,shader_program,time_checker_status,gray_color_bool
 
     # 1. Initialize GLFW
     if not glfw.init():
@@ -25,10 +24,9 @@ def main():
     glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
     # glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, glfw.TRUE)  # Uncomment if needed (MacOS)
 
-
     # 2. Criação da Janela de Aplicação
-    window_width = 800
-    window_height = 600
+    window_width = 1920
+    window_height = 1080
 
     window = glfw.create_window(window_width, window_height, "Quadrado", None, None)
     if not window:
@@ -40,7 +38,11 @@ def main():
     glfw.make_context_current(window)
     glfw.set_input_mode(window,glfw.CURSOR,glfw.CURSOR_DISABLED)
     glfw.set_cursor_pos_callback(window, mouse_callback)
+    glfw.set_mouse_button_callback(window, mouse_button_callback)
     glfw.set_key_callback(window,keys_callback)
+    #glfw.swap_interval(0) # Descomenta para fps enormes(esse quebrar velocidade tbm)
+
+    # 3. Váriaveis e afins
 
     # Quadrado
     quadrado_vertex = np.array([0.3, 0.3, -1.0, 1.0, 1.0, # T1 V1
@@ -103,15 +105,14 @@ def main():
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection.flatten())
 
     # variáveis para a convolução
-    kernel = np.array([[1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]],
-                      dtype=np.float32)
-
-    kernel_loc = glGetUniformLocation(shader_program,"kernel")
-    size_loc = glGetUniformLocation(shader_program,"texSize")
-    texture_loc = glGetUniformLocation(shader_program, "frameColor")
+    size_loc = glGetUniformLocation(shader_program,"texSize") #Tamanho da textura
+    texture_loc = glGetUniformLocation(shader_program, "frameColor") # TODO COMMENTS
+    use_kernel_loc = glGetUniformLocation(shader_program,"useKernel") # Se terá efeito
+    grey_color_loc = glGetUniformLocation(shader_program,"greyColor") # Determina se a textura será cinza ou não
     glUniform1i(texture_loc, 0)
+    glUniform1i(use_kernel_loc,False)
+    glUniform1f(grey_color_loc,0.0)
     glUniform2fv(size_loc,1,np.array([1.0/tex_width,1.0/tex_height],dtype=np.float32))
-    glUniformMatrix3fv(kernel_loc,1,GL_FALSE,kernel)
 
     #Espeficamos as operações de viewport
     glViewport(0, 0, window_width, window_height)
@@ -123,13 +124,15 @@ def main():
     last_y = 300
     last_x = 400
     rot_x = rot_y = 0.0
+    gray_color_bool = False
+    time_checker_status = False
 
     # Comento depois TODO
     glEnable(GL_DEPTH_TEST)
 
     fps_counter = FPSCounter(average_over=30, stats_interval=5.0)
     fps_counter.initialize_text_rendering(window_width, window_height)
-    fps_counter.enable_stats_printing(True)
+    fps_counter.enable_stats_printing(False)
 
     # Define a cor de fundo da janela
     glClearColor(0.3, 0.3, 0.3, 1.0)
@@ -159,8 +162,8 @@ def main():
         glUniformMatrix4fv(view_loc, 1, GL_FALSE, view.flatten())
         
         glBindVertexArray(vao_qua)
-        glDrawArrays(GL_TRIANGLES,0,6)
         time_checker()
+        glDrawArrays(GL_TRIANGLES,0,6)
         glBindTexture(GL_TEXTURE_2D,0)
         glBindVertexArray(0)
 
@@ -268,9 +271,57 @@ def keys_callback(window,key,scancode,action,mods):
     global translation_m,rotation_x,rotation_y,rotation_z,scale_m,camera_pos,camera_front,camera_up
     global first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y,shader_program,start_time,time_checker_status
 
-    kernel_loc = glGetUniformLocation(shader_program,"kernel")
     if action == glfw.PRESS:
+        use_kernel_loc = glGetUniformLocation(shader_program,"useKernel")
         if key == glfw.KEY_R:
+            glUseProgram(shader_program)
+            glUniform1i(use_kernel_loc,False)
+            glUseProgram(0)
+        else:
+            match(key):
+                case glfw.KEY_1:
+                    kernel = np.array([[1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]],
+                      dtype=np.float32) # Blur Gaussian 
+                    print("Kernel:kernel blur")
+                case glfw.KEY_2:
+                    kernel = np.array([[0,-1,0],[-1,5,-1],[0,-1,0]],dtype=np.float32) # Sharpen
+                    print("Kernel:kernel sharpen")
+                case glfw.KEY_3:
+                    kernel = np.array([[-1,-1,-1],[-1,8,-1],[-1,-1,-1]],dtype=np.float32) # Edge detection
+                    print("Kernel:kernel edge detection")
+                case glfw.KEY_4:
+                    kernel = np.array([[-1,0,1],[-2,0,2],[-1,0,1]], # Sobel Kernel
+                      dtype=np.float32)
+                    print("Kernel:kernel sobel")
+                case glfw.KEY_5:
+                    kernel = np.array([[-1,-1,-1],[-1,9,-1],[-1,-1,-1]], # High boost
+                      dtype=np.float32)
+                    print("Kernel:kernel high boost")
+                case _:
+                    return
+            glUseProgram(shader_program)
+            glUniform1i(use_kernel_loc,True)
+            kernel_loc = glGetUniformLocation(shader_program,"kernel")
+            glUniformMatrix3fv(kernel_loc,1,GL_FALSE,kernel)
+            glUseProgram(0)
+            time_checker_status = True
+            start_time = time.time()
+
+def mouse_button_callback(window,button,action,mods):
+    global translation_m,rotation_x,rotation_y,rotation_z,scale_m,camera_pos,camera_front,camera_up
+    global first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y,shader_program,gray_color_bool
+
+    if button == glfw.MOUSE_BUTTON_LEFT and action == glfw.PRESS:
+        grey_color_loc = glGetUniformLocation(shader_program,"greyColor")
+        glUseProgram(shader_program)
+        if gray_color_bool:
+            glUniform1f(grey_color_loc,0.0)
+            gray_color_bool = False
+        else:
+            glUniform1f(grey_color_loc,1.0)
+            gray_color_bool = True
+        glUseProgram(0)
+    if button == glfw.MOUSE_BUTTON_RIGHT and action == glfw.PRESS:
             # Matrizes do model
             scale_m = create_scale(2.0, 1.5, 1.0)
             rotation_x = create_rotation(0.0,"x")
@@ -290,28 +341,10 @@ def keys_callback(window,key,scancode,action,mods):
             last_x = 400
             rot_x = rot_y = 0.0
 
-            #RESET DO KERNEL TODO
-        else:
-            match(key):
-                case glfw.KEY_1:
-                    kernel = np.array([[1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]],
-                      dtype=np.float32)
-                case glfw.KEY_2:
-                    pass
-                case glfw.KEY_3:
-                    pass
-                case glfw.KEY_4:
-                    pass
-                case glfw.KEY_5:
-                    kernel = np.array([[1,1,1],[1,1,1],[1,1,1]],
-                      dtype=np.float32)
-                case _:
-                    return
             glUseProgram(shader_program)
-            glUniformMatrix3fv(kernel_loc,1,GL_FALSE,kernel)
+            use_kernel_loc = glGetUniformLocation(shader_program,"useKernel")
+            glUniform1i(use_kernel_loc,False)
             glUseProgram(0)
-            time_checker_status = True
-            start_time = time.time()
 
 def time_checker():
     global start_time,time_checker_status
