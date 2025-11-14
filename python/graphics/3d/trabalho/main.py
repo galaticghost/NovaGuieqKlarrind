@@ -5,9 +5,14 @@ import glfw
 import numpy as np
 import math
 import cv2
+import time
 
 def main():
-    global camera_pos, camera_front, camera_up, window, first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y
+    #Globais da camera e da rotação
+    global camera_pos,camera_front,camera_up,window,first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y
+    #Globais do model
+    global translation_m,rotation_x,rotation_y,rotation_z,scale_m,shader_program,time_checker_status
+    time_checker_status = False
 
     # 1. Initialize GLFW
     if not glfw.init():
@@ -20,11 +25,12 @@ def main():
     glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
     # glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, glfw.TRUE)  # Uncomment if needed (MacOS)
 
-    win_height = 2160
-    win_width = 3840
 
     # 2. Criação da Janela de Aplicação
-    window = glfw.create_window(win_width, win_height, "Quadrado", None, None)
+    window_width = 800
+    window_height = 600
+
+    window = glfw.create_window(window_width, window_height, "Quadrado", None, None)
     if not window:
         glfw.terminate()
         print("Erro: Não foi possível criar a janela GLFW.")
@@ -34,6 +40,7 @@ def main():
     glfw.make_context_current(window)
     glfw.set_input_mode(window,glfw.CURSOR,glfw.CURSOR_DISABLED)
     glfw.set_cursor_pos_callback(window, mouse_callback)
+    glfw.set_key_callback(window,keys_callback)
 
     # Quadrado
     quadrado_vertex = np.array([0.3, 0.3, -1.0, 1.0, 1.0, # T1 V1
@@ -69,7 +76,6 @@ def main():
     translation_m = create_translation(0.0, 0.0, 1.0)
     model = translation_m @ rotation_m @ scale_m
 
-
     # Matriz da câmera
     camera_pos = np.array([0.0, 0.0,3.0], dtype=np.float32) #world pos
     camera_front = np.array([0.0, 0.0, -1.0], dtype=np.float32) #facing
@@ -77,8 +83,9 @@ def main():
     view = create_view(camera_pos,camera_front,camera_up)
 
     # Matriz de projeção
-    projection = create_projection(45.0,win_width/win_height,0.1,100.0)
+    projection = create_projection(45.0,window_width/window_height,0.1,100.0)
 
+    # Criação dos shaders
     mvpshader = create_shader(GL_VERTEX_SHADER,"shadermvp.vert")
     fragshader = create_shader(GL_FRAGMENT_SHADER,"convolution.frag")
 
@@ -96,7 +103,7 @@ def main():
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection.flatten())
 
     # variáveis para a convolução
-    kernel = np.array([[[1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]]],
+    kernel = np.array([[1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]],
                       dtype=np.float32)
 
     kernel_loc = glGetUniformLocation(shader_program,"kernel")
@@ -107,9 +114,9 @@ def main():
     glUniformMatrix3fv(kernel_loc,1,GL_FALSE,kernel)
 
     #Espeficamos as operações de viewport
-    glViewport(0, 0, win_width, win_height)
+    glViewport(0, 0, window_width, window_height)
 
-    # Globais para a camera com o mouse
+    # Variáveis iniciais para a camera com o mouse
     first_mouse = True
     yaw = -90.0
     pitch = 0
@@ -121,7 +128,7 @@ def main():
     glEnable(GL_DEPTH_TEST)
 
     fps_counter = FPSCounter(average_over=30, stats_interval=5.0)
-    fps_counter.initialize_text_rendering(win_width, win_height)
+    fps_counter.initialize_text_rendering(window_width, window_height)
     fps_counter.enable_stats_printing(True)
 
     # Define a cor de fundo da janela
@@ -131,13 +138,15 @@ def main():
     while not glfw.window_should_close(window):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         fps_counter.update()
-        keys()
+        
+        keys_input()
 
         #Definicao da matriz de projeção
         glUseProgram(shader_program)
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D,texture_id)
         glUniform1i(texture_loc,0)
+
         #Refazer a rotação TODO or not TODO (seilá se é para ser assim)
         rotation_x = create_rotation(rot_x,"x")
         rotation_y = create_rotation(rot_y,"y")
@@ -151,17 +160,17 @@ def main():
         
         glBindVertexArray(vao_qua)
         glDrawArrays(GL_TRIANGLES,0,6)
+        time_checker()
         glBindTexture(GL_TEXTURE_2D,0)
         glBindVertexArray(0)
 
-        fps_counter.render_fps(x=10, y=win_height - 30, size=2.0, color=(1.0, 1.0, 0.0))
+        fps_counter.render_fps(x=10, y=window_height - 30, size=2.0, color=(1.0, 1.0, 0.0))
         glUseProgram(0)
 
+        # Troca os buffers front e back para exibir a imagem renderizada
         glfw.swap_buffers(window)
         # Verifica e processa eventos da janela
         glfw.poll_events()
-
-        # Troca os buffers front e back para exibir a imagem renderizada
 
 
     # 5. Finalização
@@ -173,7 +182,10 @@ def main():
     glDeleteShader(mvpshader)
     glDeleteShader(fragshader)
 
-def keys():
+def keys_input():
+    """
+    Essa função é basicamente o que controla os inputs do teclado
+    """
     global camera_pos,camera_front,camera_up,window,rot_x,rot_y
     camera_speed = 0.05
 
@@ -199,9 +211,9 @@ def keys():
         right_matrix = np.cross(camera_front,camera_up)
         camera_pos += right_matrix / np.linalg.norm(right_matrix) * camera_speed
     if space == glfw.PRESS:
-        camera_pos += camera_speed * camera_up
-    if shift == glfw.PRESS:
         camera_pos -= camera_speed * camera_up
+    if shift == glfw.PRESS:
+        camera_pos += camera_speed * camera_up
     if up == glfw.PRESS:
         rot_x += 0.05
     if down == glfw.PRESS:
@@ -212,25 +224,34 @@ def keys():
         rot_y -= 0.05
 
 def mouse_callback(window,xpos,ypos):
+    """
+    Callback do mouse. 
+    """
     global first_mouse, camera_front,yaw,pitch,last_x,last_y
     
+    #Checagem inicial
+    #
     if (first_mouse):
         last_x = xpos
         last_y = ypos
         first_mouse = False
 
+    # o offset vai ser usado para mudar a posição da camera
     x_offset = xpos - last_x
     y_offset = last_y - ypos
     last_y = ypos
     last_x = xpos
 
     sensitivity = 0.1
+    #Multiplica pela sensitividade para gerenciar a velocidade da camera
     x_offset *= sensitivity
     y_offset *= sensitivity
 
+    #Yaw é a esquerda e a direita e o pitch cima e baixo
     yaw += x_offset
     pitch += y_offset
 
+    # ifs para evitar dar um 360 
     if pitch > 89.0:
         pitch = 89.0
     if pitch < -89.0:
@@ -240,7 +261,62 @@ def mouse_callback(window,xpos,ypos):
     y = math.sin(math.radians(pitch))
     z = math.sin(math.radians(yaw)) * math.cos(math.radians(pitch))
     direction = np.array([x, y, z], dtype=np.float32)
+    # Normaliza para evitar lentidão ao olhar por um ângulo
     camera_front = direction / np.linalg.norm(direction)
 
+def keys_callback(window,key,scancode,action,mods):
+    global translation_m,rotation_x,rotation_y,rotation_z,scale_m,camera_pos,camera_front,camera_up
+    global first_mouse,yaw,pitch,last_x,last_y,rot_x,rot_y,shader_program,start_time,time_checker_status
+
+    kernel_loc = glGetUniformLocation(shader_program,"kernel")
+    if action == glfw.PRESS:
+        if key == glfw.KEY_R:
+            # Matrizes do model
+            scale_m = create_scale(2.0, 1.5, 1.0)
+            rotation_x = create_rotation(0.0,"x")
+            rotation_y = create_rotation(0.0,"y")
+            rotation_z = create_rotation(0.0,"z")
+            translation_m = create_translation(0.0, 0.0, 1.0)
+            
+            # Câmera
+            camera_pos = np.array([0.0, 0.0,3.0], dtype=np.float32) #world pos
+            camera_front = np.array([0.0, 0.0, -1.0], dtype=np.float32) #facing
+            camera_up = np.array([0.0, 1.0, 0.0], dtype=np.float32) #up
+
+            first_mouse = True
+            yaw = -90.0
+            pitch = 0
+            last_y = 300
+            last_x = 400
+            rot_x = rot_y = 0.0
+
+            #RESET DO KERNEL TODO
+        else:
+            match(key):
+                case glfw.KEY_1:
+                    kernel = np.array([[1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]],
+                      dtype=np.float32)
+                case glfw.KEY_2:
+                    pass
+                case glfw.KEY_3:
+                    pass
+                case glfw.KEY_4:
+                    pass
+                case glfw.KEY_5:
+                    kernel = np.array([[1,1,1],[1,1,1],[1,1,1]],
+                      dtype=np.float32)
+                case _:
+                    return
+            glUseProgram(shader_program)
+            glUniformMatrix3fv(kernel_loc,1,GL_FALSE,kernel)
+            glUseProgram(0)
+            time_checker_status = True
+            start_time = time.time()
+
+def time_checker():
+    global start_time,time_checker_status
+    if time_checker_status:
+        print(f"{(time.time() - start_time)} segundos para o nosso algoritmo")
+        time_checker_status = False
 if __name__ == "__main__":
     main()
