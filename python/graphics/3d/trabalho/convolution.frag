@@ -12,12 +12,6 @@ out vec4 FragColor;
 void main()
 {   
     vec3 result = vec3(0,0,0);
-    /*mat3 kernel = mat3(0);
-    if (x == 1) {
-        kernel = mat3(1/16,1/8,1/16,
-        1/8,1/4,1/8,
-        1/16,1/8,1/16)
-    }*/
     if (useKernel){
         // Loop para pegar os pixeis vizinhos
         for (int y = -1; y <= 1; y++) {
