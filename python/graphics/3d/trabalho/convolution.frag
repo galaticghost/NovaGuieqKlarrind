@@ -12,6 +12,12 @@ out vec4 FragColor;
 void main()
 {   
     vec3 result = vec3(0,0,0);
+    /*mat3 kernel = mat3(0);
+    if (x == 1) {
+        kernel = mat3(1/16,1/8,1/16,
+        1/8,1/4,1/8,
+        1/16,1/8,1/16)
+    }*/
     if (useKernel){
         // Loop para pegar os pixeis vizinhos
         for (int y = -1; y <= 1; y++) {
@@ -20,7 +26,7 @@ void main()
                 vec2 offset = vec2(x, y) * texSize;    
                 // Recebe na textura a coordenada uv + o deslocamento
                 vec3 sampleColor = texture(frameColor, vTex + offset).rgb; 
-                float weight = kernel[x+1][y+1];
+                float weight = kernel[y+1][x+1];
                 // Multiplica o vizinho pelo seu valor correspondente no kernel e faz a soma no result
                 result += sampleColor * weight;    
             }

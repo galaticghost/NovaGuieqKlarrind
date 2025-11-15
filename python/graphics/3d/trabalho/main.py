@@ -101,7 +101,7 @@ def main():
     model_loc = glGetUniformLocation(shader_program,"model")
     view_loc = glGetUniformLocation(shader_program,"view")
     proj_loc = glGetUniformLocation(shader_program,"projection")
-    glUniformMatrix4fv(model_loc,1,GL_FALSE,model.T.flatten())
+    glUniformMatrix4fv(model_loc,1,GL_FALSE,model.T.flatten()) # Como essa matriz model é row major é preciso fazer transposição
     glUniformMatrix4fv(view_loc, 1, GL_FALSE, view.flatten())
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection.flatten())
 
@@ -143,21 +143,23 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         fps_counter.update()
         
+        #Inputs de movimento da câmera e rotação
         keys_input()
 
-        #Definicao da matriz de projeção
         glUseProgram(shader_program)
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D,texture_id)
         glUniform1i(texture_loc,0)
 
-        #Refazer a rotação TODO or not TODO (seilá se é para ser assim)
+        # Rotação
         rotation_x = create_rotation(rot_x,"x")
         rotation_y = create_rotation(rot_y,"y")
         rotation_z = create_rotation(0.0,"z")
         rotation_m = rotation_x @ rotation_y @ rotation_z
 
         model = translation_m @ rotation_m @ scale_m
+        
+        #Movimento da câmera
         view = create_view(camera_pos, camera_front, camera_up)
         glUniformMatrix4fv(model_loc, 1, GL_FALSE, model.T.flatten())
         glUniformMatrix4fv(view_loc, 1, GL_FALSE, view.flatten())
