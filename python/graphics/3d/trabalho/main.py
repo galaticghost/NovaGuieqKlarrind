@@ -107,7 +107,7 @@ def main():
 
     # variáveis para a convolução
     size_loc = glGetUniformLocation(shader_program,"texSize") #Tamanho da textura
-    texture_loc = glGetUniformLocation(shader_program, "frameColor") # TODO COMMENTS
+    texture_loc = glGetUniformLocation(shader_program, "frameColor")
     use_kernel_loc = glGetUniformLocation(shader_program,"useKernel") # Se terá efeito
     grey_color_loc = glGetUniformLocation(shader_program,"greyColor") # Determina se a textura será cinza ou não
     glUniform1i(texture_loc, 0)
@@ -128,7 +128,6 @@ def main():
     gray_color_bool = False
     time_checker_status = False
 
-    # Comento depois TODO
     glEnable(GL_DEPTH_TEST)
 
     fps_counter = FPSCounter(average_over=30, stats_interval=5.0)

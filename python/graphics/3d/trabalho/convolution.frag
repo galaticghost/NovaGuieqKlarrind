@@ -3,8 +3,8 @@
 in vec2 vTex;
 uniform sampler2D frameColor;
 uniform mat3 kernel;
-uniform vec2 texSize; // 
-uniform bool useKernel; // Bool para ver se será aplicado um filtro na texxtura
+uniform vec2 texSize;
+uniform bool useKernel; // Bool para ver se será aplicado um filtro na textura
 uniform float greyColor;
 
 out vec4 FragColor;
