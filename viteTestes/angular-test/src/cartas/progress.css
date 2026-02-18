@@ -1,0 +1,26 @@
+.progress-bar {
+    background-color: #DFF8EB;
+    flex: 1;
+}
+.progress-bar > progress {
+    border: none;
+    background-color: gray;
+    border-radius: 8px;
+    appearance: none;
+    width: 70%;
+}
+.progress-bar > progress::-moz-progress-bar {
+    background: green;
+    border-radius: 8px;
+}
+.progress-bar > progress::-webkit-progress-bar {
+    background: gray;
+    border-radius: 8px;
+}
+.progress-bar > progress::-webkit-progress-value {
+    background: green;
+    border-radius: 8px;
+}
+.card-total {
+    font-size: 1.2em;
+}

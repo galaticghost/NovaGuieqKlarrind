@@ -8,8 +8,7 @@ import { Cartas } from "./cartas/cartas";
   selector: "app-root",
   standalone: true,
   imports: [Cartas],
-  template: `
-  <app-cartas>`
+  template: `<app-cartas>`
 })
 class App { }
 

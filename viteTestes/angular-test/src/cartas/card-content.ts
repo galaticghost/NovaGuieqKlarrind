@@ -5,15 +5,15 @@ import { Component, input } from "@angular/core";
     standalone: true,
     template: `
     <p>@if (!showAnswer()){
-        {{ pergunta() }}
+        {{ question() }}
         } @else {
-        {{ resposta() }}
+        {{ answer() }}
         }
     </p>
     `
 })
 export class CardContent {
     showAnswer = input(false);
-    pergunta = input("");
-    resposta = input("");
+    question = input("");
+    answer = input("");
 }

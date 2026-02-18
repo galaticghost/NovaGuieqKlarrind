@@ -1,32 +1,36 @@
-import { Barra } from "./barra";
-import { CardContent } from "./conteudo";
+import { ProgressBar } from "./progress-bar";
+import { CardContent } from "./card-content";
 import { Component, signal, WritableSignal } from "@angular/core";
 import jsonData from "./conteudo.json";
 
 type Content = {
-    pergunta: string,
-    resposta: string
+    question: string,
+    answer: string
 }
 
 @Component({
     selector: "app-cartas",
     standalone: true,
-    imports: [CardContent, Barra],
+    imports: [CardContent, ProgressBar],
     styleUrl: "./styles.css",
-    template: `<section>
-    <h1>Cartas</h1>
-    <barra [index]="index()" [cardLength]="content.length" />
-    <div>
-        <card-content 
-        [showAnswer]='showAnswer()'
-        [pergunta]='currentCard.pergunta'
-        [resposta]='currentCard.resposta'
-        />
-        <button [disabled]="isFirstCard()"(click)='prev()'>Anterior</button>
-        <button (click)='toggleAnswer()'>{{ showAnswer() ? "Esconder resposta" : "Mostrar resposta" }}</button>
-        <button [disabled]="isLastCard()" (click)='next()'>Próximo</button> 
-    </div>
-    </section>`
+    template: `
+    <section class="cards-app">
+        <h1 class="title">Cartas</h1>
+        <progress-bar class="progress-bar" [index]="index()" [cardLength]="content.length" />
+        <section class="card-content">
+            <card-content class="card-text"
+            [showAnswer]='showAnswer()'
+            [question]='currentCard.question'
+            [answer]='currentCard.answer'
+            />
+            <div class="card-buttons">
+                <button class="button" [disabled]="isFirstCard()" (click)='prev()'>Anterior</button>
+                <button class="button" (click)='toggleAnswer()'>{{ showAnswer() ? "Esconder resposta" : "Mostrar resposta" }}</button>
+                <button class="button" [disabled]="isLastCard()" (click)='next()'>Próximo ></button> 
+            </div>
+        </section>
+    </section>
+    `
 })
 export class Cartas {
     showAnswer: WritableSignal<boolean> = signal(false);
@@ -42,7 +46,6 @@ export class Cartas {
     };
 
     prev(): void {
-        console.log(jsonData);
         this.showAnswer.set(false);
         this.index.update((i) => i - 1);
     };
@@ -59,6 +62,4 @@ export class Cartas {
     isLastCard(): boolean {
         return this.index() === this.content.length - 1;
     };
-
-
 }
