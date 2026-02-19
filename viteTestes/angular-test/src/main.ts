@@ -7,8 +7,9 @@ import { Cartas } from "./cartas/cartas";
 @Component({
   selector: "app-root",
   standalone: true,
+  styleUrl: "styles.css",
   imports: [Cartas],
-  template: `<app-cartas>`
+  template: `<app-cartas class="app-cartas">`
 })
 class App { }
 

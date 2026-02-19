@@ -14,8 +14,8 @@ type Content = {
     imports: [CardContent, ProgressBar],
     styleUrl: "./styles.css",
     template: `
+    <header class="title">Cartas</header>
     <section class="cards-app">
-        <h1 class="title">Cartas</h1>
         <progress-bar class="progress-bar" [index]="index()" [cardLength]="content.length" />
         <section class="card-content">
             <card-content class="card-text"
@@ -24,9 +24,9 @@ type Content = {
             [answer]='currentCard.answer'
             />
             <div class="card-buttons">
-                <button class="button" [disabled]="isFirstCard()" (click)='prev()'>Anterior</button>
+                <button class="button" id="previous" [disabled]="isFirstCard()" (click)='prev()'>< Anterior</button>
                 <button class="button" (click)='toggleAnswer()'>{{ showAnswer() ? "Esconder resposta" : "Mostrar resposta" }}</button>
-                <button class="button" [disabled]="isLastCard()" (click)='next()'>Próximo ></button> 
+                <button class="button" id="next" [disabled]="isLastCard()" (click)='next()'>Próximo ></button> 
             </div>
         </section>
     </section>
